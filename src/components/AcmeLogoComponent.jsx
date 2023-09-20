@@ -8,4 +8,4 @@
     />
   </svg>
 );
-export default AcmeLogoComponent
+export default AcmeLogoComponent;

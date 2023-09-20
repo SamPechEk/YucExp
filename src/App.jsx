@@ -1,12 +1,14 @@
 import {Navbar, NavbarBrand, NavbarContent, NavbarItem, Link, Input, DropdownItem, DropdownTrigger, Dropdown, DropdownMenu, Avatar} from "@nextui-org/react";
 import AcmeLogoComponent from "./components/AcmeLogoComponent";
 import SearchIconComponent from "./components/SearchIconComponent";
+import BuscadorComponent from "./components/buscadorComponent";
+import {Card, CardBody} from "@nextui-org/react";
 
 export default function App() {
-  return (
+  return (   
     <>
     <div>
-      <Navbar isBordered>
+    <Navbar isBordered>
       <NavbarContent justify="start">
         <NavbarBrand className="mr-4">
           <AcmeLogoComponent />
@@ -75,8 +77,10 @@ export default function App() {
       </NavbarContent>
       </Navbar>
     </div>
-    <div>
-    </div>
+
+    <BuscadorComponent/>
     </>
+    
      );
 }
+ 

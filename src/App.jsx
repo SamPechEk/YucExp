@@ -4,7 +4,9 @@ import SearchIconComponent from "./components/SearchIconComponent";
 
 export default function App() {
   return (
-    <Navbar isBordered>
+    <>
+    <div>
+      <Navbar isBordered>
       <NavbarContent justify="start">
         <NavbarBrand className="mr-4">
           <AcmeLogoComponent />
@@ -71,6 +73,10 @@ export default function App() {
           </DropdownMenu>
         </Dropdown>
       </NavbarContent>
-    </Navbar>
-  );
+      </Navbar>
+    </div>
+    <div>
+    </div>
+    </>
+     );
 }

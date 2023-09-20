@@ -1,5 +1,5 @@
 import {useState} from 'react'
-import {Tabs, Tab, Input, Link, Button, Card, CardBody, CardHeader} from "@nextui-org/react";
+import {Tabs, Tab, Input, Link, Button, Card, CardBody, CardHeader, Image} from "@nextui-org/react";
 
 
 import MailIconComponent from './Icons/MailIconComponent';
@@ -12,9 +12,17 @@ import EyeSlashFilledIconComponent from "./Icons/EyeSlashFilledIconComponent";
     return (
         
 
-<div className="flex flex-col  items-center py-10 px-10">
-<Card className="max-w-full max-h-full w-[340px] h-[400px]">
-  <CardBody className="overflow-hidden">
+<div className=" justify-center items-center flex flex-col py-5 px-10 container">
+<Image
+      removeWrapper
+      width={850}
+      alt="Card background"
+      className="z-0  object-cover"
+      src="https://www.meridadeyucatan.com/wp-content/uploads/2018/10/heade1_opt.jpg"
+    />
+<Card className=" absolute w-[340px] h-[400px]">
+
+  <CardBody className=" overflow-hidden">
     <Tabs
       fullWidth
       size="md"
@@ -22,21 +30,21 @@ import EyeSlashFilledIconComponent from "./Icons/EyeSlashFilledIconComponent";
       selectedKey={selected}
       onSelectionChange={setSelected}
     >
-      <Tab key="login" title="Login">
+      <Tab key="login" title="Iniciar sesión">
         <form className="flex flex-col gap-4">
         <Input
                     type="email"
                     label="Email"
-                    placeholder="you@example.com"
+                    placeholder="tu@email.com"
                     labelPlacement="outside"
                     startContent={
                         <MailIconComponent className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
                     }
                     />
                     <Input
-                    label="Password"
+                    label="Constraseña"
                     labelPlacement="outside"
-                    placeholder="Enter your password"
+                    placeholder="Ingresa tu contraseña"
                     endContent={
                         <button className="focus:outline-none" type="button" onClick={toggleVisibility}>
                         {isVisible ? (
@@ -50,19 +58,19 @@ import EyeSlashFilledIconComponent from "./Icons/EyeSlashFilledIconComponent";
                     
                     />
           <p className="text-center text-small">
-            Need to create an account?{" "}
+            Nesesitas una cuenta?{" "}
             <Link size="sm" onPress={() => setSelected("sign-up")}>
-              Sign up
+              Registrarse
             </Link>
           </p>
           <div className="flex gap-2 justify-end">
             <Button fullWidth color="primary">
-              Login
+              Iniciar
             </Button>
           </div>
         </form>
       </Tab>
-      <Tab key="sign-up" title="Sign up">
+      <Tab key="sign-up" title="Registrarse">
         <form className="flex flex-col gap-4 h-[300px]">
           <Input isRequired label="Name" placeholder="Enter your name" type="password" />
           <Input isRequired label="Email" placeholder="Enter your email" type="email" />

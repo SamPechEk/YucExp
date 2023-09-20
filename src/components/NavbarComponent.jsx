@@ -13,17 +13,22 @@ const NavbarComponent = () => {
           <NavbarContent className="hidden sm:flex gap-3">
             <NavbarItem>
               <Link color="foreground" href="#">
-                Features
+                Inicio
               </Link>
             </NavbarItem>
-            <NavbarItem isActive>
-              <Link href="#" aria-current="page" color="secondary">
-                Customers
+            <NavbarItem >
+              <Link href="#" color="foreground">
+                Servicios
               </Link>
             </NavbarItem>
             <NavbarItem>
               <Link color="foreground" href="#">
-                Integrations
+                Paquetes
+              </Link>
+            </NavbarItem>
+            <NavbarItem isActive>
+              <Link aria-current="page" color="secondary" href="#">
+                Login
               </Link>
             </NavbarItem>
           </NavbarContent>

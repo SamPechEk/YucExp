@@ -4,21 +4,12 @@ import ReactDOM from "react-dom/client";
 import {NextUIProvider} from "@nextui-org/react";
 import App from "./App";
 import "./index.css";
-import ListadoComponent from "./components/ListadoComponent";
-import ListadoPaisesComponent from "./components/ListadoPaisesComponent";
-import ListadoOfertasComponent from "./components/ListadoOfertasComponent";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <NextUIProvider>
       <main className="dark text-foreground bg-background">
         <App />
-        <h1>Seleciona tu lugar favorito</h1>
-        <ListadoPaisesComponent />
-        <h1>Servicios</h1>
-        <ListadoComponent />
-        <h1>Ofertas</h1>
-        <ListadoOfertasComponent />
       </main>
     </NextUIProvider>
   </React.StrictMode>,

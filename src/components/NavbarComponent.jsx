@@ -1,6 +1,7 @@
-import {Navbar, NavbarBrand, NavbarContent, NavbarItem, Link, Input, DropdownItem, DropdownTrigger, Dropdown, DropdownMenu, Avatar, navbar} from "@nextui-org/react";
+import {Navbar, NavbarBrand, NavbarContent, NavbarItem, Input, DropdownItem, DropdownTrigger, Dropdown, DropdownMenu, Avatar, navbar} from "@nextui-org/react";
 import AcmeLogoComponent from "./Icons/AcmeLogoComponent";
 import SearchIconComponent from "./Icons/SearchIconComponent";
+import { Outlet, Link } from "react-router-dom";
 
 const NavbarComponent = () => {
     return (
@@ -8,11 +9,11 @@ const NavbarComponent = () => {
         <NavbarContent justify="start">
           <NavbarBrand className="mr-4">
             <AcmeLogoComponent />
-            <p className="hidden sm:block font-bold text-inherit">ACME</p>
+            <p className="hidden sm:block font-bold text-inherit">YucExp</p>
           </NavbarBrand>
           <NavbarContent className="hidden sm:flex gap-3">
             <NavbarItem>
-              <Link color="foreground" href="#">
+            <Link to={`login`}>
                 Inicio
               </Link>
             </NavbarItem>

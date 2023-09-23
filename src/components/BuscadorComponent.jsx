@@ -1,6 +1,6 @@
 import {Card, CardHeader, CardBody, CardFooter} from "@nextui-org/react";
 import {Navbar, NavbarBrand, NavbarContent, NavbarItem, Link, Input, DropdownItem, DropdownTrigger, Dropdown, DropdownMenu, Avatar} from "@nextui-org/react";
-import SearchIconComponent from "./SearchIconComponent";
+import SearchIconComponent from "./Icons/SearchIconComponent";
 import {CheckboxGroup, Checkbox} from "@nextui-org/react";
 import {Switch} from "@nextui-org/react";
 import {Accordion, AccordionItem} from "@nextui-org/react";
@@ -26,7 +26,7 @@ const BuscadorComponent = () => (
                     type="search"
                 />
                  <div>
-                    <Switch Selected= "false" className="mt-3">
+                    <Switch defaultSelected className="mt-3">
                         Paquete Completo
                     </Switch>
                     <CheckboxGroup

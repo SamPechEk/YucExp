@@ -6,6 +6,8 @@ import App from "./App";
 import "./index.css";
 import LoginComponent from "./components/LoginComponent";
 import NavbarComponent from './components/NavbarComponent';
+import BuscadorComponent from "./components/BuscadorComponent";
+
 
 
 ReactDOM.createRoot(document.getElementById("root")).render(
@@ -14,7 +16,10 @@ ReactDOM.createRoot(document.getElementById("root")).render(
       <main className="dark text-foreground bg-background">
         <App />
         <NavbarComponent />
+        <BuscadorComponent/>
         <LoginComponent />
+        <div>
+        </div>
       </main>
     </NextUIProvider>
   </React.StrictMode>,

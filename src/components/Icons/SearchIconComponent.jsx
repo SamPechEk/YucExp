@@ -1,4 +1,5 @@
-const SearchIconComponent = ({
+
+ const SearchIconComponent = ({
   size = 24,
   strokeWidth = 1.5,
   width,
@@ -32,4 +33,5 @@ const SearchIconComponent = ({
   </svg>
 );
 
-export default SearchIconComponent
+export default SearchIconComponent;
+

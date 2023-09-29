@@ -1,8 +1,5 @@
-<<<<<<< HEAD:src/components/SearchIconComponent.jsx
+
  const SearchIconComponent = ({
-=======
-const SearchIconComponent = ({
->>>>>>> f840fca7f6899c7a658d7b2008613f2777461e24:src/components/Icons/SearchIconComponent.jsx
   size = 24,
   strokeWidth = 1.5,
   width,
@@ -36,4 +33,5 @@ const SearchIconComponent = ({
   </svg>
 );
 
-export default SearchIconComponent
+export default SearchIconComponent;
+

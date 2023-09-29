@@ -16,6 +16,8 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         {/* <LoginComponent></LoginComponent> */}
         <ListadoComponent></ListadoComponent>
         <ListadoOfertasComponent></ListadoOfertasComponent>
+        <App />
+
       </main>
     </NextUIProvider>
   </React.StrictMode>,

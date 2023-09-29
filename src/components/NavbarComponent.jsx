@@ -14,22 +14,22 @@ const NavbarComponent = () => {
           </NavbarBrand>
           <NavbarContent className="hidden sm:flex gap-3">
             <NavbarItem>
-            <Link to={`login`}>
+            <Link to={`Inicio`}>
                 Inicio
               </Link>
             </NavbarItem>
             <NavbarItem >
-              <Link href="#" color="foreground">
+              <Link to={`Servicios`}>
                 Servicios
               </Link>
             </NavbarItem>
             <NavbarItem>
-              <Link color="foreground" href="#">
+              <Link to={`Ofertas`}>
                 Paquetes
               </Link>
             </NavbarItem>
             <NavbarItem isActive>
-              <Link aria-current="page" color="secondary" href="#">
+              <Link to={`Login`} color="secondary">
                 Login
               </Link>
             </NavbarItem>

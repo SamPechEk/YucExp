@@ -11,6 +11,9 @@ import "./index.css";
 import LoginComponent from "./components/LoginComponent";
 import NavbarComponent from './components/NavbarComponent';
 import ErrorPage from "./components/ErrorPageComponent";
+import ListadoComponent from './components/ListadoComponent';
+import ListadoOfertasComponent from './components/ListadoOfertasComponent';
+
 
 
 
@@ -20,9 +23,19 @@ const router = createBrowserRouter([
     element: <NavbarComponent />,
     children: [
       {
+        path: "Inicio",
+        element: <App />
+      },{
+        path: "Servicios",
+        element: <ListadoComponent />
+      },{
+        path: "Ofertas",
+        element: <ListadoOfertasComponent />
+      },{
         path: "login",
         element: <LoginComponent />
-      }
+      },
+
     ],
     errorElement: <ErrorPage />,
   }

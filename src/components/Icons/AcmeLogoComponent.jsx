@@ -1,8 +1,4 @@
-<<<<<<< HEAD:src/components/AcmeLogoComponent.jsx
- const AcmeLogoComponent = () => (
-=======
 const AcmeLogoComponent = () => (
->>>>>>> f840fca7f6899c7a658d7b2008613f2777461e24:src/components/Icons/AcmeLogoComponent.jsx
   <svg fill="none" height="36" viewBox="0 0 32 32" width="36">
     <path
       clipRule="evenodd"
@@ -12,9 +8,4 @@ const AcmeLogoComponent = () => (
     />
   </svg>
 );
-<<<<<<< HEAD:src/components/AcmeLogoComponent.jsx
-
-
-=======
->>>>>>> f840fca7f6899c7a658d7b2008613f2777461e24:src/components/Icons/AcmeLogoComponent.jsx
 export default AcmeLogoComponent

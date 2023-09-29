@@ -2,54 +2,36 @@ import React from "react";
 
 import {Card, CardBody, CardFooter, Image} from "@nextui-org/react";
 
-export default function App() {
+
+export default function ListadoOfertasComponent() {
   const list = [
     {
-      title: "Orange",
-      img: "/images/fruit-1.jpeg",
-      price: "$5.50",
+      title: "Mérida, Yuc.",
+      img: "https://littlevisuals.co/images/bronica.jpg",
+      price: "",
     },
     {
-      title: "Tangerine",
-      img: "/images/fruit-2.jpeg",
-      price: "$3.00",
+      title: "Valladolid, Yuc.",
+      img: "https://littlevisuals.co/images/downtown.jpg",
+      price: "",
     },
     {
-      title: "Raspberry",
-      img: "/images/fruit-3.jpeg",
-      price: "$10.00",
+      title: "Progreso, Yuc",
+      img: "https://littlevisuals.co/images/red_dawn.jpg",
+      price: "",
     },
     {
-      title: "Lemon",
-      img: "/images/fruit-4.jpeg",
-      price: "$5.30",
-    },
-    {
-      title: "Avocado",
-      img: "/images/fruit-5.jpeg",
-      price: "$15.70",
-    },
-    {
-      title: "Lemon 2",
-      img: "/images/fruit-6.jpeg",
-      price: "$8.00",
-    },
-    {
-      title: "Banana",
-      img: "/images/fruit-7.jpeg",
-      price: "$7.50",
-    },
-    {
-      title: "Watermelon",
-      img: "/images/fruit-8.jpeg",
-      price: "$12.20",
-    },
+      title: "Celestun, Yuc.",
+      img: "https://littlevisuals.co/images/whisp.jpg",
+      price: "",
+    }
   ];
 
   return (
 
-    
-    <div className="gap-2 grid grid-cols-2 sm:grid-cols-4">
+ 
+    <div className="gap-2 grid grid-cols-3 sm:grid-cols-2 py-5">
+      
       {list.map((item, index) => (
         <Card shadow="sm" key={index} isPressable onPress={() => console.log("item pressed")}>
           <CardBody className="overflow-visible p-0">
@@ -58,7 +40,7 @@ export default function App() {
               radius="lg"
               width="100%"
               alt={item.title}
-              className="w-full object-cover h-[140px]"
+              className="w-full object-cover h-[400px]"
               src={item.img}
             />
           </CardBody>

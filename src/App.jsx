@@ -1,7 +1,20 @@
+import { Hero, Navbar,Companies, Courses, Achievement, Categories, Feedback, CTA, Footer } from './components';
+import './App.css'
 
-export default function App() {
+const App = () => {
   return (
-    <div className="App">
+    <div>
+      
+      <Hero />
+      <Companies/>
+      <Courses />
+      <Achievement />
+      <Categories />
+      <Feedback />
+      <CTA />
+      <Footer />
     </div>
-  );
-}
+  )
+
+
+export default App

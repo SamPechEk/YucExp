@@ -1,5 +1,6 @@
 
  const SearchIconComponent = ({
+
   size = 24,
   strokeWidth = 1.5,
   width,

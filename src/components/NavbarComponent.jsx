@@ -5,6 +5,7 @@ import { Outlet, Link } from "react-router-dom";
 
 const NavbarComponent = () => {
     return (
+      <>
       <Navbar isBordered>
         <NavbarContent justify="start">
           <NavbarBrand className="mr-4">
@@ -78,6 +79,10 @@ const NavbarComponent = () => {
           </Dropdown>
         </NavbarContent>
       </Navbar>
+      <div id="detail">
+        <Outlet />
+      </div>
+      </>
     );
   }
 export default NavbarComponent

@@ -20,16 +20,12 @@ const router = createBrowserRouter([
     element: <NavbarComponent />,
     children: [
       {
-        path: "login/:id",
+        path: "login",
         element: <LoginComponent />
       }
     ],
     errorElement: <ErrorPage />,
-  },
-  {
-    path: "login2/",
-    element: <LoginComponent />,
-  },
+  }
 ]);
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>

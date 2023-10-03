@@ -2,6 +2,7 @@ import {Navbar, NavbarBrand, NavbarContent, NavbarItem, Input, DropdownItem, Dro
 import AcmeLogoComponent from "./Icons/AcmeLogoComponent";
 import SearchIconComponent from "./Icons/SearchIconComponent";
 import { Outlet, Link } from "react-router-dom";
+import CartIconComponent from "./Icons/CartIconComponent";
 
 const NavbarComponent = () => {
     return (
@@ -49,7 +50,7 @@ const NavbarComponent = () => {
             startContent={<SearchIconComponent size={18} />}
             type="search"
           />
-          <Dropdown placement="bottom-end">
+          <Dropdown placement="bottom-end ml-6">
             <DropdownTrigger>
               <Avatar
                 isBordered
@@ -63,8 +64,10 @@ const NavbarComponent = () => {
             </DropdownTrigger>
             <DropdownMenu aria-label="Profile Actions" variant="flat">
               <DropdownItem key="profile" className="h-14 gap-2">
-                <p className="font-semibold">Signed in as</p>
+              <Link to={`ShoppingList`}>
+                <p className="font-semibold">Mis Compras</p>
                 <p className="font-semibold">zoey@example.com</p>
+              </Link>
               </DropdownItem>
               <DropdownItem key="settings">My Settings</DropdownItem>
               <DropdownItem key="team_settings">Team Settings</DropdownItem>
@@ -77,6 +80,12 @@ const NavbarComponent = () => {
               </DropdownItem>
             </DropdownMenu>
           </Dropdown>
+        </NavbarContent>
+
+        <NavbarContent className="sm:flex gap-3 ml-6">
+          <NavbarItem>
+            <Link to={`ShoppingCart`}><CartIconComponent size={30} /></Link>
+          </NavbarItem>
         </NavbarContent>
       </Navbar>
       <div id="detail">

@@ -13,6 +13,8 @@ import NavbarComponent from './components/NavbarComponent';
 import ErrorPage from "./components/ErrorPageComponent";
 import ListadoComponent from './components/ListadoComponent';
 import ListadoOfertasComponent from './components/ListadoOfertasComponent';
+import CarritoComponent from "./components/CarritoComponent";
+import ListadoComprasComponent from "./components/ListadoComprasComponent";
 
 
 
@@ -34,7 +36,15 @@ const router = createBrowserRouter([
       },{
         path: "login",
         element: <LoginComponent />
-      },
+      },{
+        path: "ShoppingCart",
+        element: <CarritoComponent />
+        
+      },{
+        path: "ShoppingList",
+        element: <ListadoComprasComponent />
+        
+      }
 
     ],
     errorElement: <ErrorPage />,

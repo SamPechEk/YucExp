@@ -1,15 +1,15 @@
 import React from 'react';
-import { Hero2, Courses2, Footer2 } from './';
+import { Hero2, Courses2,  } from './';
 import './Vmenus.css'
 
 const Vmenus = () => {
   return (
     <div>
-      <Hero2 />
+      {/* <Hero2 /> */}
     
       <Courses2 />
      
-      <Footer2 />
+      
     </div>
   )
 }

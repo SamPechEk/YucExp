@@ -4,20 +4,20 @@ const HomeComponent = () => {
   return (
     <div className="">
         <Hero />
-        <Divider className="my-4" />
+        <Divider className="my-1" />
         <Companies/> 
-        <Divider className="my-4" />
+        <Divider className="my-1" />
         <Courses />
-        <Divider className="my-4" />
+        <Divider className="my-1" />
         <Achievement />
-        <Divider className="my-4" />
+        <Divider className="my-1" />
         {/* <Categories /> */}
-        <Divider className="my-4" />
+        <Divider className="my-1" />
         <Feedback />
-        <Divider className="my-4" />
+        <Divider className="my-1" />
         <CTA />
-        <Divider className="my-4" />
-        <Footer />
+        <Divider className="my-1" />
+        
     </div>
   )
 }

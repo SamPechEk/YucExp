@@ -3,7 +3,7 @@ import { avatar, quotationMark } from '../assets'
 
 const FeedbackCard = () => {
   return (
-    <div className='bg-[#0d1b2a] p-8 rounded-3xl shadow-xl my-8 mx-2'>
+    <div className='dark:bg-[#0d1b2a] p-8 rounded-3xl shadow-xl my-8 mx-2'>
       <div className='flex justify-between'>
         <div className='flex gap-4'>
                 <img src={avatar} />

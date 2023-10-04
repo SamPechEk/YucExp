@@ -4,7 +4,7 @@ import StarRating from './StarRating'
 
 const Card2 = ({rest2}) => {
   return (
-    <div className='z-10 bg-[#0d1b2a] drop-shadow-md overflow-hidden rounded-2xl mr-2  my-4'>
+    <div className='z-10 dark:bg-[#0d1b2a] drop-shadow-md overflow-hidden rounded-2xl mr-2  my-4'>
         <img src={rest2.linkImg} 
                 className="h-40 w-full object-cover"
         

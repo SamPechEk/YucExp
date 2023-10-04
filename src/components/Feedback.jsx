@@ -46,7 +46,7 @@ const Feedback = () => {
   };
 
   return (
-    <div className='w-full bg-[#1b263b] py-32'>
+    <div className='w-full dark:bg-[#1b263b] items-center py-10 px-10'>
         <div className='md:max-w-[1480px] m-auto max-w-[600px]  px-4 md:px-0'>
             <div className='py-4'>
               <h1 className='py-3 text-3xl font-bold'> <span className='text-[#DB5A42]'>Opiniones</span> del Cliente</h1>

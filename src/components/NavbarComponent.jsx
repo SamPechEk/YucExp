@@ -4,6 +4,8 @@ import SearchIconComponent from "./Icons/SearchIconComponent";
 import { Outlet, Link } from "react-router-dom";
 import CartIconComponent from "./Icons/CartIconComponent";
 import SwitchDarkModeComponent from './SwitchDarkModeComponent';
+import Footer from "./Footer";
+
 
 const NavbarComponent = () => {
     return (
@@ -98,6 +100,7 @@ const NavbarComponent = () => {
       <div id="detail">
         <Outlet />
       </div>
+      <Footer />
       </>
     );
   }

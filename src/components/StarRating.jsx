@@ -17,7 +17,7 @@ const StarRating = ({rating}) => {
 
             </div>
             )}
-            <p className='ml-2 dark:text-[#DB5A42]'>(15)</p>
+            <p className='ml-2 dark:text-white'>(15)</p>
 
             
             </div>

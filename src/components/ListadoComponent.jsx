@@ -94,7 +94,6 @@ export default function ListadoComponent() {
   </div>
   </div>
   
-   <Footer2/>
  </div>
 
   );

@@ -15,6 +15,7 @@ import ListadoComponent from './components/ListadoComponent';
 import ListadoOfertasComponent from './components/ListadoOfertasComponent';
 import CarritoComponent from "./components/CarritoComponent";
 import ListadoComprasComponent from "./components/ListadoComprasComponent";
+import HomeComponent from "./components/HomeComponent";
 
 
 
@@ -26,7 +27,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "Inicio",
-        element: <App />
+        element: <HomeComponent />
       },{
         path: "Servicios",
         element: <ListadoComponent />
@@ -53,7 +54,7 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <NextUIProvider>
-      <main className="dark text-foreground bg-background">
+      <main className=" text-foreground bg-background">
         <RouterProvider router={router} />
       </main>
     </NextUIProvider>

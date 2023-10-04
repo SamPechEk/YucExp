@@ -6,7 +6,7 @@ import {SlPeople} from 'react-icons/sl'
 
 const Achievement = () => {
   return (
-    <div className='w-full bg-[#f8edeb] py-24'>
+    <div className='w-full items-center dark:bg-[#0d1b2a] py-10 px-10'>
         <div className='md:max-w-[1480px] m-auto grid md:grid-cols-2 max-w-[600px]  px-4 md:px-0'>
             
             <div className='flex flex-col justify-center '>

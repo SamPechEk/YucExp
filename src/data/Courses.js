@@ -5,7 +5,7 @@ export const courses = [
       category:'1',
       rating:5,
       price: '$59.99',
-      linkImg:''
+      linkImg:'https://littlevisuals.co/images/bronica.jpg'
     },
     {
       id: 2,
@@ -13,20 +13,20 @@ export const courses = [
       category:'2 ',
       rating:4,
       price: '$59.99',
-      linkImg:''    },
+      linkImg:'https://littlevisuals.co/images/downtown.jpg'    },
     {
       id: 3,
       title: 'paquete3',
       category:'3',
       rating:4,
       price: '$59.99',
-      linkImg:''    },
+      linkImg:'https://littlevisuals.co/images/red_dawn.jpg'    },
     {
       id: 4,
       title: 'paquete4',
       category:'4',
       rating:4,
       price: '$59.99',
-      linkImg:''    },
+      linkImg:'https://littlevisuals.co/images/whisp.jpg'    },
  
   ];

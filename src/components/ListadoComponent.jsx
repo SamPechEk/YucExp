@@ -1,7 +1,9 @@
 import {Card, CardHeader, CardBody, CardFooter, Image, Button} from "@nextui-org/react";
+import Footer2 from './Footer2'
 
 export default function ListadoComponent() {
   return (
+    <div>
     <div className="justify-center items-centr flex py-5">
     <div className="max-w-[900px] gap-2 grid grid-cols-12 grid-rows-2 px-8">
     <Card className="col-span-12 sm:col-span-4 h-[300px]">
@@ -87,7 +89,13 @@ export default function ListadoComponent() {
         <Button radius="full" size="sm">Get App</Button>
       </CardFooter>
     </Card>
+
+     
   </div>
   </div>
+  
+   <Footer2/>
+ </div>
+
   );
 }

@@ -9,5 +9,4 @@ import CTA from "./CTA";
 import Footer from "./Footer";
 
 
-
 export {Navbar,Hero, Companies,Courses,Achievement,Categories,Feedback,CTA,Footer}

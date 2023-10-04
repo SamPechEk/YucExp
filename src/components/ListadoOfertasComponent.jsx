@@ -1,10 +1,13 @@
 import React from "react";
+import Vmenus from "./Vmenus";
 
 import {Card, CardBody, CardFooter, Image} from "@nextui-org/react";
 
 
 export default function ListadoOfertasComponent() {
+  
   const list = [
+        
     {
       title: "Mérida, Yuc.",
       img: "https://littlevisuals.co/images/bronica.jpg",
@@ -29,7 +32,13 @@ export default function ListadoOfertasComponent() {
 
   return (
 
- 
+    <div className='w-full bg-[#0d1b2a] py-23'>
+      <div  className='md:max-w-[1000px] m-auto grid md:grid-cols-1 max-w-[1000px]  px-4 md:px-5'>
+      <div className='flex flex-col justify-start gap-4'>
+                <h1 className='md:leading-[72px] py-2 md:text-6xl text-5xl font-semibold'>Conoce restaurantes donde probar nuesta comida tradicional
+                </h1> 
+      </div>
+      </div>
     <div className="gap-2 grid grid-cols-3 sm:grid-cols-2 py-5">
       
       {list.map((item, index) => (
@@ -49,7 +58,13 @@ export default function ListadoOfertasComponent() {
             <p className="text-default-500">{item.price}</p>
           </CardFooter>
         </Card>
+
+
       ))}
+
+      
+
     </div>
+    <Vmenus/></div>
   );
 }

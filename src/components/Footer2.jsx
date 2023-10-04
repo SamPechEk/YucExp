@@ -2,7 +2,7 @@ import React from 'react'
 import { logo } from '../assets'
 import {FaFacebookF,FaDribbble,FaLinkedinIn,FaInstagram,FaBehance} from 'react-icons/fa'
 
-const Footer = () => {
+const Footer2 = () => {
   return (
     <div className='w-full bg-[#1b263b] py-24'>
         <div className='md:max-w-[1480px] m-auto grid md:grid-cols-5 max-[780px]:grid-cols-2  gap-8 max-w-[600px]  px-4 md:px-0'>
@@ -58,4 +58,4 @@ const Footer = () => {
   )
 }
 
-export default Footer
+export default Footer2

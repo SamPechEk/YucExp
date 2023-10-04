@@ -16,6 +16,7 @@ import ListadoOfertasComponent from './components/ListadoOfertasComponent';
 import CarritoComponent from "./components/CarritoComponent";
 import ListadoComprasComponent from "./components/ListadoComprasComponent";
 import HomeComponent from "./components/HomeComponent";
+import ActividadesComponent from "./components/ActividadesComponents";
 
 
 
@@ -44,6 +45,10 @@ const router = createBrowserRouter([
       },{
         path: "ShoppingList",
         element: <ListadoComprasComponent />
+        
+      },{
+        path: "Actividades",
+        element: <ActividadesComponent />
         
       }
 

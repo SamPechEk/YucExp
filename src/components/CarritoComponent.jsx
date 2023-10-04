@@ -2,7 +2,6 @@ import {Card, CardHeader, CardBody, CardFooter} from "@nextui-org/react";
 import {Image} from "@nextui-org/react";
 import {Button} from "@nextui-org/react";
 import { Link} from "react-router-dom";
-import { useNavigate } from "react-router-dom";
 import Swal from 'sweetalert2';
 
 // const [activador, setActivador] = useState(false);
@@ -67,10 +66,12 @@ const CarritoComponent = () => (
                 <div className="mt-10 flex flex-wrap gap-4 items-center">
                     <Button color="success" onClick={() => notification()}>
                         Comprar
-                    </Button> 
+                    </Button>
+                    <Link to={`/Actividades`}>
                     <Button color="danger">
                         Cancelar
-                    </Button> 
+                    </Button>
+                    </Link> 
                 </div>
             </CardBody>
         </Card>

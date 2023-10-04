@@ -1,24 +1,24 @@
-import React from "react";
 import {Card,CardFooter, CardHeader, CardBody, Image, Button} from "@nextui-org/react";
 import { Modal , ModalContent , ModalHeader , ModalBody , ModalFooter, useDisclosure } from "@nextui-org/react" ; 
 import ReactPlayer from "react-player";
 import {Accordion, AccordionItem} from "@nextui-org/react";
+import { Link } from "react-router-dom";
 
-export default function App() {
+export default function ActividadesComponent() {
     const { isOpen , onOpen , onOpenChange } = useDisclosure ( ) ;
     const defaultContent =
     "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.";
     
   return (
 
-    <div className="justify-center px-5 py-5">
+    <div className="justify-center items-center py-10 px-10 dark:bg-[#1b263b]">
         <h4 className="font-bold text-large">¿Qué puedo hacer en los destino?</h4>
         <small className="text-default-500">Los mejores destino de Yucatan</small>
 
 
     <div className="gap-4 grid grid-cols-1 sm:grid-cols-4 py-5">
-    <Card>
-      <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
+    <Card className='dark:bg-[#1b263b]'> 
+      <CardHeader className="pb-0 pt-2 px-4 flex-col items-start ">
         <h4 className="font-bold text-large">¿Quieres visitar ruinas arqueologicas?</h4>
         <small className="text-default-500">Los mejores destino de Yucatan</small>
       </CardHeader>
@@ -70,9 +70,11 @@ export default function App() {
                 <Button color="danger" variant="light" onPress={onClose}>
                   Cerrar
                 </Button>
+                <Link to={`/ShoppingCart`}>
                 <Button color="primary" onPress={onClose}>
                   Reservar
                 </Button>
+                </Link>
               </ModalFooter>
             </>
           )}
@@ -82,8 +84,8 @@ export default function App() {
       </CardFooter>
     </Card>
 
-    <Card>
-      <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
+    <Card className='dark:bg-[#1b263b]'>
+      <CardHeader className="pb-0 pt-2 px-4 flex-col items-start ">
         <h4 className="font-bold text-large">Conoce los mejores cenotes del Estado.</h4>
         <small className="text-default-500">Los mejores destino de Yucatan</small>
       </CardHeader>
@@ -135,9 +137,11 @@ export default function App() {
                 <Button color="danger" variant="light" onPress={onClose}>
                   Cerrar
                 </Button>
+                <Link to={`/ShoppingCart`}>
                 <Button color="primary" onPress={onClose}>
                   Reservar
                 </Button>
+                </Link>
               </ModalFooter>
             </>
           )}
@@ -147,7 +151,7 @@ export default function App() {
       </CardFooter>
     </Card>
 
-    <Card>
+    <Card className='dark:bg-[#1b263b]'>
       <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
         <h4 className="font-bold text-large">Los mejores restaurantes con la gastronomia tradicional.</h4>
         <small className="text-default-500">Los mejores destino de Yucatan</small>
@@ -200,9 +204,11 @@ export default function App() {
                 <Button color="danger" variant="light" onPress={onClose}>
                   Cerrar
                 </Button>
+                <Link to={`/ShoppingCart`}>
                 <Button color="primary" onPress={onClose}>
                   Reservar
                 </Button>
+                </Link>
               </ModalFooter>
             </>
           )}
@@ -212,7 +218,7 @@ export default function App() {
       </CardFooter>
     </Card>
 
-    <Card>
+    <Card className='dark:bg-[#1b263b]'>
       <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
         <h4 className="font-bold text-large">Descansas en las mejores habitaciones</h4>
         <small className="text-default-500">Los mejores destino de Yucatan</small>
@@ -265,9 +271,11 @@ export default function App() {
                 <Button color="danger" variant="light" onPress={onClose}>
                   Cerrar
                 </Button>
+                <Link to={`/ShoppingCart`}>
                 <Button color="primary" onPress={onClose}>
                   Reservar
                 </Button>
+                </Link>
               </ModalFooter>
             </>
           )}
@@ -291,34 +299,42 @@ export default function App() {
    </div>
 
  <Card className="justify-center items-center ">
-      <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
+      <CardHeader className="pb-0 pt-2 px-4 flex-col items-start ">
         <h4 className="font-bold text-large">Tipo de Reservaciones</h4>
         <small className="text-default-500">Reserva a tu gusto</small>
       </CardHeader>
-      <CardBody className="overflow-visible py-2">
-    <Accordion variant="splitted">
-    <AccordionItem key="1" aria-label="Accordion 1" title=" 1">
+      <CardBody className="overflow-visible py-2 ">
+    <Accordion variant="splitted" className="">
+    <AccordionItem key="1" aria-label="Accordion 1" title=" 1" className="">
     {defaultContent}
-    <div className="justify-end">
+    <div className="justify-end ">
+    <Link to={`/ShoppingCart`}>
     <Button color="primary">
         Reservar
     </Button>
+    </Link>
     </div>
     </AccordionItem>
-    <AccordionItem key="2" aria-label="Accordion 2" title=" 2">
+    <AccordionItem key="2" aria-label="Accordion 2" title=" 2" className="">
     {defaultContent}
     <div className="justify-end">
+    <Link to={`/ShoppingCart`}>
     <Button color="primary">
         Reservar
     </Button>
+    </Link>
     </div>
     </AccordionItem>
-    <AccordionItem key="3" aria-label="Accordion 3" title=" 3">
+    <AccordionItem key="3" aria-label="Accordion 3" title=" 3" className="">
     {defaultContent}
     <div className="justify-end">
+    <Link to={`/ShoppingCart`}>
+    <Link to={`/ShoppingCart`}>
     <Button color="primary">
         Reservar
     </Button>
+    </Link>
+    </Link>
     </div>
     </AccordionItem>
     </Accordion>

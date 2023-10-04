@@ -3,6 +3,9 @@ import AcmeLogoComponent from "./Icons/AcmeLogoComponent";
 import SearchIconComponent from "./Icons/SearchIconComponent";
 import { Outlet, Link } from "react-router-dom";
 import CartIconComponent from "./Icons/CartIconComponent";
+import SwitchDarkModeComponent from './SwitchDarkModeComponent';
+import Footer from "./Footer";
+
 
 const NavbarComponent = () => {
     return (
@@ -13,7 +16,7 @@ const NavbarComponent = () => {
             <AcmeLogoComponent />
             <p className="hidden sm:block font-bold text-inherit">YucExp</p>
           </NavbarBrand>
-          <NavbarContent className="hidden sm:flex gap-3">
+          <NavbarContent className="hidden sm:flex gap-6">
             <NavbarItem>
             <Link to={`Inicio`}>
                 Inicio
@@ -37,7 +40,7 @@ const NavbarComponent = () => {
           </NavbarContent>
         </NavbarContent>
   
-        <NavbarContent as="div" className="items-center" justify="end">
+        <NavbarContent as="div" className="items-center " justify="end" >
           <Input
             classNames={{
               base: "max-w-full sm:max-w-[10rem] h-10",
@@ -47,7 +50,7 @@ const NavbarComponent = () => {
             }}
             placeholder="Type to search..."
             size="sm"
-            startContent={<SearchIconComponent size={18} />}
+            startContent={<SearchIconComponent size={28} />}
             type="search"
           />
           <Dropdown placement="bottom-end ml-6">
@@ -87,10 +90,17 @@ const NavbarComponent = () => {
             <Link to={`ShoppingCart`}><CartIconComponent size={30} /></Link>
           </NavbarItem>
         </NavbarContent>
+
+        <NavbarContent className="sm:flex gap-3">
+          <NavbarItem>
+            <SwitchDarkModeComponent />
+          </NavbarItem>
+        </NavbarContent>
       </Navbar>
       <div id="detail">
         <Outlet />
       </div>
+      <Footer />
       </>
     );
   }

@@ -1,6 +1,9 @@
 import React from 'react'
 import { blogImg1 } from '../assets'
 import StarRating from './StarRating'
+import {Input} from "@nextui-org/react";
+import { Link } from "react-router-dom";
+import {Button} from "@nextui-org/react";
 
 const Card2 = ({rest2}) => {
   return (
@@ -12,8 +15,29 @@ const Card2 = ({rest2}) => {
         <div className='p-5 border border-b'>
             <h1 className='py-2 truncate'>{rest2.title}</h1>
             <StarRating rating={rest2.rating}/>
+            <Input
+          type="number"
+          label="Agregar al Carrito"
+          placeholder="1"
+          min={1}
+          max={10}
+          labelPlacement="outside"
+          color='danger'
+          variant="bordered"
+          errorMessage="Selecciona el numero de Servicios que desea agregar"
+          startContent={
+            <div className="pointer-events-none flex items-center">
+              <span className="text-default-400 text-small">Agregar</span>
+            </div>
+          }
+        />
         </div>
         <h3 className='p-5 text-xl'>{rest2.price}</h3>
+        <div className='item-center px-5 py-2'>
+        <Link to={`/ShoppingCart`}><Button radius="full" className="bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg">
+           Agregar al Carrito
+        </Button></Link>
+        </div>
 
         <div className='absolute top-0 bg-white m-3 px-2 py-[2.5px] rounded font-bold'>
             {rest2.category}

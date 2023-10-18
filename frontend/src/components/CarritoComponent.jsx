@@ -3,6 +3,8 @@ import {Image} from "@nextui-org/react";
 import {Button} from "@nextui-org/react";
 import { Link} from "react-router-dom";
 import Swal from 'sweetalert2';
+import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, getKeyValue,} from "@nextui-org/react";
+import {Input} from "@nextui-org/react";
 
 // const [activador, setActivador] = useState(false);
 
@@ -37,35 +39,95 @@ const notification = () => (
 );
 
 
-
 const CarritoComponent = () => (
     <div className="flex flex-col  items-center py-10 px-10">
-        <Card className="max-w-full max-h-full w-[600px] h-[900px]">
+        <Card className="max-w-full max-h-full w-[900px] h-[600px]">
             <CardHeader className="flex flex-col content-center mr-4">
-                <h1>Carrito De Compras</h1>
+                <h1 className="text-large uppercase font-bold">Reservaciones</h1>
             </CardHeader>
             <CardBody className="content-start">
-                <div className="flex flex-col items-center">
+                {/* <div className="flex flex-col items-center">
                 <Image
                     isZoomed
                     width={300}
                     alt="NextUI Fruit Image with Zoom"
                     src="https://nextui-docs-v2.vercel.app/images/fruit-1.jpeg"
                 />
-                </div>
+                </div> */}
 
-                <div className="mt-10">
-                    <h1 className="uppercase font-bold text-xl text-center font-serif">Descripcion General</h1>
-                    <p className="font-bold text-left mt-10">Nombre Del Paquete:</p>
-                    <p className="font-bold text-left mt-5">Tipo:</p>
-                    <p className="font-bold text-left mt-5">Costo:</p>
-                    <p className="font-bold text-left mt-5">Total de boletos:</p>
-                    <p className="font-bold text-left mt-5">Descripcion General:</p>
-                </div>
+                {/* <div className="mt-10">
+                    <h1 className="uppercase font-bold text-xl text-center">Descripcion de la Reserva</h1>
+                    <p className="font-bold text-left mt-10">Tipo de Paquete:</p>
+                    <p className="font-bold text-left mt-5">Tipo de Servicio:</p>
+                    <p className="font-bold text-left mt-5">Total de Reservaciones:</p>
+                    
+                </div> */}
 
-                <div className="mt-10 flex flex-wrap gap-4 items-center">
+<Table aria-label="Example static collection table">
+      <TableHeader>
+        <TableColumn>TIPO DE SERVICIO</TableColumn>
+        <TableColumn>Servicio</TableColumn>
+        <TableColumn></TableColumn>
+      </TableHeader>
+      <TableBody>
+        <TableRow key="1">
+          <TableCell>Restaurante</TableCell>
+          <TableCell><small className="text-default-500">*Agrega un restaurante*</small></TableCell>
+          <TableCell>
+            <Button size="sm" color="primary">
+              Eliminar servicio
+            </Button>
+          </TableCell>
+        </TableRow>
+        <TableRow key="2">
+          <TableCell>Hoteles</TableCell>
+          <TableCell><small className="text-default-500">*Agrega un Hotel*</small></TableCell>
+          <TableCell>
+            <Button size="sm" color="primary">
+              Eliminar servicio
+            </Button>
+          </TableCell>
+        </TableRow>
+        <TableRow key="3">
+          <TableCell>Transporte</TableCell>
+          <TableCell><small className="text-default-500">*Agrega un Transporte*</small></TableCell>
+          <TableCell>
+            <Button size="sm" color="primary">
+              Eliminar servicio
+            </Button>
+          </TableCell>
+        </TableRow>
+        <TableRow key="4">
+          <TableCell>Actividades</TableCell>
+          <TableCell><small className="text-default-500">*Agrega una Actividad*</small></TableCell>
+          <TableCell>
+            <Button size="sm" color="primary">
+              Eliminar servicio
+            </Button>
+          </TableCell>
+        </TableRow>
+      </TableBody>
+    </Table>
+    
+    <Card className="">
+      <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
+        <p className="text-small uppercase font-bold">Total de Reservaciones:</p>
+        <small className="font-bold">12 Servicios</small>
+        <small className="text-default-500">Confirma tus reservaciones</small>
+      </CardHeader>
+      <CardBody className="overflow-visible py-2">
+
+      </CardBody>
+      <CardFooter>
+        <Button className="justify-item-center" color="warning" variant="ghost" size="sm">
+        Vaciar carrito de Reservaciones
+        </Button>
+      </CardFooter>
+    </Card>
+
+                <div className="mt-10 flex flex-wrap gap-4 justify-end">
                     <Button color="success" onClick={() => notification()}>
-                        Comprar
+                        Reservar
                     </Button>
                     <Link to={`/Actividades`}>
                     <Button color="danger">

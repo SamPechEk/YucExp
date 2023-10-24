@@ -72,7 +72,10 @@ const NavbarComponent = () => {
                 <p className="font-semibold">zoey@example.com</p>
               </Link>
               </DropdownItem>
-              <DropdownItem key="settings">My Settings</DropdownItem>
+               <DropdownItem key="settings">
+               <Link to={`RegistrarServicio`}>
+               My Settings
+              </Link></DropdownItem>
               <DropdownItem key="team_settings">Team Settings</DropdownItem>
               <DropdownItem key="analytics">Analytics</DropdownItem>
               <DropdownItem key="system">System</DropdownItem>

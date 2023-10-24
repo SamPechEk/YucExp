@@ -17,6 +17,7 @@ import CarritoComponent from "./components/CarritoComponent";
 import ListadoComprasComponent from "./components/ListadoComprasComponent";
 import HomeComponent from "./components/HomeComponent";
 import ActividadesComponent from "./components/ActividadesComponents";
+import FormularioServiciosComponent from "./components/FormularioServiciosComponent";
 
 
 
@@ -49,6 +50,10 @@ const router = createBrowserRouter([
       },{
         path: "Actividades",
         element: <ActividadesComponent />
+        
+      },{
+        path: "RegistrarServicio",
+        element: <FormularioServiciosComponent />
         
       }
 

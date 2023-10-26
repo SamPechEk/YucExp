@@ -15,14 +15,14 @@ export const emailRegistro = async (datos) => {
   // Información del email
 
   const info = await transport.sendMail({
-    from: '"UpTask - Administrador de Proyectos" <cuentas@uptask.com>',
+    from: '"YucExp - Administrador" <cuentas@YucExt.com.mx>',
     to: email,
-    subject: "UpTask - Comprueba tu cuenta",
-    text: "Comprueba tu cuenta en UpTask",
-    html: `<p>Hola: ${nombre} Comprueba tu cuenta en UpTask</p>
+    subject: "YucExp - Comprueba tu cuenta",
+    text: "Comprueba tu cuenta en YucExp",
+    html: `<p>Hola: ${nombre} Comprueba tu cuenta en YucExp</p>
     <p>Tu cuenta ya esta casi lista, solo debes comprobarla en el siguiente enlace: 
 
-    <a href="${process.env.FRONTEND_URL}/confirmar/${token}">Comprobar Cuenta</a>
+    <a href="${process.env.FRONTEND_URL}/confirma/${token}">Comprobar Cuenta</a>
     
     <p>Si tu no creaste esta cuenta, puedes ignorar el mensaje</p>
     
@@ -46,9 +46,9 @@ export const emailOlvidePassword = async (datos) => {
   // Información del email
 
   const info = await transport.sendMail({
-    from: '"UpTask - Administrador de Proyectos" <cuentas@uptask.com>',
+    from: '"YucExp - Administrador de Proyectos" <cuentas@uptask.com>',
     to: email,
-    subject: "UpTask - Reestablece tu Password",
+    subject: "YucEcp - Reestablece tu Password",
     text: "Reestablece tu Password",
     html: `<p>Hola: ${nombre} has solicitado reestablecer tu password</p>
 

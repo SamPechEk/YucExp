@@ -24,12 +24,12 @@ const NavbarComponent = () => {
             </NavbarItem>
             <NavbarItem >
               <Link to={`Servicios`}>
-                Servicios
+              Paquetes
               </Link>
             </NavbarItem>
             <NavbarItem>
               <Link to={`Ofertas`}>
-                Paquetes
+                Servicios
               </Link>
             </NavbarItem>
             <NavbarItem isActive>

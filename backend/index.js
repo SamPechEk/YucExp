@@ -1,3 +1,4 @@
+
 import express from "express";
 import cors from "cors";
 import usuarioRoutes from "./routes/usuarioRoutes.js";
@@ -25,6 +26,7 @@ app.use(cors());
 
 // Routing
 app.use("/api/usuarios", usuarioRoutes);
+
 
 const PORT = process.env.PORT || 7000;
 const servidor = app.listen(PORT, () => {

@@ -12,7 +12,6 @@ import {
 
 import checkAuth from "../middleware/checkAuth.js";
 
-import {obtener} from "../controllers/servicioController.js";
 
 // Autenticación, Registro y Confirmación de Usuarios
 router.post("/", registrar); // Crea un nuevo usuario
@@ -21,6 +20,6 @@ router.get("/confirmar/:token", confirmar);
 router.post("/olvide-password", olvidePassword);
 router.route("/olvide-password/:token").get(comprobarToken).post(nuevoPassword);
 router.get("/perfil", checkAuth, perfil);
-router.get("/getServicios", obtener);
+
 
 export default router;

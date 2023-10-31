@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import usuarioRoutes from "./routes/usuarioRoutes.js";
+import serviciosRoutes from "./routes/serviciosRoutes.js";
 
 const app = express();
 app.use(express.json());
@@ -20,11 +21,14 @@ const corsOptions = {
   },
 };
 
-app.use(cors(corsOptions));
-// app.use(cors());
+// app.use(cors(corsOptions));
+app.use(cors());
 
 // Routing
 app.use("/api/usuarios", usuarioRoutes);
+
+//rutas para formularios de servicios
+app.use("/obtener/servicios", serviciosRoutes);
 
 const PORT = process.env.PORT || 7000;
 const servidor = app.listen(PORT, () => {

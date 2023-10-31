@@ -5,6 +5,8 @@ import { Outlet, Link } from "react-router-dom";
 import CartIconComponent from "./Icons/CartIconComponent";
 import SwitchDarkModeComponent from './SwitchDarkModeComponent';
 import Footer from "./Footer";
+import SelectComponent from "./SelectComponent";
+
 
 
 const NavbarComponent = () => {
@@ -12,17 +14,18 @@ const NavbarComponent = () => {
       <>
       <Navbar isBordered>
         <NavbarContent justify="start">
-          <NavbarBrand className="mr-4">
+          <NavbarBrand className="mr-2">
             <AcmeLogoComponent />
             <p className="hidden sm:block font-bold text-inherit">YucExp</p>
           </NavbarBrand>
           <NavbarContent className="hidden sm:flex gap-6">
             <NavbarItem>
-            <Link to={`Inicio`}>
+            <Link to={`/`}>
                 Inicio
               </Link>
             </NavbarItem>
             <NavbarItem >
+<<<<<<< HEAD
               <Link to={`Servicios`}>
               Paquetes
               </Link>
@@ -30,17 +33,20 @@ const NavbarComponent = () => {
             <NavbarItem>
               <Link to={`Ofertas`}>
                 Servicios
+=======
+              <Link to={`Ofertas`}>
+                Servicios
               </Link>
             </NavbarItem>
-            <NavbarItem isActive>
-              <Link to={`Login`} color="secondary">
-                Login
+            <NavbarItem>
+              <Link to={`Servicios`}>
+                Paquetes
+>>>>>>> 9a5985f633c1fec25275ca7cfe6ceb15a942dc5b
               </Link>
             </NavbarItem>
+            
+           
           </NavbarContent>
-        </NavbarContent>
-  
-        <NavbarContent as="div" className="items-center " justify="end" >
           <Input
             classNames={{
               base: "max-w-full sm:max-w-[10rem] h-10",
@@ -53,6 +59,20 @@ const NavbarComponent = () => {
             startContent={<SearchIconComponent size={28} />}
             type="search"
           />
+        </NavbarContent>
+  
+        
+
+       <NavbarContent as="div" className="items-center " justify="end" >
+        
+         <NavbarItem isActive>
+            <Link to={`Login`} color="secondary">
+              Login
+            </Link>
+          </NavbarItem>
+
+          
+          
           <Dropdown placement="bottom-end ml-6">
             <DropdownTrigger>
               <Avatar
@@ -72,30 +92,24 @@ const NavbarComponent = () => {
                 <p className="font-semibold">zoey@example.com</p>
               </Link>
               </DropdownItem>
-              <DropdownItem key="settings">My Settings</DropdownItem>
-              <DropdownItem key="team_settings">Team Settings</DropdownItem>
-              <DropdownItem key="analytics">Analytics</DropdownItem>
-              <DropdownItem key="system">System</DropdownItem>
-              <DropdownItem key="configurations">Configurations</DropdownItem>
-              <DropdownItem key="help_and_feedback">Help & Feedback</DropdownItem>
+              
               <DropdownItem key="logout" color="danger">
                 Log Out
               </DropdownItem>
             </DropdownMenu>
           </Dropdown>
-        </NavbarContent>
+        
 
-        <NavbarContent className="sm:flex gap-3 ml-6">
           <NavbarItem>
             <Link to={`ShoppingCart`}><CartIconComponent size={30} /></Link>
           </NavbarItem>
-        </NavbarContent>
 
-        <NavbarContent className="sm:flex gap-3">
-          <NavbarItem>
+         <NavbarItem>
             <SwitchDarkModeComponent />
           </NavbarItem>
+          <SelectComponent></SelectComponent>
         </NavbarContent>
+
       </Navbar>
       <div id="detail">
         <Outlet />

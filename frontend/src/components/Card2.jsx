@@ -6,13 +6,15 @@ import { Link } from "react-router-dom";
 import {Button} from "@nextui-org/react";
 
 const Card2 = ({rest2}) => {
+  // console.log(rest2);
   return (
     <div className='z-10 dark:bg-[#0d1b2a] drop-shadow-md overflow-hidden rounded-2xl mr-2  my-4'>
-        <img src={rest2.linkImg} 
+        <img src={rest2.img} 
                 className="h-40 w-full object-cover"
         
         />
         <div className='p-5 border border-b'>
+<<<<<<< HEAD
             <h1 className='py-2 truncate'>{rest2.title}</h1>
             <StarRating rating={rest2.rating}/>
             <Input
@@ -38,9 +40,15 @@ const Card2 = ({rest2}) => {
            Agregar al Carrito
         </Button></Link>
         </div>
+=======
+            <h1 className='py-2 dark:text-white truncate'>{rest2.nombre}</h1>
+            {/* <StarRating rating={rest2.rating}/> */}
+        </div>
+        {/* <h3 className='p-5 text-xl'>{rest2.price}</h3> */}
+>>>>>>> 9a5985f633c1fec25275ca7cfe6ceb15a942dc5b
 
-        <div className='absolute top-0 bg-white m-3 px-2 py-[2.5px] rounded font-bold'>
-            {rest2.category}
+        <div className='absolute top-0 dark:bg-white m-3 px-2 py-[2.5px] rounded font-bold'>
+            {''}
         </div>
     </div>
   )

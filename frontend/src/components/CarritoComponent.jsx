@@ -22,11 +22,11 @@ const notification = () => (
                 title: 'Muchas Gracias Por Su Preferencia!!!, Le deseamos que disfrute sus vacaciones',
                 width: 600,
                 padding: '3em',
-                color: '#716add',
+                color: '#89745F',
                 background: '#fff url(/images/trees.png)',
                 backdrop: `
                   rgba(0,0,123,0.4)
-                  url("../public/gracias-thanks.gif")
+                  url("../public/gracias-thanks2.gif")
                   left top
                   no-repeat
                 `

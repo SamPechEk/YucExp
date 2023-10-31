@@ -1,9 +1,12 @@
 import { connection } from '../config/db.js';
+import multer from 'multer';
 
 
 const Servicio = {
 
-    async RegistrarServicio({tipo ,nombre, municipio, calificacion, idLugar,direccion, idTipoTransporte}) {
+    async RegistrarServicio({tipo ,nombre, municipio, calificacion, idLugar,direccion, idTipoTransporte, idLocalidad}) {
+      costo = 100;
+      // const cargarImagen = multer();
 
       switch(tipo) {
         case "1":
@@ -37,8 +40,48 @@ const Servicio = {
                 // response.status(201).json({"Usuario añadido correctamente": results.affectedRows});
             }); 
           break;
-        case 4:
+        case "4":
             connection.query("INSERT INTO actividades(idMunicipio, nombre) VALUES (?,?)",[municipio, nombre],
+              (error, rows) => {
+                  if(error)
+                      throw error;
+                      const insertId = rows.insertId;
+                      return insertId || null;
+                  // response.status(201).json({"Usuario añadido correctamente": results.affectedRows});
+              });
+          break;
+        case "5":
+            connection.query("INSERT INTO restaurantes(nombre, direccion, idLugar) VALUES (?,?, ?)",[nombre, direccion, idLugar],
+              (error, rows) => {
+                  if(error)
+                      throw error;
+                      const insertId = rows.insertId;
+                      return insertId || null;
+                  // response.status(201).json({"Usuario añadido correctamente": results.affectedRows});
+              });
+          break;
+        case "6":
+            connection.query("INSERT INTO localidad(nombreMunicipio) VALUES (?)",[nombre],
+              (error, rows) => {
+                  if(error)
+                      throw error;
+                      const insertId = rows.insertId;
+                      return insertId || null;
+                  // response.status(201).json({"Usuario añadido correctamente": results.affectedRows});
+              });
+          break;
+        case "7":
+            connection.query("INSERT INTO municipios(idLocalidad, nombre) VALUES (?, ?)",[idLocalidad,nombre],
+              (error, rows) => {
+                  if(error)
+                      throw error;
+                      const insertId = rows.insertId;
+                      return insertId || null;
+                  // response.status(201).json({"Usuario añadido correctamente": results.affectedRows});
+              });
+          break;
+        case "9":
+            connection.query("INSERT INTO paquetes(nombre, costo) VALUES (?, ?)",[nombre, costo],
               (error, rows) => {
                   if(error)
                       throw error;

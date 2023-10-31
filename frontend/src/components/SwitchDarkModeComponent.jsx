@@ -32,7 +32,7 @@ function SwitchDarkModeComponent() {
       endContent={<MoonIconComponent />}
       onClick={handleChangeTheme}
     >
-      Dark mode
+      
     </Switch>
   );
 }

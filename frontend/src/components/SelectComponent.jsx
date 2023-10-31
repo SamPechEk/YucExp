@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Select, SelectItem } from "@nextui-org/react";
 import axios from "axios";
+import  Swal  from 'sweetalert2';
+
 
 export default function SelectComponent() {
   const [municipios, setMunicipios] = useState([]);
@@ -25,6 +27,11 @@ export default function SelectComponent() {
     setSelectedMunicipio(new Set([e]));
     // Almacenar el valor en localStorage
     localStorage.setItem("selectedMunicipio", e);
+    Swal.fire('Municipio actualizado con exito', '', 'success')
+    setTimeout(function() {
+      window.location.reload();
+    }, 3000);
+
   };
 
   useEffect(() => {
@@ -34,7 +41,6 @@ export default function SelectComponent() {
     }else{
         setSelectedMunicipio(new Set(["1"]));
     }
-    console.log(selectedMunicipio);
   }, []);
 
   return (

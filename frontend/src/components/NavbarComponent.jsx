@@ -25,15 +25,6 @@ const NavbarComponent = () => {
               </Link>
             </NavbarItem>
             <NavbarItem >
-<<<<<<< HEAD
-              <Link to={`Servicios`}>
-              Paquetes
-              </Link>
-            </NavbarItem>
-            <NavbarItem>
-              <Link to={`Ofertas`}>
-                Servicios
-=======
               <Link to={`Ofertas`}>
                 Servicios
               </Link>
@@ -41,7 +32,6 @@ const NavbarComponent = () => {
             <NavbarItem>
               <Link to={`Servicios`}>
                 Paquetes
->>>>>>> 9a5985f633c1fec25275ca7cfe6ceb15a942dc5b
               </Link>
             </NavbarItem>
             

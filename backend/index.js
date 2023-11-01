@@ -1,8 +1,3 @@
-<<<<<<< HEAD
-const app = express();
-import  express from 'express';
-=======
->>>>>>> 9a5985f633c1fec25275ca7cfe6ceb15a942dc5b
 
 import express from "express";
 import cors from "cors";

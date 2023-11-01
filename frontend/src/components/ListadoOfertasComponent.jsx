@@ -21,17 +21,10 @@ export default function ListadoOfertasComponent() {
 
   return (
     <div className='w-full dark:bg-[#0d1b2a] items-center py-10 px-10'>
-<<<<<<< HEAD
-      <div  className='md:max-w-[1000px] m-auto grid md:grid-cols-1 max-w-[1000px]  px-4 md:px-5'>
-      <div className='flex flex-col justify-start gap-4'>
-                <h1 className='md:leading-[72px] py-2 md:text-6xl text-5xl font-semibold'>Selecciona tu <span className='text-[#DB5A42]'>destino</span> para elegir tus servicios.
-                </h1> 
-=======
       <div className='md:max-w-[1000px] m-auto grid md:grid-cols-1 max-w-[1000px] px-4 md:px-5'>
         <div className='flex flex-col justify-start gap-4'>
           <h1 className='md:leading-[72px] py-2 md:text-6xl text-5xl font-semibold'>Conoce cosas nuevas para ese viaje soñado:</h1>
         </div>
->>>>>>> 9a5985f633c1fec25275ca7cfe6ceb15a942dc5b
       </div>
       <div className="gap-2 grid grid-cols-3 sm:grid-cols-2 py-5">
         {ofertas.map((item, index) => (

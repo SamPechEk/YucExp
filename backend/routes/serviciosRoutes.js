@@ -1,15 +1,27 @@
 import express from "express";
 import { connection } from '../config/db.js';
-
-
 const Srouter = express.Router();
-
+import multer from "multer";
+import path from "path";
 import {registrarServicio} from "../controllers/servicioController.js";
 
+const storage = multer.diskStorage({
+  destination: "images",
+  filename: (req, file, cb) => {
+    cb(
+      null, file.fieldname + "_"+Date.now()+ path.extname(file.originalname)
+    );
+  },
+});
+
+const uploadImage = multer({
+  storage : storage,
+});
 
 
+Srouter.post("/registrarServicio",uploadImage.single("foto"), registrarServicio);
 
-Srouter.post("/registrarServicio", registrarServicio);
+
 Srouter.get("/getServicios", async (req, res) =>{
     await connection.query("SELECT * FROM tiposervicio",
     (err, rows) =>{

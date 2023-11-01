@@ -1,20 +1,18 @@
 import { connection } from '../config/db.js';
-import multer from 'multer';
 
 
 const Servicio = {
 
-    async RegistrarServicio({tipo ,nombre, municipio, calificacion, idLugar,direccion, idTipoTransporte, idLocalidad}) {
-      costo = 100;
-      // const cargarImagen = multer();
-
+    async RegistrarServicio({tipo ,nombre, municipio, calificacion, idLugar,direccion, idTipoTransporte, idLocalidad, foto}) {
+      console.log("nombre de la foto =>",foto, nombre, tipo);
       switch(tipo) {
         case "1":
-          connection.query("INSERT INTO hoteles(nombre, idMunicipio, calificacion) VALUES (?,?,?)",[nombre, municipio, calificacion],
+          connection.query("INSERT INTO hoteles(nombre, idMunicipio, calificacion, foto) VALUES (?,?,?,?)",[nombre, municipio, calificacion,foto],
           (error, rows) => {
               if(error)
                   throw error;
                   const insertId = rows.insertId;
+                  console.log("Si entre aca");
                   return insertId || null;
               // response.status(201).json({"Usuario añadido correctamente": results.affectedRows})
           });

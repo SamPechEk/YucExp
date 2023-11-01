@@ -10,23 +10,24 @@ import {useForm} from "react-hook-form";
 const FormularioServiciosComponent = () =>
 {
   const [datosSelect, setdatosSelect] = useState([]);
-  axios.get('http://localhost:7000/obtener/servicios/getServicios')
-  .then((response) => {
-    
-    if (!response.data.success) {
-      Swal.fire(response.data.msg, '', 'danger')
-      return;
-    }
-    // console.log('Respuesta del servidor:', response.data.msg);
-    if(!datosSelect.length > 0){
-      setdatosSelect(response.data.msg);
-    }
-  })
-  .catch((error) => {
-    // Maneja errores de la solicitud
-    // console.log(error.response.data.msg);
-    Swal.fire(error.response.data.msg, '', 'error')
-  });
+
+  
+  React.useEffect(()=>{
+    axios.get('http://localhost:7000/obtener/servicios/getServicios')
+    .then((response) => {
+      
+      if (!response.data.success) {
+        Swal.fire(response.data.msg, '', 'danger')
+        return;
+      }
+      if(!datosSelect.length > 0){
+        setdatosSelect(response.data.msg);
+      }
+    })
+    .catch((error) => {
+      Swal.fire(error.response.data.msg, '', 'error')
+    });
+  },[])
 
           const {register, handleSubmit, formState:{ errors }} = useForm();
          
@@ -49,20 +50,29 @@ const FormularioServiciosComponent = () =>
         }
 
         const onSubmit = (values) =>{
-          // ,nombre, municipio, calificacion, idLugar,direccion, idTipoTransporte
-          const datos = {
-            tipo : show,
-            nombre : values.nombre,
-            municipio : values.municipio,
-            calificacion : values.calificacion,
-            idLugar : values.idLugar,
-            direccion : values.direccion,
-            idTipoTransporte : values.idTipoTransporte,
-          }
+          // const datos = {
+          //   tipo : show,
+          //   nombre : values.nombre,
+          //   municipio : values.municipio,
+          //   calificacion : values.calificacion,
+          //   idLugar : values.idLugar,
+          //   direccion : values.direccion,
+          //   idTipoTransporte : values.idTipoTransporte,
+          //   foto: values.foto[0],
+          // }
+          // console.log(" este es el nuevo =>",datos);
 
-          console.log(values);
+          const formData = new FormData();
+          formData.set('tipo',show);
+          formData.set('nombre', values.nombre);
+          formData.set('municipio', values.municipio);
+          formData.set('calificacion', values.calificacion);
+          formData.set('idLugar', values.idLugar);
+          formData.set('direccion', values.direccion);
+          formData.set('idTipoTransporte', values.idTipoTransporte);
+          formData.set('foto', values.foto[0]);
 
-          axios.post('http://localhost:7000/obtener/servicios/registrarServicio', datos).then((response) =>{
+          axios.post('http://localhost:7000/obtener/servicios/registrarServicio', formData).then((response) =>{
             if(!response.data.success){
               Swal.fire(response.data.msg,'','error')
             }
@@ -70,7 +80,7 @@ const FormularioServiciosComponent = () =>
             Swal.fire(response.data.msg, '','success')
             }
           }).catch((error) => {
-            Swal.fire(error.response.data.msg,'','error')
+            Swal.fire(error.data.msg,'','error')
           });
 
         }
@@ -140,7 +150,8 @@ const FormularioServiciosComponent = () =>
                           </Select>
                       </div>
                       <div className="flex w-full flex-wrap md:flex-nowrap gap-4 pt-5">
-                          <Input name="foto" className="max-w-xs" type="file" label="Selecciona Una Imagen" placeholder="Inserta una foto del Hotel" />
+                          <Input name="foto" {...register("foto",{
+                              required:"Required", message:'Este campo es obligatorio'})} className="max-w-xs" type="file" label="Selecciona Una Imagen" placeholder="Inserta una foto del Hotel" />
 
                           <Select
                             label="Selecciona la calificacion"

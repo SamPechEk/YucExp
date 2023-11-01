@@ -20,8 +20,20 @@ import Servicio from "../models/Servicio.js";
 
 const registrarServicio = async (req, res) => {
   try {
-    await Servicio.RegistrarServicio({ ...req.body, confirmado: false });
+    console.log("Datos que recibe el request =>",req.body," Esta es la foto =>",req.file);
+    const datos = {
+      tipo : req.body.tipo,
+      nombre : req.body.nombre,
+      municipio : req.body.municipio,
+      calificacion : req.body.calificacion,
+      idLugar : req.body.idLugar,
+      direccion : req.body.direccion,
+      idTipoTransporte : req.body.idTipoTransporte,
+      foto : req.file.filename,
+    };
 
+    console.log("Arreglo creado manualmente =>",datos);
+   await Servicio.RegistrarServicio({ ...datos, confirmado: false });
       res.json({
         msg: "Servicio Guardado Correctamente",
         success : true,

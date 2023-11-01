@@ -4,6 +4,8 @@ import { connection } from '../config/db.js';
 const Usuario = {
   async create({ idtipousuario, nombre, password, email, token, confirmado }) {
     const hashedPassword = await bcrypt.hash(password, 10);
+    
+
 
     connection.query("INSERT INTO usuario(idtipousuario, nombre, password, email, token, confirmado) VALUES (?,?,?,?,?,?) ", 
     [idtipousuario, nombre, hashedPassword, email, token, confirmado],
@@ -45,8 +47,23 @@ const Usuario = {
   },
 
 
-  async comparePassword(user, passwordFormulario) {
-    return await bcrypt.compare(passwordFormulario, user.password);
+  async comparePassword(passwordFormulario,password) {
+    return new Promise((resolve, reject) => {
+      bcrypt.compare(passwordFormulario, password, (err, result) => {
+        if (err) {
+          // Ocurrió un error al comparar las contraseñas.
+          reject(err);
+        } else {
+          if (result) {
+            // Las contraseñas coinciden, el inicio de sesión es exitoso.
+            resolve(true);
+          } else {
+            // Las contraseñas no coinciden, el inicio de sesión falló.
+            resolve(false);
+          }
+        }
+      });
+    });
   },
 
   async confirmarUsuario(token) {

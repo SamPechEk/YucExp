@@ -43,25 +43,28 @@ const autenticar = async (req, res) => {
   const { email, password } = req.body;
 
   // Comprobar si el usuario existe
-  const usuario = await Usuario.findByEmail(email);
+  const usuario = await Usuario.findByEmail({email});
   if (!usuario) {
     const error = new Error("El Usuario no existe");
     return res.status(404).json({ msg: error.message });
   }
 
   // Comprobar si el usuario esta confirmado
-  if (!usuario.confirmado) {
+  if (!usuario[0].confirmado) {//RowDataPacket
     const error = new Error("Tu Cuenta no ha sido confirmada");
     return res.status(403).json({ msg: error.message });
   }
 
   // Comprobar su password
-  if (await usuario.comparePassword(password)) {
+  const correctPass = await Usuario.comparePassword(password,usuario[0].password);
+  if (correctPass) {
+    console.log(usuario[0].idUsuario);
     res.json({
-      _id: usuario._id,
-      nombre: usuario.nombre,
-      email: usuario.email,
-      token: generarJWT(usuario._id),
+      _id: usuario[0].idUsuario,
+      nombre: usuario[0].nombre,
+      email: usuario[0].email,
+      token: generarJWT(usuario[0].idUsuario),
+      success:true,
     });
   } else {
     const error = new Error("El Password es Incorrecto");

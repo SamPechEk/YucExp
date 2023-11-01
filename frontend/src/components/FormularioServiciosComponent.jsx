@@ -150,8 +150,14 @@ const FormularioServiciosComponent = () =>
                           </Select>
                       </div>
                       <div className="flex w-full flex-wrap md:flex-nowrap gap-4 pt-5">
-                          <Input name="foto" {...register("foto",{
-                              required:"Required", message:'Este campo es obligatorio'})} className="max-w-xs" type="file" label="Selecciona Una Imagen" placeholder="Inserta una foto del Hotel" />
+                          <Input name="foto" 
+                          {...register("foto",{
+                              required:"Required", message:'Este campo es obligatorio'
+                              })} 
+                              className="max-w-xs" 
+                              type="file" 
+                              label="Selecciona Una Imagen" 
+                              placeholder="Inserta una foto del Hotel" />
 
                           <Select
                             label="Selecciona la calificacion"
@@ -267,6 +273,16 @@ const FormularioServiciosComponent = () =>
                             </SelectItem>
                         </Select>
                     </div>
+                    <div className="flex w-full flex-wrap md:flex-nowrap gap-4 pt-5">
+                    <Input name="foto" 
+                          {...register("foto",{
+                              required:"Required", message:'Este campo es obligatorio'
+                              })} 
+                              className="max-w-xs" 
+                              type="file" 
+                              label="Selecciona Una Imagen" 
+                              placeholder="Inserta una foto del Hotel" />
+                    </div>
 
                     <div className="pt-5">
                       <Button color="success" type="submit"> Guardar</Button>
@@ -311,6 +327,17 @@ const FormularioServiciosComponent = () =>
                         </Select>
                     </div>
 
+                    <div className="flex w-full flex-wrap md:flex-nowrap gap-4 pt-5">
+                      <Input name="foto" 
+                        {...register("foto",{
+                            required:"Required", message:'Este campo es obligatorio'
+                            })} 
+                            className="max-w-xs" 
+                            type="file" 
+                            label="Selecciona Una Imagen" 
+                            placeholder="Inserta una foto del Hotel" />
+                    </div>
+
                     <div className="pt-5">
                       <Button color="success" type="submit"> Guardar</Button>
                     </div>
@@ -352,6 +379,17 @@ const FormularioServiciosComponent = () =>
                               Homun
                             </SelectItem>
                         </Select>
+                    </div>
+
+                    <div className="flex w-full flex-wrap md:flex-nowrap gap-4 pt-5">
+                      <Input name="foto" 
+                          {...register("foto",{
+                              required:"Required", message:'Este campo es obligatorio'
+                              })} 
+                              className="max-w-xs" 
+                              type="file" 
+                              label="Selecciona Una Imagen" 
+                              placeholder="Inserta una foto del Hotel" />
                     </div>
 
                     <div className="pt-5">
@@ -398,6 +436,15 @@ const FormularioServiciosComponent = () =>
                     </div>
                     <div className="flex w-full flex-wrap md:flex-nowrap gap-4 pt-5">
                         <Input name="direccion" className="max-w-xs" type="text" label="Direccion" placeholder="Escribe La Direccion" />
+                        
+                      <Input name="foto" 
+                          {...register("foto",{
+                              required:"Required", message:'Este campo es obligatorio'
+                              })} 
+                              className="max-w-xs" 
+                              type="file" 
+                              label="Selecciona Una Imagen" 
+                              placeholder="Inserta una foto del Hotel" />
                     </div>
 
                     <div className="pt-5">
@@ -463,8 +510,6 @@ const FormularioServiciosComponent = () =>
                             </SelectItem>
                         </Select>
                     </div>
-
-
                     <div className="pt-5">
                       <Button color="success" type="submit"> Guardar</Button>
                     </div>
@@ -483,9 +528,17 @@ const FormularioServiciosComponent = () =>
                           name="nombre"
                           {...register("nombre",{
                             required:"Required", message:'Este campo es obligatorio'})}/>
-                            {errors.nombre && "este campo es obligatorio"}   
-                    </div>
+                            {errors.nombre && "este campo es obligatorio"} 
 
+                        <Input name="foto" 
+                          {...register("foto",{
+                              required:"Required", message:'Este campo es obligatorio'
+                              })} 
+                              className="max-w-xs" 
+                              type="file" 
+                              label="Selecciona Una Imagen" 
+                              placeholder="Inserta una foto del Hotel" />  
+                    </div>
                     <div className="pt-5">
                       <Button color="success" type="submit"> Guardar</Button>
                     </div>

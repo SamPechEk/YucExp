@@ -1,6 +1,7 @@
 import Usuario from "../models/Usuario.js";
 import generarId from "../helpers/generarId.js";
 import generarJWT from "../helpers/generarJWT.js";
+
 import { emailRegistro, emailOlvidePassword } from "../helpers/email.js";
 
 
@@ -11,7 +12,7 @@ const registrar = async (req, res) => {
    // Comprueba si el usuario ya existe en la base de datos
   if (existeUsuario) {
     const error = new Error("Usuario ya registrado");
-    return res.status(400).json({ msg: error.message });
+    return res.status(400).json({success:false, msg: error.message });
   }
   try {
     // Crea un nuevo usuario
@@ -19,73 +20,77 @@ const registrar = async (req, res) => {
     await Usuario.create({ ...req.body, token, confirmado: false });
 
     // Enviar el email de confirmación
-    // emailRegistro({
-    //   email: req.body.email,
-    //   nombre: req.body.nombre,
-    //   token,
-    // });
+    emailRegistro({
+      email: req.body.email,
+      nombre: req.body.nombre,
+      token,
+    });
 
     res.json({
+      success: true,
       msg: "Usuario Creado Correctamente, Revisa tu Email para confirmar tu cuenta",
     });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ msg: "Error en el servidor" });
+    res.json({ 
+      success: false,
+      msg: "Error en el servidor" 
+    });
   }
 };
 
 const autenticar = async (req, res) => {
   const { email, password } = req.body;
 
-  try {
-    // Comprueba si el usuario existe
-    const usuario = await Usuario.findByEmail(email);
-    if (!usuario) {
-      const error = new Error("El Usuario no existe");
-      return res.status(404).json({ msg: error.message });
-    }
-
-    // Comprueba si el usuario está confirmado
-    if (!usuario.confirmado) {
-      const error = new Error("Tu Cuenta no ha sido confirmada");
-      return res.status(403).json({ msg: error.message });
-    }
-
-    // Comprueba la contraseña
-    if (await Usuario.comparePassword(usuario, password)) {
-      res.json({
-        _id: usuario._id,
-        nombre: usuario.nombre,
-        email: usuario.email,
-        token: generarJWT(usuario._id),
-      });
-    } else {
-      const error = new Error("El Password es Incorrecto");
-      return res.status(403).json({ msg: error.message });
-    }
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ msg: "Error en el servidor" });
+  // Comprobar si el usuario existe
+  const usuario = await Usuario.findByEmail({email});
+  if (!usuario) {
+    const error = new Error("El Usuario no existe");
+    return res.status(404).json({ msg: error.message });
   }
-};
 
-const confirmar = async (req, res) => {
-  const { token } = req.params;
-  const usuarioConfirmar = await Usuario.findOne({ token });
-  if (!usuarioConfirmar) {
-    const error = new Error("Token no válido");
+  // Comprobar si el usuario esta confirmado
+  if (!usuario[0].confirmado) {//RowDataPacket
+    const error = new Error("Tu Cuenta no ha sido confirmada");
     return res.status(403).json({ msg: error.message });
   }
 
-  try {
-    usuarioConfirmar.confirmado = true;
-    usuarioConfirmar.token = "";
-    await usuarioConfirmar.save();
-    res.json({ msg: "Usuario Confirmado Correctamente" });
-  } catch (error) {
-    console.log(error);
+  // Comprobar su password
+  const correctPass = await Usuario.comparePassword(password,usuario[0].password);
+  if (correctPass) {
+    console.log(usuario[0].idUsuario);
+    res.json({
+      _id: usuario[0].idUsuario,
+      nombre: usuario[0].nombre,
+      email: usuario[0].email,
+      token: generarJWT(usuario[0].idUsuario),
+      success:true,
+    });
+  } else {
+    const error = new Error("El Password es Incorrecto");
+    return res.status(403).json({ msg: error.message });
   }
 };
+
+
+
+const confirma = async (req, res) => {
+  const { token } = req.params;
+
+  try {
+    const usuarioConfirmar = await Usuario.confirmarUsuario(token);
+    if (usuarioConfirmar) {
+      return res.status(201).json({ success:true,msg: "Usuario confirmado con éxito" });
+
+      
+    }
+    return res.status(404).json({ success:false,msg: "Token no válido" });
+  } catch (error) {
+    
+    return res.json({ success:false,msg: "Error al confirmar el usuario" });
+  }
+};
+
 
 const olvidePassword = async (req, res) => {
   const { email } = req.body;
@@ -155,7 +160,7 @@ const perfil = async (req, res) => {
 export {
   registrar,
   autenticar,
-  confirmar,
+  confirma,
   olvidePassword,
   comprobarToken,
   nuevoPassword,

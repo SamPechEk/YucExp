@@ -1,4 +1,4 @@
-import { Hero,Companies, Courses, Achievement, Categories, Feedback, CTA, Footer } from './';
+import { Hero,Companies, Courses2, Achievement, Categories, Feedback, CTA, Footer } from './';
 import {Divider} from "@nextui-org/react";
 const HomeComponent = () => {
   return (
@@ -7,7 +7,7 @@ const HomeComponent = () => {
         <Divider className="my-1" />
         <Companies/> 
         <Divider className="my-1" />
-        <Courses />
+        <Courses2 />
         <Divider className="my-1" />
         <Achievement />
         <Divider className="my-1" />

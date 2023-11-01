@@ -1,5 +1,4 @@
 import {Card, CardHeader, CardBody, CardFooter, Image, Button} from "@nextui-org/react";
-import Footer2 from './Footer2'
 
 export default function ListadoComponent() {
   return (

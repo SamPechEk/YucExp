@@ -15,6 +15,7 @@ import {
 
 import checkAuth from "../middleware/checkAuth.js";
 
+
 // Autenticación, Registro y Confirmación de Usuarios
 router.post("/", registrar); // Crea un nuevo usuario
 router.post("/login", autenticar); 
@@ -183,6 +184,7 @@ router.get('/user/:token', async (req, res) => {
   
 
 });
+
 
 
 export default router;

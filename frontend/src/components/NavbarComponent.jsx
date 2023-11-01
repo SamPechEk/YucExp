@@ -137,8 +137,12 @@ const NavbarComponent = () => {
                  </div>
               ) : (
                 <p className="font-semibold">Administrador</p>
+                   <Link to={`RegistrarServicio`}>
+                   Agregar
+                  </Link>
               )}
               </Link>
+
             </DropdownItem>
 
             <DropdownItem key="logout" color="danger" onClick={handleLogOut}>

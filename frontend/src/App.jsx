@@ -10,6 +10,7 @@ import ListadoComprasComponent from "./components/ListadoComprasComponent";
 import HomeComponent from "./components/HomeComponent";
 import ActividadesComponent from "./components/ActividadesComponents";
 import ConfirmarCuent from "./components/ConfirmarCuenta";
+import FormularioServiciosComponent from "./components/FormularioServiciosComponent"
 const App = () => {
   return (
     <BrowserRouter>
@@ -23,6 +24,7 @@ const App = () => {
                   <Route path="Actividades" element={<ActividadesComponent />} />
                   <Route path="login" element={<LoginComponent />} />
                   <Route path="confirma/:token" element={<ConfirmarCuent />} />
+                  <Route path="registrarServicio" element={<FormularioServiciosComponent />} />
               </Route>
           </Routes>
     </BrowserRouter>

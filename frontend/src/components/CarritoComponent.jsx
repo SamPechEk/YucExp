@@ -1,10 +1,10 @@
 import {Card, CardHeader, CardBody, CardFooter} from "@nextui-org/react";
+import React,{ useState } from 'react';
 import {Image} from "@nextui-org/react";
 import {Button} from "@nextui-org/react";
 import { Link} from "react-router-dom";
 import Swal from 'sweetalert2';
-
-// const [activador, setActivador] = useState(false);
+import QRCode from "react-qr-code";
 
 const notification = () => (
     Swal.fire({
@@ -36,9 +36,21 @@ const notification = () => (
       })
 );
 
-
-
-const CarritoComponent = () => (
+const CarritoComponent = () => 
+{
+    const [QrValor, setQrValor] = useState('');
+    React.useEffect(() => {
+    const valorQR = {
+        tipo: "objetos",
+        boletos: 2,
+        fecha: "05/11/2023",
+        hora: "11:31am",
+    
+    }
+    const datos = JSON.stringify(valorQR);
+    setQrValor(datos);
+},[])
+    return(
     <div className="flex flex-col  items-center py-10 px-10">
         <Card className="max-w-full max-h-full w-[600px] h-[900px]">
             <CardHeader className="flex flex-col content-center mr-4">
@@ -46,12 +58,13 @@ const CarritoComponent = () => (
             </CardHeader>
             <CardBody className="content-start">
                 <div className="flex flex-col items-center">
-                <Image
+                {/* <Image
                     isZoomed
                     width={300}
                     alt="NextUI Fruit Image with Zoom"
                     src="https://nextui-docs-v2.vercel.app/images/fruit-1.jpeg"
-                />
+                /> */}
+                    <QRCode value={QrValor}/>
                 </div>
 
                 <div className="mt-10">
@@ -77,7 +90,8 @@ const CarritoComponent = () => (
         </Card>
 
     </div>
-);
+    );
+}
 
 
 export default CarritoComponent;

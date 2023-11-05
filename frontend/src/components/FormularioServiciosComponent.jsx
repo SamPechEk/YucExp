@@ -9,10 +9,8 @@ import {useForm} from "react-hook-form";
 import {Checkbox} from "@nextui-org/react";
 const FormularioServiciosComponent = () =>
 {
-
-
   const [datosSelect, setdatosSelect] = useState([]); //almacena los datos cargados de la base de datos, tiposervicio
-  const [municipiosV, setMunicipios] = useState([]);
+  const [municipiosV, setMunicipios] = useState([]); //almacena los municipios cargados de la base de datos
 
   React.useEffect(()=>{
     //obtiene los tipo de servicios para pintar el select
@@ -33,7 +31,7 @@ const FormularioServiciosComponent = () =>
           });
 
 
-          axios.get("http://localhost:7000/api/usuarios/municipios")
+          axios.get("http://localhost:7000/api/usuarios/municipios")//trae d la base de datos los municipios 
           .then((response) => {
             if(!municipiosV.length > 0){
               setMunicipios(response.data);
@@ -51,14 +49,15 @@ const FormularioServiciosComponent = () =>
             setShow(valor);
         }
 
-        const [EstSwitch, setEstSwitch] = useState(true);
+        const [EstSwitch, setEstSwitch] = useState(true);//lee el estado del switch
         const {register, handleSubmit, formState:{ errors }} = useForm();//hook para formularios
         const onSubmit = (values) =>{//values es el arreglo que trae el useForm
           //esta funcion escucha cuando el formulario es enviado
-          console.log(values);
           let foto = '';
           var tipoImg = '';
           if (EstSwitch == true && values.foto) {
+            //comprueba el estado del switch para informar el tipo de imagen
+            //y comprueba si el formulario esta mandando un campo foto/texto foto
             foto = values.foto[0];
             tipoImg = '1';
           }

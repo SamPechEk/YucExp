@@ -136,14 +136,20 @@ const NavbarComponent = () => {
                  <p className="font-semibold">Mis Compras</p>
                  </div>
               ) : (
-                    <p className="font-semibold">Administrador</p>
+
+                <p className="font-semibold">Administrador</p>
+                  
               )}
               </Link>
+              
+              
 
             </DropdownItem>
 
+
             <DropdownItem key="Registrar">
             {tipo != 1 ? (
+
                 <Link to={`RegistrarServicio`}>
                    Agregar
                   </Link>

@@ -3,16 +3,14 @@ import { connection } from '../config/db.js';
 
 const Servicio = {
 
-    async RegistrarServicio({tipo ,nombre, municipio, calificacion, idLugar,direccion, idTipoTransporte, idLocalidad, foto}) {
-      console.log("nombre de la foto =>",foto, nombre, tipo);
+    async RegistrarServicio({tipo ,nombre, municipio, calificacion, idLugar,direccion, idTipoTransporte, idLocalidad, foto, tipoImg}) {
       switch(tipo) {
         case "1":
-          connection.query("INSERT INTO hoteles(nombre, idMunicipio, calificacion, foto) VALUES (?,?,?,?)",[nombre, municipio, calificacion,foto],
+          connection.query("INSERT INTO hoteles(nombre, idMunicipio, calificacion, foto, typeImg) VALUES (?,?,?,?)",[nombre, municipio, calificacion,foto, tipoImg],
           (error, rows) => {
               if(error)
                   throw error;
                   const insertId = rows.insertId;
-                  console.log("Si entre aca");
                   return insertId || null;
               // response.status(201).json({"Usuario añadido correctamente": results.affectedRows})
           });
@@ -23,13 +21,12 @@ const Servicio = {
               if(error)
                   throw error;
                   const insertId = rows.insertId;
-                  console.log("transportes");
                   return insertId || null;
               // response.status(201).json({"Usuario añadido correctamente": results.affectedRows});
           });
           break;
         case "3":
-          connection.query("INSERT INTO lugar(idMunicipio, nombre) VALUES (?,?)",[municipio, nombre],
+          connection.query("INSERT INTO lugar(idMunicipio, nombre, foto, typeImg) VALUES (?,?,?,?)",[municipio, nombre,foto, tipoImg],
             (error, rows) => {
                 if(error)
                     throw error;
@@ -39,7 +36,7 @@ const Servicio = {
             }); 
           break;
         case "4":
-            connection.query("INSERT INTO actividades(idMunicipio, nombre) VALUES (?,?)",[municipio, nombre],
+            connection.query("INSERT INTO actividades(idMunicipio, nombre, foto, typeImg) VALUES (?,?,?,?)",[municipio, nombre,foto,tipoImg],
               (error, rows) => {
                   if(error)
                       throw error;
@@ -49,7 +46,7 @@ const Servicio = {
               });
           break;
         case "5":
-            connection.query("INSERT INTO restaurantes(nombre, direccion, idLugar) VALUES (?,?, ?)",[nombre, direccion, idLugar],
+            connection.query("INSERT INTO restaurantes(nombre, direccion, idMunicipio, foto, typeImg) VALUES (?,?,?,?,?)",[nombre, direccion, municipio,foto, tipoImg],
               (error, rows) => {
                   if(error)
                       throw error;
@@ -59,7 +56,7 @@ const Servicio = {
               });
           break;
         case "6":
-            connection.query("INSERT INTO localidad(nombreMunicipio) VALUES (?)",[nombre],
+            connection.query("INSERT INTO localidad(nombreLocalidad) VALUES (?)",[nombre],
               (error, rows) => {
                   if(error)
                       throw error;
@@ -79,7 +76,7 @@ const Servicio = {
               });
           break;
         case "9":
-            connection.query("INSERT INTO paquetes(nombre, costo) VALUES (?, ?)",[nombre, costo],
+            connection.query("INSERT INTO paquetes(nombre) VALUES (?)",[nombre],
               (error, rows) => {
                   if(error)
                       throw error;

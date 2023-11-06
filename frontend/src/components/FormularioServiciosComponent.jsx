@@ -1,68 +1,71 @@
 import {Select, SelectItem} from "@nextui-org/react";
 import {Card, CardHeader, CardBody, CardFooter} from "@nextui-org/react";
 import {Button} from "@nextui-org/react";
-import { Link} from "react-router-dom";
 import Swal from 'sweetalert2';
 import React,{ useState, Component } from 'react';
 import {Input} from "@nextui-org/react";
 import axios from "axios";
 import {useForm} from "react-hook-form";
+import {Checkbox} from "@nextui-org/react";
 const FormularioServiciosComponent = () =>
 {
-  const [datosSelect, setdatosSelect] = useState([]);
+  const [datosSelect, setdatosSelect] = useState([]); //almacena los datos cargados de la base de datos, tiposervicio
+  const [municipiosV, setMunicipios] = useState([]); //almacena los municipios cargados de la base de datos
 
-  
   React.useEffect(()=>{
-    axios.get('http://localhost:7000/obtener/servicios/getServicios')
-    .then((response) => {
-      
-      if (!response.data.success) {
-        Swal.fire(response.data.msg, '', 'danger')
-        return;
-      }
-      if(!datosSelect.length > 0){
-        setdatosSelect(response.data.msg);
-      }
-    })
-    .catch((error) => {
-      Swal.fire(error.response.data.msg, '', 'error')
-    });
-  },[])
-
-          const {register, handleSubmit, formState:{ errors }} = useForm();
-         
-          // const datosSelect = [
-          //   {nombreTabla:"Seleccionar", idTipo:"0"},
-          //   {nombreTabla:"Hotel", idTipo:"1"},
-          //   {nombreTabla:"Transporte", idTipo:"2"},
-          //   {nombreTabla:"Lugar", idTipo:"3"},
-          //   {nombreTabla:"Restaurante", idTipo:"4"},
-          //   {nombreTabla:"Guia", idTipo:"5"}
+    //obtiene los tipo de servicios para pintar el select
+          axios.get('http://localhost:7000/obtener/servicios/getServicios')
+          .then((response) => {
             
-          // ]
-          const [show, setShow] = useState('');// escucha cuando el valor de lo que se desee agregar cambia
+            if (!response.data.success) {
+              Swal.fire(response.data.msg, '', 'danger')
+              return;
+            }
+            if(!datosSelect.length > 0){//confirma que el arreglo aun no tenga datos, asi evita que se carguen de forma infinita
+              setdatosSelect(response.data.msg);//le pasamos la respuesta del servidor con los datos
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+            Swal.fire(error.response.data.msg, '', 'error')
+          });
 
+
+          axios.get("http://localhost:7000/api/usuarios/municipios")//trae d la base de datos los municipios 
+          .then((response) => {
+            if(!municipiosV.length > 0){
+              setMunicipios(response.data);
+            }
+          })
+          .catch((error) => {
+            console.error("Error al obtener municipios:", error);
+          });
+        },[])
+
+          const [show, setShow] = useState('');// almacena el tipo de servicio que fue seleccionado
           const showContent = (event) => {
             // al modificar el valor del select llama a esta funcion para actualizar el formulario a mostrar
-            console.log(datosSelect);
             var valor = event.target.value;
             setShow(valor);
         }
 
-        const onSubmit = (values) =>{
-          // const datos = {
-          //   tipo : show,
-          //   nombre : values.nombre,
-          //   municipio : values.municipio,
-          //   calificacion : values.calificacion,
-          //   idLugar : values.idLugar,
-          //   direccion : values.direccion,
-          //   idTipoTransporte : values.idTipoTransporte,
-          //   foto: values.foto[0],
-          // }
-          // console.log(" este es el nuevo =>",datos);
-
-          const formData = new FormData();
+        const [EstSwitch, setEstSwitch] = useState(true);//lee el estado del switch
+        const {register, handleSubmit, formState:{ errors }} = useForm();//hook para formularios
+        const onSubmit = (values) =>{//values es el arreglo que trae el useForm
+          //esta funcion escucha cuando el formulario es enviado
+          let foto = '';
+          var tipoImg = '';
+          if (EstSwitch == true && values.foto) {
+            //comprueba el estado del switch para informar el tipo de imagen
+            //y comprueba si el formulario esta mandando un campo foto/texto foto
+            foto = values.foto[0];
+            tipoImg = '1';
+          }
+          else{
+            foto = values.foto;
+            tipoImg = '2';
+          }
+          const formData = new FormData(); //instancia de datos que se va a mandar al axios
           formData.set('tipo',show);
           formData.set('nombre', values.nombre);
           formData.set('municipio', values.municipio);
@@ -70,7 +73,8 @@ const FormularioServiciosComponent = () =>
           formData.set('idLugar', values.idLugar);
           formData.set('direccion', values.direccion);
           formData.set('idTipoTransporte', values.idTipoTransporte);
-          formData.set('foto', values.foto[0]);
+          formData.set('foto', foto);
+          formData.set('tipoImg', tipoImg);
 
           axios.post('http://localhost:7000/obtener/servicios/registrarServicio', formData).then((response) =>{
             if(!response.data.success){
@@ -92,7 +96,14 @@ const FormularioServiciosComponent = () =>
                 <h2>Formulario De Registro de servicios</h2>
             </CardHeader>
             <CardBody className="content-center">
-                <div className="items-center">
+                <div className="flex flex-col gap-2">
+                  <Checkbox isSelected={EstSwitch} onValueChange={setEstSwitch}>
+                  <p className="text-default-500">
+                    Campo: {EstSwitch ? "Imagen" : "Link De Imagen"}
+                  </p>
+                  </Checkbox>
+                </div>
+                <div className="items-center pt-5">
                     <Select
                         isRequired
                         label="Tipo Servicio"
@@ -119,13 +130,14 @@ const FormularioServiciosComponent = () =>
                         <h1>Formulario Hoteles</h1>
                       </div>
                       <div className="flex w-full flex-wrap md:flex-nowrap gap-4 pt-5">
-                          <Input 
-                            className="max-w-xs" type="text" label="nombre" 
-                            placeholder="Escribe el nombre del hotel"
-                            name="nombre"
-                            {...register("nombre",{
-                              required:"Required", message:'Este campo es obligatorio'})}/>
-                              {errors.nombre && "este campo es obligatorio"}   
+                      <Input 
+                        className="max-w-xs" type="text" label="nombre" 
+                        placeholder="Escribe el nombre del hotel"
+                        name="nombre"
+                        {...register("nombre",{
+                          required:"Required", message:'Este campo es obligatorio'})}/>
+                          <p className="text-red-700">{errors.nombre && "este campo es obligatorio"}</p>
+                            
 
                           <Select
                             label="Selecciona El Municipio"
@@ -135,22 +147,17 @@ const FormularioServiciosComponent = () =>
                             {...register("municipio",{
                               required:"Required", message:'Este campo es obligatorio'})}
                           >
-                              <SelectItem key={"1"} value={"1"}>
-                                Conkal
+                              {municipiosV.map((mun) =>(
+                                <SelectItem key={mun.idMunicipio} value={mun.idMunicipio}>
+                                {mun.nombreMunicipio}
                               </SelectItem>
-                              <SelectItem key={"2"} value={"2"}>
-                                Acanceh
-                              </SelectItem>
-                              <SelectItem key={"3"} value={"3"}>
-                                ChichenItza
-                              </SelectItem>
-                              <SelectItem key={"4"} value={"4"}>
-                                Homun
-                              </SelectItem>
+                              ))}
                           </Select>
+                          <p className="text-red-700">{errors.municipio && "este campo es obligatorio"}</p>
                       </div>
                       <div className="flex w-full flex-wrap md:flex-nowrap gap-4 pt-5">
-                          <Input name="foto" 
+                      {EstSwitch ? 
+                        <Input name="foto" 
                           {...register("foto",{
                               required:"Required", message:'Este campo es obligatorio'
                               })} 
@@ -158,6 +165,17 @@ const FormularioServiciosComponent = () =>
                               type="file" 
                               label="Selecciona Una Imagen" 
                               placeholder="Inserta una foto del Hotel" />
+                        :
+                        <Input
+                      className="max-w-xs" type="text" label="foto" 
+                        placeholder="Inserta el link de la foto"
+                        name="foto"
+                        {...register("foto",{
+                          required:"Required", message:'Este campo es obligatorio'})}
+                        />
+                        
+                      }
+                        <p className="text-red-700">{errors.foto && "este campo es obligatorio"}</p>
 
                           <Select
                             label="Selecciona la calificacion"
@@ -183,6 +201,7 @@ const FormularioServiciosComponent = () =>
                                 5 estrellas
                               </SelectItem>
                           </Select>
+                          <p className="text-red-700">{errors.calificacion && "este campo es obligatorio"}</p>
                       </div>
     
                       <div className="pt-5">
@@ -202,7 +221,7 @@ const FormularioServiciosComponent = () =>
                           name="nombre"
                           {...register("nombre",{
                             required:"Required", message:'Este campo es obligatorio'})}/>
-                            {errors.nombre && "este campo es obligatorio"}   
+                          <p className="text-red-700">{errors.nombre && "este campo es obligatorio"}</p>
 
                         <Select
                           label="Municipio"
@@ -212,19 +231,13 @@ const FormularioServiciosComponent = () =>
                           {...register("municipio",{
                             required:"Required", message:'Este campo es obligatorio'})}
                         >
-                            <SelectItem key={"1"} value={"1"}>
-                              Conkal
-                            </SelectItem>
-                            <SelectItem key={"2"} value={"2"}>
-                              Acanceh
-                            </SelectItem>
-                            <SelectItem key={"3"} value={"3"}>
-                              ChichenItza
-                            </SelectItem>
-                            <SelectItem key={"4"} value={"4"}>
-                              Homun
-                            </SelectItem>
+                            {municipiosV.map((mun) =>(
+                                <SelectItem key={mun.idMunicipio} value={mun.idMunicipio}>
+                                {mun.nombreMunicipio}
+                              </SelectItem>
+                              ))}
                         </Select>
+                        <p className="text-red-700">{errors.municipio && "este campo es obligatorio"}</p>
                     </div>
                     <div className="flex w-full flex-wrap md:flex-nowrap gap-4 pt-5">
                         <Select
@@ -251,6 +264,7 @@ const FormularioServiciosComponent = () =>
                               5 estrellas
                             </SelectItem>
                         </Select>
+                        <p className="text-red-700">{errors.calificacion && "este campo es obligatorio"}</p>
                         <Select
                           label="Tipo Transporte"
                           placeholder="Selecciona el tipo de transporte"
@@ -272,16 +286,7 @@ const FormularioServiciosComponent = () =>
                               Privado
                             </SelectItem>
                         </Select>
-                    </div>
-                    <div className="flex w-full flex-wrap md:flex-nowrap gap-4 pt-5">
-                    <Input name="foto" 
-                          {...register("foto",{
-                              required:"Required", message:'Este campo es obligatorio'
-                              })} 
-                              className="max-w-xs" 
-                              type="file" 
-                              label="Selecciona Una Imagen" 
-                              placeholder="Inserta una foto del Hotel" />
+                        <p className="text-red-700">{errors.idTipoTransporte && "este campo es obligatorio"}</p>
                     </div>
 
                     <div className="pt-5">
@@ -302,7 +307,7 @@ const FormularioServiciosComponent = () =>
                           name="nombre"
                           {...register("nombre",{
                             required:"Required", message:'Este campo es obligatorio'})}/>
-                            {errors.nombre && "este campo es obligatorio"}   
+                          <p className="text-red-700">{errors.nombre && "este campo es obligatorio"}</p>
 
                         <Select
                           label="Municipio"
@@ -312,30 +317,36 @@ const FormularioServiciosComponent = () =>
                           {...register("municipio",{
                             required:"Required", message:'Este campo es obligatorio'})}
                         >
-                            <SelectItem key={"1"} value={"1"}>
-                              Conkal
-                            </SelectItem>
-                            <SelectItem key={"2"} value={"2"}>
-                              Acanceh
-                            </SelectItem>
-                            <SelectItem key={"3"} value={"3"}>
-                              ChichenItza
-                            </SelectItem>
-                            <SelectItem key={"4"} value={"4"}>
-                              Homun
-                            </SelectItem>
+                            {municipiosV.map((mun) =>(
+                                <SelectItem key={mun.idMunicipio} value={mun.idMunicipio}>
+                                {mun.nombreMunicipio}
+                              </SelectItem>
+                              ))}
                         </Select>
+                        <p className="text-red-700">{errors.municipio && "este campo es obligatorio"}</p>
                     </div>
 
                     <div className="flex w-full flex-wrap md:flex-nowrap gap-4 pt-5">
-                      <Input name="foto" 
-                        {...register("foto",{
-                            required:"Required", message:'Este campo es obligatorio'
-                            })} 
-                            className="max-w-xs" 
-                            type="file" 
-                            label="Selecciona Una Imagen" 
-                            placeholder="Inserta una foto del Hotel" />
+                        {EstSwitch ? 
+                            <Input name="foto" 
+                              {...register("foto",{
+                                  required:"Required", message:'Este campo es obligatorio'
+                                  })} 
+                                  className="max-w-xs" 
+                                  type="file" 
+                                  label="Selecciona Una Imagen" 
+                                  placeholder="Inserta una foto del Hotel" />
+                            :
+                            <Input
+                          className="max-w-xs" type="text" label="foto" 
+                            placeholder="Inserta el link de la foto"
+                            name="foto"
+                            {...register("foto",{
+                              required:"Required", message:'Este campo es obligatorio'})}
+                            />
+                            
+                          }       
+                        <p className="text-red-700">{errors.foto && "este campo es obligatorio"}</p>
                     </div>
 
                     <div className="pt-5">
@@ -356,8 +367,7 @@ const FormularioServiciosComponent = () =>
                           name="nombre"
                           {...register("nombre",{
                             required:"Required", message:'Este campo es obligatorio'})}/>
-                            {errors.nombre && "este campo es obligatorio"}   
-
+                          <p className="text-red-700">{errors.nombre && "este campo es obligatorio"}</p>
                         <Select
                           label="Municipio"
                           name="municipio"
@@ -366,30 +376,36 @@ const FormularioServiciosComponent = () =>
                           {...register("municipio",{
                             required:"Required", message:'Este campo es obligatorio'})}
                         >
-                            <SelectItem key={"1"} value={"1"}>
-                              Conkal
-                            </SelectItem>
-                            <SelectItem key={"2"} value={"2"}>
-                              Acanceh
-                            </SelectItem>
-                            <SelectItem key={"3"} value={"3"}>
-                              ChichenItza
-                            </SelectItem>
-                            <SelectItem key={"4"} value={"4"}>
-                              Homun
-                            </SelectItem>
+                            {municipiosV.map((mun) =>(
+                                <SelectItem key={mun.idMunicipio} value={mun.idMunicipio}>
+                                {mun.nombreMunicipio}
+                              </SelectItem>
+                              ))}
                         </Select>
+                        <p className="text-red-700">{errors.municipio && "este campo es obligatorio"}</p>
                     </div>
 
                     <div className="flex w-full flex-wrap md:flex-nowrap gap-4 pt-5">
-                      <Input name="foto" 
+                      {EstSwitch ? 
+                          <Input name="foto" 
+                            {...register("foto",{
+                                required:"Required", message:'Este campo es obligatorio'
+                                })} 
+                                className="max-w-xs" 
+                                type="file" 
+                                label="Selecciona Una Imagen" 
+                                placeholder="Inserta una foto del Hotel" />
+                          :
+                          <Input
+                        className="max-w-xs" type="text" label="foto" 
+                          placeholder="Inserta el link de la foto"
+                          name="foto"
                           {...register("foto",{
-                              required:"Required", message:'Este campo es obligatorio'
-                              })} 
-                              className="max-w-xs" 
-                              type="file" 
-                              label="Selecciona Una Imagen" 
-                              placeholder="Inserta una foto del Hotel" />
+                            required:"Required", message:'Este campo es obligatorio'})}
+                          />
+                          
+                        }
+                        <p className="text-red-700">{errors.foto && "este campo es obligatorio"}</p>
                     </div>
 
                     <div className="pt-5">
@@ -410,7 +426,7 @@ const FormularioServiciosComponent = () =>
                           name="nombre"
                           {...register("nombre",{
                             required:"Required", message:'Este campo es obligatorio'})}/>
-                            {errors.nombre && "este campo es obligatorio"}   
+                          <p className="text-red-700">{errors.nombre && "este campo es obligatorio"}</p>
 
                         <Select
                           label="Municipio"
@@ -420,24 +436,19 @@ const FormularioServiciosComponent = () =>
                           {...register("municipio",{
                             required:"Required", message:'Este campo es obligatorio'})}
                         >
-                            <SelectItem key={"1"} value={"1"}>
-                              Conkal
-                            </SelectItem>
-                            <SelectItem key={"2"} value={"2"}>
-                              Acanceh
-                            </SelectItem>
-                            <SelectItem key={"3"} value={"3"}>
-                              ChichenItza
-                            </SelectItem>
-                            <SelectItem key={"4"} value={"4"}>
-                              Homun
-                            </SelectItem>
+                           {municipiosV.map((mun) =>(
+                                <SelectItem key={mun.idMunicipio} value={mun.idMunicipio}>
+                                {mun.nombreMunicipio}
+                              </SelectItem>
+                              ))}
                         </Select>
+                        <p className="text-red-700">{errors.municipio && "este campo es obligatorio"}</p>
                     </div>
                     <div className="flex w-full flex-wrap md:flex-nowrap gap-4 pt-5">
                         <Input name="direccion" className="max-w-xs" type="text" label="Direccion" placeholder="Escribe La Direccion" />
                         
-                      <Input name="foto" 
+                        {EstSwitch ? 
+                        <Input name="foto" 
                           {...register("foto",{
                               required:"Required", message:'Este campo es obligatorio'
                               })} 
@@ -445,6 +456,17 @@ const FormularioServiciosComponent = () =>
                               type="file" 
                               label="Selecciona Una Imagen" 
                               placeholder="Inserta una foto del Hotel" />
+                        :
+                        <Input
+                      className="max-w-xs" type="text" label="foto" 
+                        placeholder="Inserta el link de la foto"
+                        name="foto"
+                        {...register("foto",{
+                          required:"Required", message:'Este campo es obligatorio'})}
+                        />
+                        
+                      }
+                        <p className="text-red-700">{errors.foto && "este campo es obligatorio"}</p>
                     </div>
 
                     <div className="pt-5">
@@ -461,11 +483,11 @@ const FormularioServiciosComponent = () =>
                     <div className="flex w-full flex-wrap md:flex-nowrap gap-4 pt-5">
                         <Input 
                           className="max-w-xs" type="text" label="nombre" 
-                          placeholder="Escribe el nombre del restaurante"
+                          placeholder="Escribe el nombre de la localidad"
                           name="nombre"
                           {...register("nombre",{
                             required:"Required", message:'Este campo es obligatorio'})}/>
-                            {errors.nombre && "este campo es obligatorio"}   
+                          <p className="text-red-700">{errors.nombre && "este campo es obligatorio"}</p>
 
                     </div>
                     <div className="pt-5">
@@ -482,14 +504,14 @@ const FormularioServiciosComponent = () =>
                     <div className="flex w-full flex-wrap md:flex-nowrap gap-4 pt-5">
                         <Input 
                           className="max-w-xs" type="text" label="nombre" 
-                          placeholder="Escribe el nombre del restaurante"
+                          placeholder="Escribe el nombre del municipio"
                           name="nombre"
                           {...register("nombre",{
                             required:"Required", message:'Este campo es obligatorio'})}/>
-                            {errors.nombre && "este campo es obligatorio"}   
+                          <p className="text-red-700">{errors.nombre && "este campo es obligatorio"}</p>
 
                         <Select
-                          label="Municipio"
+                          label="Localidad"
                           name="idLocalidad"
                           placeholder="Selecciona una localidad"
                           className="max-w-sm"
@@ -497,18 +519,19 @@ const FormularioServiciosComponent = () =>
                             required:"Required", message:'Este campo es obligatorio'})}
                         >
                             <SelectItem key={"1"} value={"1"}>
-                              Conkal
+                              Yucatan
                             </SelectItem>
                             <SelectItem key={"2"} value={"2"}>
-                              Acanceh
+                              Cancun
                             </SelectItem>
                             <SelectItem key={"3"} value={"3"}>
-                              ChichenItza
+                              Cozumel
                             </SelectItem>
                             <SelectItem key={"4"} value={"4"}>
-                              Homun
+                              otro
                             </SelectItem>
                         </Select>
+                        <p className="text-red-700">{errors.municipio && "este campo es obligatorio"}</p>
                     </div>
                     <div className="pt-5">
                       <Button color="success" type="submit"> Guardar</Button>
@@ -524,20 +547,32 @@ const FormularioServiciosComponent = () =>
                     <div className="flex w-full flex-wrap md:flex-nowrap gap-4 pt-5">
                         <Input 
                           className="max-w-xs" type="text" label="nombre" 
-                          placeholder="Escribe el nombre del restaurante"
+                          placeholder="Escribe el nombre del paquete"
                           name="nombre"
                           {...register("nombre",{
                             required:"Required", message:'Este campo es obligatorio'})}/>
-                            {errors.nombre && "este campo es obligatorio"} 
+                          <p className="text-red-700">{errors.nombre && "este campo es obligatorio"}</p>
 
-                        <Input name="foto" 
+                        {EstSwitch ? 
+                          <Input name="foto" 
+                            {...register("foto",{
+                                required:"Required", message:'Este campo es obligatorio'
+                                })} 
+                                className="max-w-xs" 
+                                type="file" 
+                                label="Selecciona Una Imagen" 
+                                placeholder="Inserta una foto " />
+                          :
+                          <Input
+                        className="max-w-xs" type="text" label="foto" 
+                          placeholder="Inserta el link de la foto"
+                          name="foto"
                           {...register("foto",{
-                              required:"Required", message:'Este campo es obligatorio'
-                              })} 
-                              className="max-w-xs" 
-                              type="file" 
-                              label="Selecciona Una Imagen" 
-                              placeholder="Inserta una foto del Hotel" />  
+                            required:"Required", message:'Este campo es obligatorio'})}
+                          />
+                          
+                        }
+                        <p className="text-red-700">{errors.foto && "este campo es obligatorio"}</p>  
                     </div>
                     <div className="pt-5">
                       <Button color="success" type="submit"> Guardar</Button>

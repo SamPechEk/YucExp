@@ -1,12 +1,12 @@
-import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/react";
+import { Card, CardHeader, CardBody, CardFooter, Divider } from "@nextui-org/react";
 import { Image } from "@nextui-org/react";
 import { Button } from "@nextui-org/react";
 import { Link } from "react-router-dom";
 import Swal from 'sweetalert2';
 import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, getKeyValue, } from "@nextui-org/react";
 import { Input } from "@nextui-org/react";
-
-// const [activador, setActivador] = useState(false);
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 
 const notification = () => (
   Swal.fire({
@@ -39,7 +39,40 @@ const notification = () => (
 );
 
 
-const CarritoComponent = () => (
+
+const CarritoComponent = () => {
+
+  const [datosItemCarrito, setDatosItemCarrito] = useState([]);
+
+  useEffect(() => {
+
+    // Hacer una solicitud GET al backend para obtener los items agregados
+    axios.get('/api/itemcarrito')
+      .then((response) => {
+        setDatosItemCarrito(response.data);
+      })
+      .catch((error) => {
+        console.error('Error al obtener datos de itemcarrito:', error);
+      });
+  }, []);
+
+  const handleEliminarItem = (id) => {
+
+    // Realizar una solicitud DELETE al backend para eliminar el items del carrito
+    axios.delete(`/api/itemcarrito/${id}`)
+      .then((response) => {
+        console.log('Item eliminado del carrito:', response.data);
+        // Actualizar la lista de items del carrito después de eliminar el servicio
+        const updatedItems = datosItemCarrito.filter((item) => item.id !== id);
+        setDatosItemCarrito(updatedItems);
+      })
+      .catch((error) => {
+        console.error('Error al eliminar el item del carrito:', error);
+      });
+  };
+  
+
+  return (
   <div className="flex flex-col  items-center py-10 px-10">
     <Card className="max-w-full max-h-full w-[900px] h-[600px]">
       <CardHeader className="flex flex-col content-center mr-4">
@@ -47,69 +80,70 @@ const CarritoComponent = () => (
       </CardHeader>
       <CardBody className="content-start">
 
+
         <Table aria-label="Example static collection table">
           <TableHeader>
             <TableColumn>TIPO DE SERVICIO</TableColumn>
             <TableColumn>Servicio</TableColumn>
-            <TableColumn></TableColumn>
+            <TableColumn>Acciones</TableColumn>
           </TableHeader>
-          <TableBody>
-            <TableRow key="1">
-              <TableCell>Restaurante</TableCell>
 
-              <TableCell><small className="text-default-500">*Agrega un restaurante*</small></TableCell>
-              <TableCell>
-                <Button size="sm" color="primary">
-                  Eliminar servicio
-                </Button>
-              </TableCell>
-              
-            </TableRow>
-            <TableRow key="2">
-              <TableCell>Hoteles</TableCell>
-              <TableCell><small className="text-default-500">*Agrega un Hotel*</small></TableCell>
-              <TableCell>
-                <Button size="sm" color="primary">
-                  Eliminar servicio
-                </Button>
-              </TableCell>
-            </TableRow>
-            <TableRow key="3">
-              <TableCell>Transporte</TableCell>
-              <TableCell><small className="text-default-500">*Agrega un Transporte*</small></TableCell>
-              <TableCell>
-                <Button size="sm" color="primary">
-                  Eliminar servicio
-                </Button>
-              </TableCell>
-            </TableRow>
-            <TableRow key="4">
-              <TableCell>Actividades</TableCell>
-              <TableCell><small className="text-default-500">*Agrega una Actividad*</small></TableCell>
-              <TableCell>
-                <Button size="sm" color="primary">
-                  Eliminar servicio
-                </Button>
-              </TableCell>
-            </TableRow>
+          <TableBody>
+
+          {datosItemCarrito.map((item) => (
+              <TableRow>
+                     
+                <TableCell>
+                hola
+                </TableCell>
+
+                <TableCell>
+                {datosItemCarrito.length > 0 ? (
+                  
+                  <Card className="max-w-[400px]" key={1}>
+                    <CardHeader className="flex gap-3">
+                      <div className="flex flex-col">
+                        <p className="text-md">hola</p>
+                        <p className="text-small text-default-500">hola</p>
+                      </div>
+                    </CardHeader>
+                    <Divider />
+                    <CardBody>
+                      <div className="grid grid-cols-2">
+                        <Image
+                          alt="nextui logo"
+                          height={40}
+                          radius="sm"
+                          src="imagen del servicio"
+                          width={40}
+                        />
+                        <p>hola</p>
+                      </div>
+                    </CardBody>
+                    <Divider />
+                    <CardFooter>
+                      <p>hola</p>
+                    </CardFooter>
+                  </Card>
+                  ) : (
+                    <small className="text-default-500">*Agrega un restaurante*</small>
+                    )}
+                </TableCell>
+
+                <TableCell>
+                  <Button size="sm" color="danger" onClick={() => handleEliminarItem(item.id)}>
+                    Eliminar servicio
+                  </Button>
+                </TableCell>
+                
+              </TableRow>
+))}
+
+
           </TableBody>
         </Table>
 
-        <Card className="">
-          <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
-            <p className="text-small uppercase font-bold">Total de Reservaciones:</p>
-            <small className="font-bold">12 Servicios</small>
-            <small className="text-default-500">Confirma tus reservaciones</small>
-          </CardHeader>
-          <CardBody className="overflow-visible py-2">
 
-          </CardBody>
-          <CardFooter>
-            <Button className="justify-item-center" color="warning" variant="ghost" size="sm">
-              Vaciar carrito de Reservaciones
-            </Button>
-          </CardFooter>
-        </Card>
 
         <div className="mt-10 flex flex-wrap gap-4 justify-end">
           <Button color="success" onClick={() => notification()}>
@@ -125,7 +159,8 @@ const CarritoComponent = () => (
     </Card>
 
   </div>
-);
+  )
+                  };
 
 
 export default CarritoComponent;

@@ -138,6 +138,59 @@ router.get('/Services/:municipio', async (req, res) => {
 });
 
 
+// Recibe datos desde frontend y se insertan en la tabla "itemscarrito" de la base de datos
+router.post('/api/card', async (req, res) => {
+  try {
+    const { item } = req.body; // El objeto del servicio enviado desde el frontend
+
+    // Inserta el artículo en la tabla del carrito en tu base de datos
+    await query('INSERT INTO itemscarrito (nombre, img, typeImg) VALUES (?, ?, ?)', [
+      //datos que se envian
+      item.nombre,
+      item.img,
+      item.typeImg,
+    ]);
+
+    // Si se inserta bien a la tabla, devuelve este mensaje:
+    res.status(200).json({ message: 'Artículo agregado al carrito correctamente' });
+  } catch (error) {
+    //Error
+    console.error('Error al agregar el artículo al carrito:', error);
+    res.status(500).json({ error: 'Error en el servidor' });
+  }
+});
+
+// Solicitud Get para agregar datos a la vista del Carrito
+router.get('/api/itemcarrito', async (req, res) => {
+  try {
+    const itemsCarrito = await query('SELECT * FROM itemscarrito');
+
+    // Enviar los datos del carrito como respuesta
+    res.status(200).json(itemsCarrito);
+  } catch (error) {
+    //Mensaje de error
+    console.error('Error al obtener los datos del carrito:', error);
+    res.status(500).json({ error: 'Error en el servidor' });
+  }
+});
+
+// Eliminar items del carrito
+router.delete('/api/itemcarrito/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    
+    // Se realiza la consulta a la base de datos para eliminar item del carrito por el ID
+    await query('DELETE FROM itemscarrito WHERE id = ?', [id]);
+    
+    // Si se elimina correctamente, devuelve este mensaje
+    res.status(200).json({ message: 'Artículo eliminado del carrito correctamente' });
+  } catch (error) {
+    //Mensaje de errores
+    console.error('Error al eliminar el artículo del carrito:', error);
+    res.status(500).json({ error: 'Error en el servidor' });
+  }
+});
+
 
 
 export default router;

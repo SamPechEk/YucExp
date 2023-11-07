@@ -174,7 +174,7 @@ router.get('/api/itemcarrito', async (req, res) => {
   }
 });
 
-// Eliminar items del carrito
+// Eliminar items de itemscarrito
 router.delete('/api/itemcarrito/:id', async (req, res) => {
   try {
     const { id } = req.params;

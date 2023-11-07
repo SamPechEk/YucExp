@@ -2,6 +2,7 @@
 import express from "express";
 import cors from "cors";
 import usuarioRoutes from "./routes/usuarioRoutes.js";
+import serviciosRoutes from "./routes/serviciosRoutes.js";
 
 const app = express();
 app.use(express.json());
@@ -12,7 +13,7 @@ const whitelist = [process.env.FRONTEND_URL];
 const corsOptions = {
   origin: function (origin, callback) {
     if (whitelist.includes(origin)) {
-      // Puede consultar la API
+      // Puede consultar la APInm
       callback(null, true);
     } else {
       // No esta permitido
@@ -26,6 +27,10 @@ app.use(cors());
 
 // Routing
 app.use("/api/usuarios", usuarioRoutes);
+
+
+//rutas para formularios de servicios
+app.use("/obtener/servicios", serviciosRoutes);
 
 
 const PORT = process.env.PORT || 7000;

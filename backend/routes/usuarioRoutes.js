@@ -1,5 +1,7 @@
 import express from "express";
 import { connection } from '../config/db.js';
+import jwt from "jsonwebtoken";
+
 const router = express.Router();
 import {
   registrar,
@@ -12,6 +14,7 @@ import {
 } from "../controllers/usuarioController.js";
 
 import checkAuth from "../middleware/checkAuth.js";
+
 
 // Autenticación, Registro y Confirmación de Usuarios
 router.post("/", registrar); // Crea un nuevo usuario
@@ -138,6 +141,7 @@ router.get('/Services/:municipio', async (req, res) => {
 });
 
 
+
 // Recibe datos desde frontend y se insertan en la tabla "itemscarrito" de la base de datos
 router.post('/api/card', async (req, res) => {
   try {
@@ -189,6 +193,50 @@ router.delete('/api/itemcarrito/:id', async (req, res) => {
     console.error('Error al eliminar el artículo del carrito:', error);
     res.status(500).json({ error: 'Error en el servidor' });
   }
+
+router.get('/user/:token', async (req, res) => {
+  // Obtiene el token del encabezado de la solicitud
+  const obtenerUser = (token) => {
+    return new Promise((resolve, reject) => {
+      const query = 'SELECT * FROM usuario WHERE idUsuario = ?';
+  
+      connection.query(query, [token], (error, results) => {
+        if (error) {
+          reject(error);
+        } else if (results.length === 0) {
+          resolve(null); // Usuario no encontrado
+        } else {
+          resolve(results[0]); // Devuelve los datos del usuario (primera fila)
+        }
+      });
+    });
+  };
+  
+  const { token } = req.params;
+  if (!token) {
+    return res.status(401).json({ message: 'Token no proporcionado' });
+  }
+  
+  try {
+    // Verifica y decodifica el token
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+  
+    // Realiza una consulta a la base de datos para obtener la información del usuario
+    const user = await obtenerUser(decoded.id);
+  
+    // Si el usuario no se encuentra en la base de datos, puedes manejarlo según tus necesidades
+    if (!user) {
+      return res.status(404).json({ message: 'Usuario no encontrado' });
+    }
+  
+    // Envía la información del usuario en la respuesta
+    res.json({ user });
+  } catch (error) {
+    res.status(401).json({ message: 'Token no válido' });
+  }
+  
+
+
 });
 
 

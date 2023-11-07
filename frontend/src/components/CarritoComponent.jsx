@@ -1,3 +1,4 @@
+
 import { Card, CardHeader, CardBody, CardFooter, Divider } from "@nextui-org/react";
 import { Image } from "@nextui-org/react";
 import { Button } from "@nextui-org/react";
@@ -7,6 +8,8 @@ import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, getKey
 import { Input } from "@nextui-org/react";
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import QRCode from "react-qr-code";
+
 
 const notification = () => (
   Swal.fire({
@@ -38,6 +41,7 @@ const notification = () => (
   })
 );
 
+// <<<<<<< YucExp-YXP01-Funcionalidad-Completa
 
 
 const CarritoComponent = () => {
@@ -160,7 +164,65 @@ const CarritoComponent = () => {
 
   </div>
   )
-                  };
+                };
+// =======
+// const CarritoComponent = () => 
+// {
+//     const [QrValor, setQrValor] = useState('');
+//     React.useEffect(() => {
+//     const valorQR = {
+//         tipo: "objetos",
+//         boletos: 2,
+//         fecha: "05/11/2023",
+//         hora: "11:31am",
+    
+//     }
+//     const datos = JSON.stringify(valorQR);
+//     setQrValor(datos);
+// },[])
+//     return(
+//     <div className="flex flex-col  items-center py-10 px-10">
+//         <Card className="max-w-full max-h-full w-[600px] h-[900px]">
+//             <CardHeader className="flex flex-col content-center mr-4">
+//                 <h1>Carrito De Compras</h1>
+//             </CardHeader>
+//             <CardBody className="content-start">
+//                 <div className="flex flex-col items-center">
+//                 {/* <Image
+//                     isZoomed
+//                     width={300}
+//                     alt="NextUI Fruit Image with Zoom"
+//                     src="https://nextui-docs-v2.vercel.app/images/fruit-1.jpeg"
+//                 /> */}
+//                     <QRCode value={QrValor}/>
+//                 </div>
+
+//                 <div className="mt-10">
+//                     <h1 className="uppercase font-bold text-xl text-center font-serif">Descripcion General</h1>
+//                     <p className="font-bold text-left mt-10">Nombre Del Paquete:</p>
+//                     <p className="font-bold text-left mt-5">Tipo:</p>
+//                     <p className="font-bold text-left mt-5">Costo:</p>
+//                     <p className="font-bold text-left mt-5">Total de boletos:</p>
+//                     <p className="font-bold text-left mt-5">Descripcion General:</p>
+//                 </div>
+
+//                 <div className="mt-10 flex flex-wrap gap-4 items-center">
+//                     <Button color="success" onClick={() => notification()}>
+//                         Comprar
+//                     </Button>
+//                     <Link to={`/Actividades`}>
+//                     <Button color="danger">
+//                         Cancelar
+//                     </Button>
+//                     </Link> 
+//                 </div>
+//             </CardBody>
+//         </Card>
+
+//     </div>
+//     );
+// }
+// >>>>>>> main
 
 
 export default CarritoComponent;

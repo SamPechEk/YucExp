@@ -31,10 +31,12 @@ export default function LoginComponent() {
       setEmailError('Email no válido');
       isValid = false;
     }
-
-    if (!nombre || nombre.length < 15) {
-      setNombreError('El nombre es incorrecto.');
-      isValid = false;
+    if (selected != "login") {
+      if (!nombre || nombre.length < 15) {
+        // console.log(nombre);
+        setNombreError('El nombre es incorrecto.');
+        isValid = false;
+      }
     }
 
     // Validación del campo de contraseña
@@ -42,15 +44,16 @@ export default function LoginComponent() {
       setPasswordError('Contraseña no válida');
       isValid = false;
     }
-
+    const data = {
+      idtipousuario: 1,
+      nombre: nombre,
+      password: password,
+      email: email,
+    };
     if (isValid) {
+      
       if (selected != "login") {
-        const data = {
-          idtipousuario: 1,
-          nombre: nombre,
-          password: password,
-          email: email,
-        };
+        
 
         // Realiza la solicitud POST al servidor
         axios
@@ -69,28 +72,29 @@ export default function LoginComponent() {
             console.log(error.response.data.msg);
             Swal.fire(error.response.data.msg, '', 'error')
           });
+      }else {
+        // console.log(selected);
+        axios
+          .post('http://localhost:7000/api/usuarios/login', data)
+          .then((response) => {
+            console.log(response.data.success);
+            if (response.data.success) {
+              // const navigate = useNavigate()
+              localStorage.setItem('token', response.data.token);
+              Swal.fire(`Bienvenido ${response.data.nombre}`, '', 'success');
+              
+              setTimeout(function() {
+                window.location.replace('/Ofertas');
+              }, 3000);
+            }
+          })
+          .catch((error) => {
+            // Maneja errores de la solicitud
+            console.log(error.response.data.msg);
+            Swal.fire(error.response.data.msg, '', 'error')
+          });
       }
-    } else {
-      axios
-        .post('http://localhost:7000/api/usuarios/login', data)
-        .then((response) => {
-
-          if (response.data.success) {
-            Swal.fire(response.data.msg, '', 'success')
-            const navigate = useNavigate()
-            localStorage.setItem('token', data.token)
-            setAuth(data)
-            navigate('/')
-          }else{
-            
-          }
-        })
-        .catch((error) => {
-          // Maneja errores de la solicitud
-          console.log(error.response.data.msg);
-          Swal.fire(error.response.data.msg, '', 'error')
-        });
-    }
+    } 
   }
   return (
     <div className="flex justify-center items-center ">

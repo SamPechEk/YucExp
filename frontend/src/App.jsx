@@ -11,7 +11,7 @@ import HomeComponent from "./components/HomeComponent";
 import ActividadesComponent from "./components/ActividadesComponents";
 import ConfirmarCuent from "./components/ConfirmarCuenta";
 import FormularioServiciosComponent from "./components/FormularioServiciosComponent";
-import QrComponent from './components/QrComponent';
+import ListadoAdminComponent from './components/ListadoAdminComponent';
 const App = () => {
   return (
     <BrowserRouter>
@@ -26,7 +26,7 @@ const App = () => {
                   <Route path="login" element={<LoginComponent />} />
                   <Route path="confirma/:token" element={<ConfirmarCuent />} />
                   <Route path="registrarServicio" element={<FormularioServiciosComponent />} />
-                  <Route path="mostrarQR" element={<QrComponent />} />
+                  <Route path="listadoAdministrador" element={<ListadoAdminComponent />} />
               </Route>
           </Routes>
     </BrowserRouter>

@@ -4,9 +4,13 @@ import { connection } from '../config/db.js';
 const Servicio = {
 
     async RegistrarServicio({tipo ,nombre, municipio, calificacion, idLugar,direccion, idTipoTransporte, idLocalidad, foto, tipoImg}) {
+      let url_foto = foto;
+      if(tipoImg == "1"){    
+         url_foto = "http://localhost:7000/"+foto;
+      }
       switch(tipo) {
         case "1":
-          connection.query("INSERT INTO hoteles(nombre, idMunicipio, calificacion, foto, typeImg) VALUES (?,?,?,?)",[nombre, municipio, calificacion,foto, tipoImg],
+          connection.query("INSERT INTO hoteles(nombre, idMunicipio, calificacion, foto, typeImg) VALUES (?,?,?,?,?)",[nombre, municipio, calificacion,url_foto, tipoImg],
           (error, rows) => {
               if(error)
                   throw error;

@@ -73,7 +73,7 @@ const NavbarComponent = () => {
             
            
           </NavbarContent>
-          <Input
+          {tipo == 1 &&(<Input
             classNames={{
               base: "max-w-full sm:max-w-[10rem] h-10",
               mainWrapper: "h-full",
@@ -84,7 +84,7 @@ const NavbarComponent = () => {
             size="sm"
             startContent={<SearchIconComponent size={28} />}
             type="search"
-          />
+          />)}
         </NavbarContent>
   
         
@@ -96,13 +96,17 @@ const NavbarComponent = () => {
           
           
           
-
-          <NavbarItem>
+          
+         {tipo == 1 ?
+         ( <NavbarItem>
             <Link to={`ShoppingCart`}><CartIconComponent size={30} /></Link>
-          </NavbarItem>
-
-         
-          <SelectComponent></SelectComponent>
+          </NavbarItem>)
+          :
+          (<NavbarItem>
+            <Link to={`listadoAdministrador`}> Listado</Link>
+          </NavbarItem>)}
+  
+          {tipo == 1 &&(<SelectComponent></SelectComponent>)}
           <Dropdown placement="bottom-end ml-6">
           {!usuarioLogueado ? (
           <NavbarItem isActive>

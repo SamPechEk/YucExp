@@ -39,7 +39,7 @@ const registrarServicio = async (req, res) => {
       foto : archivo,
       tipoImg : req.body.tipoImg,
     };
-
+    console.log(datos);
       await Servicio.RegistrarServicio({ ...datos, confirmado: false });
       res.json({
         msg: "Servicio Guardado Correctamente",

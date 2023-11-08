@@ -62,8 +62,9 @@ export default function LoginComponent() {
 
             if (response.data.success) {
               Swal.fire(response.data.msg, '', 'success')
-              const navigate = useNavigate()
-              navigate('/')
+              setTimeout(function() {
+                window.location.replace('/Ofertas');
+              }, 3000);
             }
             console.log('Respuesta del servidor:', response.data);
           })

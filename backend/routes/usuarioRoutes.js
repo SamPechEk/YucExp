@@ -183,16 +183,16 @@ router.delete('/api/itemcarrito/:id', async (req, res) => {
   try {
     const { id } = req.params;
     
-    // Se realiza la consulta a la base de datos para eliminar item del carrito por el ID
+    // Realizar una consulta a la base de datos para eliminar el item del carrito por su ID
     await query('DELETE FROM itemscarrito WHERE id = ?', [id]);
     
-    // Si se elimina correctamente, devuelve este mensaje
+    // Si se elimina correctamente, devuelve una respuesta exitosa
     res.status(200).json({ message: 'Artículo eliminado del carrito correctamente' });
   } catch (error) {
-    //Mensaje de errores
     console.error('Error al eliminar el artículo del carrito:', error);
     res.status(500).json({ error: 'Error en el servidor' });
   }
+});
 
 router.get('/user/:token', async (req, res) => {
   // Obtiene el token del encabezado de la solicitud

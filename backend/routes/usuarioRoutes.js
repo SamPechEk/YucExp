@@ -2,6 +2,7 @@ import express from "express";
 import { connection } from '../config/db.js';
 import jwt from "jsonwebtoken";
 
+
 const router = express.Router();
 import {
   registrar,
@@ -103,11 +104,26 @@ router.get('/Services/:municipio', async (req, res) => {
         if (err) {
           console.log(err);
           reject(err);
-        } else {
+        } else { let id;
+          if (tabla =="actividades") {
+            id = "idActividad";
+          }
+          if (tabla =="hoteles") {
+            id = "idHotel";
+          }
+          if (tabla =="restaurantes") {
+            id = "idRestaurante";
+          }
+          if (tabla =="lugar") {
+            id = "idLugar";
+          }
           const registros = rows.map((row) => ({
             nombre: row.nombre,
             img: row.img,
-            typeImg: row.typeImg,
+            tabla:tabla,
+            idservicio:row[id],
+            id:id,
+            idMunicipio:row.idMunicipio
           }));
           resolve({ [tablaNombre]: registros });
         }
@@ -142,27 +158,70 @@ router.get('/Services/:municipio', async (req, res) => {
 
 
 
-// Recibe datos desde frontend y se insertan en la tabla "itemscarrito" de la base de datos
-router.post('/api/card', async (req, res) => {
-  try {
-    const { item } = req.body; // El objeto del servicio enviado desde el frontend
+// Recibe datos desde frontend y se insertan en la tabla "itemscarrito" de la base de dato
 
-    // Inserta el artículo en la tabla del carrito en tu base de datos
-    await query('INSERT INTO itemscarrito (nombre, img, typeImg) VALUES (?, ?, ?)', [
-      //datos que se envian
-      item.nombre,
-      item.img,
-      item.typeImg,
-    ]);
+router.post('/add/car', async (req, res) => {
+ 
+  
+  const { idusuario, tabla, idservicio, idMunicipio } = req.body;
+ 
+  const decoded = jwt.verify(idusuario, process.env.JWT_SECRET);
+  let iduser = decoded.id;
+  const fechaCreacion = new Date(); // Obtén la fecha actual
 
-    // Si se inserta bien a la tabla, devuelve este mensaje:
-    res.status(200).json({ message: 'Artículo agregado al carrito correctamente' });
-  } catch (error) {
-    //Error
-    console.error('Error al agregar el artículo al carrito:', error);
-    res.status(500).json({ error: 'Error en el servidor' });
-  }
+  const verificarYCrearCarrito = async () => {
+    return new Promise((resolve, reject) => {
+      const carritoQuery = 'SELECT idcarrito FROM carrito WHERE idusuario = ? AND status = 0';
+      connection.query(carritoQuery, [iduser], (err, rows) => {
+        if (err) {
+          console.error(err);
+          reject(err);
+        } else {
+          if (rows.length > 0) {
+            resolve(rows[0].idcarrito);
+          } else {
+            const createCarritoQuery = 'INSERT INTO carrito (idusuario, fechaCreacion, status, idmunicipio) VALUES (?, ?, 0,?)';
+            connection.query(createCarritoQuery, [iduser, fechaCreacion, idMunicipio], (err, result) => {
+              if (err) {
+                console.error(err);
+                reject(err);
+              } else {
+                resolve(result.insertId);
+              }
+            });
+          }
+        }
+      });
+    });
+  };
+  
+  const insertarItemCarrito = (idcarrito) => {
+    return new Promise((resolve, reject) => {
+      const insertItemCarritoQuery = 'INSERT INTO itemscarrito (idcarrito, referenceIdServicio, idtiposervicio) VALUES (?, ?, ?)';
+      connection.query(insertItemCarritoQuery, [idcarrito,  idservicio,tabla], (err) => {
+        if (err) {
+          console.error(err);
+          reject(err);
+        } else {
+          resolve();
+        }
+      });
+    });
+  };
+  
+  verificarYCrearCarrito()
+    .then((idcarrito) => insertarItemCarrito(idcarrito))
+    .then(() => {
+      return res.status(200).json({ success: true, msg: 'Item agregado al carrito' });
+    })
+    .catch((error) => {
+      console.error('Error al agregar item al carrito:', error);
+      return res.status(500).json({ success: false, msg: 'Error en el servidor' });
+    });
+  
+  
 });
+
 
 // Solicitud Get para agregar datos a la vista del Carrito
 router.get('/api/itemcarrito', async (req, res) => {
@@ -239,6 +298,7 @@ router.get('/user/:token', async (req, res) => {
 
 });
 
+// Promisify the connection query method
 
 router.get('/historial/:idUsuario', async (req, res) => {
   try {
@@ -303,5 +363,122 @@ router.get('/historial/:idUsuario', async (req, res) => {
 
 
 
+
+// Ruta para obtener elementos del carrito del usuario
+router.get('/list/car/:token', async (req, res) => {
+  const { token } = req.params;
+  const decoded = jwt.verify(token, process.env.JWT_SECRET);
+  let iduser = decoded.id;
+  // Desencripta el token para obtener el id del usuario
+  const idusuario = iduser;
+  const obtenerCarritoQuery = 'SELECT idcarrito FROM carrito WHERE idusuario = ? AND status = 0';
+  connection.query(obtenerCarritoQuery, [idusuario], (err, carritoRows) => {
+    if (err) {
+      console.error('Error al obtener el carrito:', err);
+      return res.status(500).json({ success: false, msg: 'Error en el servidor' });
+    }
+
+    if (carritoRows.length === 0) {
+      // No se encontró un carrito activo para el usuario
+      return res.status(200).json({ success: true, items: [] });
+    }
+
+    const idcarrito = carritoRows[0].idcarrito;
+
+    // Obtener los elementos del carrito
+    const obtenerElementosCarritoQuery = `
+      SELECT ic.iditem, ic.idcarrito, ic.idTipoServicio, ic.referenceIdServicio
+      FROM itemscarrito ic
+      WHERE ic.idcarrito = ?
+    `;
+
+    connection.query(obtenerElementosCarritoQuery, [idcarrito], (err, elementosRows) => {
+      if (err) {
+        console.error('Error al obtener elementos del carrito:', err);
+        return res.status(500).json({ success: false, msg: 'Error en el servidor' });
+      }
+
+      const items = [];
+
+      // Procesar los elementos del carrito y obtener detalles de los servicios
+      elementosRows.forEach((elemento) => {
+        const { iditem, idTipoServicio, referenceIdServicio } = elemento;
+        let id = "";
+        if (idTipoServicio =="actividades") {
+          id = "idActividad";
+        }
+        if (idTipoServicio =="hoteles") {
+          id = "idHotel";
+        }
+        if (idTipoServicio =="restaurantes") {
+          id = "idRestaurante";
+        }
+        if (idTipoServicio =="lugar") {
+          id = "idLugar";
+        }
+        // Consulta para obtener detalles del servicio de la tabla correspondiente (usando idTipoServicio)
+        const obtenerDetallesServicioQuery = `SELECT nombre, img FROM ${idTipoServicio} WHERE ${id} = ?`;
+
+        connection.query(obtenerDetallesServicioQuery, [referenceIdServicio], (err, servicioRow) => {
+          if (err) {
+            console.error('Error al obtener detalles del servicio:', err);
+          } else {
+            if (servicioRow.length > 0) {
+              items.push({
+                iditem,
+                idcarrito,
+                idTipoServicio,
+                referenceIdServicio,
+                detallesServicio: servicioRow[0],
+              });
+            }
+          }
+
+          // Cuando hayas procesado todos los elementos, envía la respuesta
+          if (items.length === elementosRows.length) {
+            return res.status(200).json({ success: true, items });
+          }
+        });
+      });
+    });
+  });
+});
+
+router.delete('/delete/caritem/:id', (req, res) => {
+  const itemId = req.params.id;
+
+  // Realiza una consulta para eliminar el artículo del carrito
+  const deleteItemQuery = 'DELETE FROM itemscarrito WHERE iditem = ?';
+
+  connection.query(deleteItemQuery, [itemId], (err, result) => {
+    if (err) {
+      console.error('Error al eliminar el artículo del carrito:', err);
+      return res.status(500).json({ success: false, msg: 'Error en el servidor' });
+    }
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ success: false, msg: 'No se encontró el artículo en el carrito' });
+    }
+
+    return res.status(200).json({ success: true, msg: 'Artículo eliminado del carrito' });
+  });
+});
+
+// Ruta para cambiar el estado del carrito a 1
+router.put('/reser/car', (req, res) => {
+  const idUsuario = req.body.idusuario; // Asegúrate de enviar el ID de usuario en el cuerpo de la solicitud
+  const decoded = jwt.verify(idUsuario, process.env.JWT_SECRET);
+  let iduser = decoded.id;
+  // Realiza una consulta SQL para actualizar el estado del carrito
+  const updateCarritoQuery = 'UPDATE carrito SET status = 1 WHERE idusuario = ?';
+
+  connection.query(updateCarritoQuery, [iduser], (error, result) => {
+    if (error) {
+      console.error('Error al cambiar el estado del carrito:', error);
+      return res.status(500).json({ success: false, msg: 'Error en el servidor' });
+    }
+    return res.status(200).json({ success: true, msg: 'Estado del carrito actualizado correctamente' });
+  });
+});
 
 export default router;

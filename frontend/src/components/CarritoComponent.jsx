@@ -20,21 +20,6 @@ const handleReservar = () => {
   }).then((result) => {
     /* Read more about isConfirmed, isDenied below */
     if (result.isConfirmed) {
-<<<<<<< HEAD
-      Swal.fire({
-        title: 'Muchas Gracias Por Su Preferencia!!!, Le deseamos que disfrute sus vacaciones',
-        width: 600,
-        padding: '3em',
-        color: '#89745F',
-        background: '#fff url(/images/trees.png)',
-        backdrop: `
-                  rgba(0,0,123,0.4)
-                  url("../public/gracias-thanks2.gif")
-                  center
-                  no-repeat
-                `
-      })
-=======
       const token = localStorage.getItem('token');
       axios.put('http://localhost:7000/api/usuarios/reser/car', { idusuario: token })
         .then((response) => {
@@ -62,7 +47,6 @@ const handleReservar = () => {
           Swal.fire(error.response.data.msg, '', 'error');
         });
       
->>>>>>> e1c96fdbb7653d4330a5b5b3d45c333cbaba0468
     }
     else if (result.isDenied) {
       Swal.fire('Se cancelo correctamente la compra del paquete', '', 'info')

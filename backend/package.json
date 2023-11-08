@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/SamPechEk/YucExp#readme",
   "dependencies": {
+    "axios": "^1.6.0",
     "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
@@ -26,6 +27,7 @@
     "jsonwebtoken": "^9.0.2",
     "multer": "^1.4.5-lts.1",
     "mysql": "^2.18.1",
+    "mysql2": "^3.6.2",
     "nodemailer": "^6.9.6",
     "socket.io": "^4.7.2"
   },

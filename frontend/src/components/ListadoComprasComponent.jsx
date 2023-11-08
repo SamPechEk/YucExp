@@ -1,16 +1,19 @@
 import {Card, CardHeader, CardBody, CardFooter} from "@nextui-org/react";
 import {Accordion, AccordionItem, Avatar} from "@nextui-org/react";
+import VistaHistorial from './VistaHistorial'
+
 
 const defaultContent =
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.";
-
+<VistaHistorial></VistaHistorial>
 const ListadoComprasComponent = () => (
     <div className="flex flex-col  items-center py-10 px-10">
         <Card className="max-w-full max-h-full w-[600px] h-[900px]">
             <CardHeader>
                 Mi Lista De Compras:
             </CardHeader>
+            
             <CardBody>
+               
                 <Accordion selectionMode="multiple">
                     <AccordionItem
                         key="1"
@@ -27,7 +30,10 @@ const ListadoComprasComponent = () => (
                         title="Cancun"
                     >
                         {defaultContent}
+                        
                     </AccordionItem>
+                   
+
                     <AccordionItem
                         key="2"
                         aria-label="Veracruz"

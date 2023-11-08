@@ -21,7 +21,7 @@ const NavbarComponent = () => {
   const [email, setEmail] = useState("null");
   const [tipo, setTipo] = useState("null");
 
-
+//solicita info del usuario
   useEffect(() => {
     axios.get(`http://localhost:7000/api/usuarios/user/${token}`)
       .then((response) => {

@@ -30,7 +30,7 @@ const notification = () => (
         backdrop: `
                   rgba(0,0,123,0.4)
                   url("../public/gracias-thanks2.gif")
-                  left top
+                  center
                   no-repeat
                 `
       })

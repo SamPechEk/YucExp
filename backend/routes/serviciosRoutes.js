@@ -41,5 +41,51 @@ Srouter.get("/getServicios", async (req, res) =>{
 
 });
 
+Srouter.post("/listado/servicios",async (req, res) => {
+  let tabla = req.body.context;
+  console.log(tabla);
+  switch(tabla) {
+    case "hoteles":
+      await connection.query( "SELECT hoteles.idHotel AS id, hoteles.nombre, municipios.nombre AS nomMunicipio, hoteles.calificacion,hoteles.foto"
+      +" FROM hoteles"+
+      " JOIN municipios ON hoteles.idMunicipio = municipios.idMunicipio", (err, rows) => {
+        try{
+          if(err) {
+            res.status(500).json({msg: "Error en la base de datos"});
+          }
+          res.json({
+            msg : rows,
+            success : true
+          })
+          console.log(rows);
+
+        } catch(error){
+          res.status(500).json({msg: "Error en el servidor"});
+        }
+      })
+      break;
+    case "restaurantes":
+      await connection.query( "SELECT restaurantes.idRestaurante AS id, restaurantes.nombre, municipios.nombre AS nomMunicipio, restaurantes.direccion,restaurantes.foto"
+      +" FROM restaurantes"+
+      " JOIN municipios ON restaurantes.idMunicipio = municipios.idMunicipio", (err, rows) => {
+        try{
+          if(err) {
+            res.status(500).json({msg: "Error en la base de datos"});
+          }
+          res.json({
+            msg : rows,
+            success : true
+          })
+          console.log(rows);
+
+        } catch(error){
+          res.status(500).json({msg: "Error en el servidor"});
+        }
+      })
+  }
+});
+
+Srouter.put("/listado/servicios/modificar",async (req, res) => {});
+
 
 export default Srouter;

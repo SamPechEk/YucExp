@@ -13,7 +13,7 @@ const whitelist = [process.env.FRONTEND_URL];
 const corsOptions = {
   origin: function (origin, callback) {
     if (whitelist.includes(origin)) {
-      // Puede consultar la API
+      // Puede consultar la APInm
       callback(null, true);
     } else {
       // No esta permitido

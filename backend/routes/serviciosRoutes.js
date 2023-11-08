@@ -5,15 +5,15 @@ import multer from "multer";
 import path from "path";
 import {registrarServicio} from "../controllers/servicioController.js";
 
-const storage = multer.diskStorage({
-  destination: "images",
-  filename: (req, file, cb) => {
-    cb(
-      null, file.fieldname + "_"+Date.now()+ path.extname(file.originalname)
-    );
-  },
-});
-
+  const storage = multer.diskStorage({
+    destination: "images",
+    filename: (req, file, cb) => {
+      cb(
+        null, file.fieldname + "_"+Date.now()+ path.extname(file.originalname)
+      );
+    },
+  });
+  
 const uploadImage = multer({
   storage : storage,
 });

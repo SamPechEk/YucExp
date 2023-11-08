@@ -19,8 +19,15 @@ import Servicio from "../models/Servicio.js";
 // }
 
 const registrarServicio = async (req, res) => {
+  var archivo = '';
   try {
-    console.log("Datos que recibe el request =>",req.body," Esta es la foto =>",req.file);
+    if(req.file){
+      //comprueba si el request trae un campo file
+      archivo = req.file.filename;
+    }
+    else{
+      archivo = req.body.foto;
+    }
     const datos = {
       tipo : req.body.tipo,
       nombre : req.body.nombre,
@@ -29,11 +36,11 @@ const registrarServicio = async (req, res) => {
       idLugar : req.body.idLugar,
       direccion : req.body.direccion,
       idTipoTransporte : req.body.idTipoTransporte,
-      foto : req.file.filename,
+      foto : archivo,
+      tipoImg : req.body.tipoImg,
     };
 
-    console.log("Arreglo creado manualmente =>",datos);
-   await Servicio.RegistrarServicio({ ...datos, confirmado: false });
+      await Servicio.RegistrarServicio({ ...datos, confirmado: false });
       res.json({
         msg: "Servicio Guardado Correctamente",
         success : true,

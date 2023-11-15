@@ -60,7 +60,8 @@ const NavbarComponent = () => {
                 Inicio
               </Link>
             </NavbarItem>
-            <NavbarItem >
+           
+        <NavbarItem >
               <Link to={`Ofertas`}>
                 Servicios
               </Link>
@@ -70,6 +71,18 @@ const NavbarComponent = () => {
                 Paquetes
               </Link>
             </NavbarItem>
+            {tipo != 1 &&(
+              <>
+               <NavbarItem>
+                <Link to={`listadoAdministrador`}> Listado</Link>
+              </NavbarItem>
+              <NavbarItem>
+              <Link to={`RegistrarServicio`}>
+                      Agregar
+                      </Link>
+            </NavbarItem>
+            </>
+            )}
             
            
           </NavbarContent>
@@ -96,17 +109,11 @@ const NavbarComponent = () => {
           
           
           
-          
-         {tipo == 1 ?
-         ( <NavbarItem>
+       {tipo === 1 &&(<NavbarItem>
             <Link to={`ShoppingCart`}><CartIconComponent size={30} /></Link>
-          </NavbarItem>)
-          :
-          (<NavbarItem>
-            <Link to={`listadoAdministrador`}> Listado</Link>
           </NavbarItem>)}
-  
-          {tipo == 1 &&(<SelectComponent></SelectComponent>)}
+       
+          <SelectComponent></SelectComponent>
           <Dropdown placement="bottom-end ml-6">
           {!usuarioLogueado ? (
           <NavbarItem isActive>
@@ -151,14 +158,7 @@ const NavbarComponent = () => {
             </DropdownItem>
 
 
-            <DropdownItem key="Registrar">
-            {tipo != 1 ? (
-
-                <Link to={`RegistrarServicio`}>
-                   Agregar
-                  </Link>
-              ):( <div> </div>)}
-            </DropdownItem>
+            
 
             <DropdownItem key="logout" color="danger" onClick={handleLogOut}>
               Log Out

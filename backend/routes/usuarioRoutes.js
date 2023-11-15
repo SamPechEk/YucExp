@@ -15,6 +15,7 @@ import {
 } from "../controllers/usuarioController.js";
 
 import checkAuth from "../middleware/checkAuth.js";
+import Stripe from "stripe";
 
 
 // Autenticación, Registro y Confirmación de Usuarios
@@ -39,6 +40,32 @@ router.get('/municipios', (req, res) => {
     }));
     res.json(municipios);
   });
+});
+
+const stripe = Stripe(process.env.STRIPE_SECRET);
+router.post('/create-checkout-session', async (req, res) => {
+  const token = req.body.token;
+  const session = await stripe.checkout.sessions.create({
+    line_items: [
+      {
+        price_data: {
+          currency: 'mxn',
+          product_data: {
+            name: 'ReservaYucExp',
+          },
+          unit_amount: 20000,
+        },
+        quantity: 1,
+      },
+    ],
+    mode: 'payment',
+    success_url: 'http://localhost:7000/api/usuarios/reser/carget/'+token,
+    cancel_url: process.env.FRONTEND_URL+'/ShoppingCart',
+  });
+  // console.log(session.url);
+
+  // res.redirect(303, session.url);
+  return res.status(200).json({ success: true, url:session.url });
 });
 
 router.get('/randomServices/:municipio', async (req, res) => {
@@ -415,6 +442,21 @@ router.put('/reser/car', (req, res) => {
       return res.status(500).json({ success: false, msg: 'Error en el servidor' });
     }
     return res.status(200).json({ success: true, msg: 'Estado del carrito actualizado correctamente' });
+  });
+});
+router.get('/reser/carget/:idUsuario', (req, res) => {
+  const { idUsuario } = req.params;
+  const decoded = jwt.verify(idUsuario, process.env.JWT_SECRET);
+  let iduser = decoded.id;
+  // Realiza una consulta SQL para actualizar el estado del carrito
+  const updateCarritoQuery = 'UPDATE carrito SET status = 1 WHERE idusuario = ?';
+
+  connection.query(updateCarritoQuery, [iduser], (error, result) => {
+    if (error) {
+      console.error('Error al cambiar el estado del carrito:', error);
+      return res.status(500).json({ success: false, msg: 'Error en el servidor' });
+    }
+    return res.redirect(302, process.env.FRONTEND_URL+'/ShoppingList');
   });
 });
 

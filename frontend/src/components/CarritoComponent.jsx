@@ -62,6 +62,7 @@ const CarritoComponent = () => {
   const token = localStorage.getItem('token');
   useEffect(() => {
     // Hacer una solicitud GET al backend para obtener los items agregados
+    
     axios.get(`http://localhost:7000/api/usuarios/list/car/${token}`)
       .then((response) => {
         setDatosItemCarrito(response.data.items);

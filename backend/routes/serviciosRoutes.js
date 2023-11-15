@@ -46,7 +46,7 @@ Srouter.post("/listado/servicios",async (req, res) => {
   console.log(tabla);
   switch(tabla) {
     case "hoteles":
-      await connection.query( "SELECT hoteles.idHotel AS id, hoteles.nombre, municipios.nombre AS nomMunicipio, hoteles.calificacion,hoteles.foto"
+      await connection.query( "SELECT hoteles.idHotel AS id, hoteles.nombre, municipios.nombre AS nomMunicipio, hoteles.calificacion,hoteles.img"
       +" FROM hoteles"+
       " JOIN municipios ON hoteles.idMunicipio = municipios.idMunicipio", (err, rows) => {
         try{
@@ -65,7 +65,7 @@ Srouter.post("/listado/servicios",async (req, res) => {
       })
       break;
     case "restaurantes":
-      await connection.query( "SELECT restaurantes.idRestaurante AS id, restaurantes.nombre, municipios.nombre AS nomMunicipio, restaurantes.direccion,restaurantes.foto"
+      await connection.query( "SELECT restaurantes.idRestaurante AS id, restaurantes.nombre, municipios.nombre AS nomMunicipio, restaurantes.direccion,restaurantes.img"
       +" FROM restaurantes"+
       " JOIN municipios ON restaurantes.idMunicipio = municipios.idMunicipio", (err, rows) => {
         try{

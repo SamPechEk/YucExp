@@ -19,7 +19,7 @@ import checkAuth from "../middleware/checkAuth.js";
 
 // Autenticación, Registro y Confirmación de Usuarios
 router.post("/", registrar); // Crea un nuevo usuario
-router.post("/login", autenticar); 
+router.post("/login", autenticar);
 router.get("/confirma/:token", confirma);
 router.post("/olvide-password", olvidePassword);
 router.route("/olvide-password/:token").get(comprobarToken).post(nuevoPassword);
@@ -57,7 +57,7 @@ router.get('/randomServices/:municipio', async (req, res) => {
           if (rows.length > 0) {
             resolve({
               nombre: rows[0].nombre,
-              img: rows[0].img,
+              foto: rows[0].foto,
               typeImg: rows[0].typeImg,
               tabla: tablaNombre,
             });
@@ -104,26 +104,27 @@ router.get('/Services/:municipio', async (req, res) => {
         if (err) {
           console.log(err);
           reject(err);
-        } else { let id;
-          if (tabla =="actividades") {
+        } else {
+          let id;
+          if (tabla == "actividades") {
             id = "idActividad";
           }
-          if (tabla =="hoteles") {
+          if (tabla == "hoteles") {
             id = "idHotel";
           }
-          if (tabla =="restaurantes") {
+          if (tabla == "restaurantes") {
             id = "idRestaurante";
           }
-          if (tabla =="lugar") {
+          if (tabla == "lugar") {
             id = "idLugar";
           }
           const registros = rows.map((row) => ({
             nombre: row.nombre,
-            img: row.img,
-            tabla:tabla,
-            idservicio:row[id],
-            id:id,
-            idMunicipio:row.idMunicipio
+            foto: row.foto,
+            tabla: tabla,
+            idservicio: row[id],
+            id: id,
+            idMunicipio: row.idMunicipio
           }));
           resolve({ [tablaNombre]: registros });
         }
@@ -161,10 +162,10 @@ router.get('/Services/:municipio', async (req, res) => {
 // Recibe datos desde frontend y se insertan en la tabla "itemscarrito" de la base de dato
 
 router.post('/add/car', async (req, res) => {
- 
-  
+
+
   const { idusuario, tabla, idservicio, idMunicipio } = req.body;
- 
+
   const decoded = jwt.verify(idusuario, process.env.JWT_SECRET);
   let iduser = decoded.id;
   const fechaCreacion = new Date(); // Obtén la fecha actual
@@ -194,11 +195,11 @@ router.post('/add/car', async (req, res) => {
       });
     });
   };
-  
+
   const insertarItemCarrito = (idcarrito) => {
     return new Promise((resolve, reject) => {
       const insertItemCarritoQuery = 'INSERT INTO itemscarrito (idcarrito, referenceIdServicio, idtiposervicio) VALUES (?, ?, ?)';
-      connection.query(insertItemCarritoQuery, [idcarrito,  idservicio,tabla], (err) => {
+      connection.query(insertItemCarritoQuery, [idcarrito, idservicio, tabla], (err) => {
         if (err) {
           console.error(err);
           reject(err);
@@ -208,7 +209,7 @@ router.post('/add/car', async (req, res) => {
       });
     });
   };
-  
+
   verificarYCrearCarrito()
     .then((idcarrito) => insertarItemCarrito(idcarrito))
     .then(() => {
@@ -218,8 +219,8 @@ router.post('/add/car', async (req, res) => {
       console.error('Error al agregar item al carrito:', error);
       return res.status(500).json({ success: false, msg: 'Error en el servidor' });
     });
-  
-  
+
+
 });
 
 
@@ -241,10 +242,10 @@ router.get('/api/itemcarrito', async (req, res) => {
 router.delete('/api/itemcarrito/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    
+
     // Realizar una consulta a la base de datos para eliminar el item del carrito por su ID
     await query('DELETE FROM itemscarrito WHERE id = ?', [id]);
-    
+
     // Si se elimina correctamente, devuelve una respuesta exitosa
     res.status(200).json({ message: 'Artículo eliminado del carrito correctamente' });
   } catch (error) {
@@ -258,7 +259,7 @@ router.get('/user/:token', async (req, res) => {
   const obtenerUser = (token) => {
     return new Promise((resolve, reject) => {
       const query = 'SELECT * FROM usuario WHERE idUsuario = ?';
-  
+
       connection.query(query, [token], (error, results) => {
         if (error) {
           reject(error);
@@ -270,94 +271,109 @@ router.get('/user/:token', async (req, res) => {
       });
     });
   };
-  
+
   const { token } = req.params;
   if (!token) {
     return res.status(401).json({ message: 'Token no proporcionado' });
   }
-  
+
   try {
     // Verifica y decodifica el token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-  
+
     // Realiza una consulta a la base de datos para obtener la información del usuario
     const user = await obtenerUser(decoded.id);
-  
+
     // Si el usuario no se encuentra en la base de datos, puedes manejarlo según tus necesidades
     if (!user) {
       return res.status(404).json({ message: 'Usuario no encontrado' });
     }
-  
+
     // Envía la información del usuario en la respuesta
     res.json({ user });
   } catch (error) {
     res.status(401).json({ message: 'Token no válido' });
   }
-  
+
 
 
 });
 
 // Promisify the connection query method
 
-router.get('/historial/:idUsuario', async (req, res) => {
+router.get('/historial/car/:token', async (req, res) => {
   try {
-    const idUsuario = req.params.idUsuario;
+    const { token } = req.params;
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const idUsuario = decoded.id;
 
-    // Realiza la consulta para obtener el historial de compras del usuario
-    connection.query('SELECT * FROM carrito WHERE idusuario = ?', [idUsuario], async (error, historialCompras) => {
-      if (error) {
-        console.error('Error al obtener el historial de compras:', error);
-        res.status(500).json({ error: 'Error en el servidor al obtener el historial de compras' });
-        return;
-      }
+    const obtenerCarritosQuery = "SELECT carrito.idcarrito, carrito.fechaCreacion FROM carrito WHERE idusuario = ? AND status = 1";
+    const carritoRows = await promisifyQuery(obtenerCarritosQuery, [idUsuario]);
 
-      try {
-        // Verifica si los resultados son válidos (array)
-        if (!Array.isArray(historialCompras)) {
-          throw new Error('Los resultados del historial de compras no son válidos o no se encontraron registros.');
+    if (carritoRows.length === 0) {
+      return res.status(200).json({ success: true, msg: 'No se encontraron carritos finalizados para el usuario.', items: [] });
+    }
+
+    const items = [];
+
+    for (const carrito of carritoRows) {
+      const { idcarrito, fechaCreacion } = carrito;
+      const obtenerDetallesServicioQuery =
+        "SELECT itemscarrito.iditem, itemscarrito.idcarrito, itemscarrito.idTipoServicio, itemscarrito.referenceIdServicio" +
+        " FROM itemscarrito" +
+        " WHERE itemscarrito.idcarrito = ?";
+      const elementosRows = await promisifyQuery(obtenerDetallesServicioQuery, [idcarrito]);
+
+      for (const elemento of elementosRows) {
+        const { iditem, idTipoServicio, referenceIdServicio } = elemento;
+        let id = "";
+
+        if (elemento.idTipoServicio == "actividades") {
+          id = "idActividad";
+        }
+        if (elemento.idTipoServicio == "hoteles") {
+          id = "idHotel";
+        }
+        if (elemento.idTipoServicio == "restaurantes") {
+          id = "idRestaurante";
+        }
+        if (elemento.idTipoServicio == "lugar") {
+          id = "idLugar";
         }
 
-        // Formatea el historial de compras incluyendo los items del itemscarrito
-        const historialFormateado = await Promise.all(historialCompras.map(async (compra) => {
-          // Realiza una consulta para obtener los items del itemscarrito correspondientes a esta compra
-          const [itemsAgregados] = await connection.query('SELECT * FROM itemscarrito WHERE idcarrito = ?', [compra.idcarrito]);
+        const obtenerDetallesServicioQuery = `SELECT nombre, foto FROM ${elemento.idTipoServicio} WHERE ${id} = ?`;
+        const servicioRow = await promisifyQuery(obtenerDetallesServicioQuery, [referenceIdServicio]);
 
-          // Verifica si itemsAgregados es un array antes de desestructurarlo
-          const itemsFormateados = Array.isArray(itemsAgregados) ? itemsAgregados.map((item) => {
-            return {
-              iditem: item.iditem,
-              idcarrito: item.idcarrito,
-              idTipoServicio: item.idTipoServicio,
-              referenceIdServicio: item.referenceIdServicio,
-              fechaDeAgg: item.fechaDeAgg,
-              // Agrega más campos si es necesario
-            };
-          }) : [];
-
-          // Formatea los datos del historial de compras incluyendo los items
-          return {
-            idcarrito: compra.idcarrito,
-            idusuario: compra.idusuario,
-            idmunicipio: compra.idmunicipio,
-            fechaCreacion: compra.fechaCreacion,
-            status: compra.status,
-            items: itemsFormateados,
-          };
-        }));
-
-        // Devuelve el historial formateado como un JSON
-        res.json(historialFormateado);
-      } catch (error) {
-        console.error('Error al formatear los datos del historial de compras:', error);
-        res.status(500).json({ error: 'Error en el servidor al formatear los datos del historial de compras' });
+        if (servicioRow.length > 0) {
+          items.push({
+            iditem,
+            idcarrito,
+            fechaCreacion,
+            idTipoServicio,
+            referenceIdServicio,
+            detallesServicio: servicioRow[0],
+          });
+        }
       }
-    });
+    }
+
+    return res.status(200).json({ success: true, msg: 'Carritos finalizados encontrados.', items });
   } catch (error) {
-    console.error('Error al obtener el historial de compras:', error);
-    res.status(500).json({ error: 'Error en el servidor al obtener el historial de compras' });
+    console.error('Error al procesar la solicitud:', error);
+    res.status(500).json({ success: false, msg: 'Error en el servidor' });
   }
 });
+
+// Función para convertir las consultas a promesas
+function promisifyQuery(query, values) {
+  return new Promise((resolve, reject) => {
+    connection.query(query, values, (err, result) => {
+      if (err) reject(err);
+      else resolve(result);
+    });
+  });
+}
+
 
 
 
@@ -404,20 +420,20 @@ router.get('/list/car/:token', async (req, res) => {
       elementosRows.forEach((elemento) => {
         const { iditem, idTipoServicio, referenceIdServicio } = elemento;
         let id = "";
-        if (idTipoServicio =="actividades") {
+        if (idTipoServicio == "actividades") {
           id = "idActividad";
         }
-        if (idTipoServicio =="hoteles") {
+        if (idTipoServicio == "hoteles") {
           id = "idHotel";
         }
-        if (idTipoServicio =="restaurantes") {
+        if (idTipoServicio == "restaurantes") {
           id = "idRestaurante";
         }
-        if (idTipoServicio =="lugar") {
+        if (idTipoServicio == "lugar") {
           id = "idLugar";
         }
         // Consulta para obtener detalles del servicio de la tabla correspondiente (usando idTipoServicio)
-        const obtenerDetallesServicioQuery = `SELECT nombre, img FROM ${idTipoServicio} WHERE ${id} = ?`;
+        const obtenerDetallesServicioQuery = `SELECT nombre, foto FROM ${idTipoServicio} WHERE ${id} = ?`;
 
         connection.query(obtenerDetallesServicioQuery, [referenceIdServicio], (err, servicioRow) => {
           if (err) {

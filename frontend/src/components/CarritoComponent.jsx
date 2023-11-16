@@ -140,7 +140,7 @@ const CarritoComponent = () => {
                           <div className="flex flex-col">
                             <p className="text-md">{item.detallesServicio.nombre}</p>
                             <p className="text-small text-default-500">
-                              {item.detallesServicio.img}
+                              {item.detallesServicio.foto}
                             </p>
                           </div>
                         </CardHeader>
@@ -151,7 +151,7 @@ const CarritoComponent = () => {
                               alt="nextui logo"
                               height={40}
                               radius="sm"
-                              src={item.detallesServicio.img}
+                              src={item.detallesServicio.foto}
                               width={40}
                             />
                             <p>{item.detallesServicio.nombre}</p>

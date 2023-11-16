@@ -4,9 +4,17 @@ import { connection } from '../config/db.js';
 const Servicio = {
 
     async RegistrarServicio({tipo ,nombre, municipio, calificacion, idLugar,direccion, idTipoTransporte, idLocalidad, foto, tipoImg}) {
+      let url_foto = foto;
+      if(tipoImg == 1){    
+         url_foto = "http://localhost:7000/"+foto;
+      }
       switch(tipo) {
         case "1":
+<<<<<<< HEAD
           connection.query("INSERT INTO hoteles(nombre, idMunicipio, calificacion, foto, typeImg) VALUES (?,?,?,?,?)",[nombre, municipio, calificacion,foto, tipoImg],
+=======
+          connection.query("INSERT INTO hoteles(nombre, idMunicipio, calificacion, img, typeImg) VALUES (?,?,?,?,?)",[nombre, municipio, calificacion,url_foto, tipoImg],
+>>>>>>> 182404bfde96fdf25ba692e814a952fed4636cfa
           (error, rows) => {
               if(error)
                   throw error;
@@ -26,7 +34,7 @@ const Servicio = {
           });
           break;
         case "3":
-          connection.query("INSERT INTO lugar(idMunicipio, nombre, foto, typeImg) VALUES (?,?,?,?)",[municipio, nombre,foto, tipoImg],
+          connection.query("INSERT INTO lugar(idMunicipio, nombre, img, typeImg) VALUES (?,?,?,?)",[municipio, nombre,foto, tipoImg],
             (error, rows) => {
                 if(error)
                     throw error;
@@ -36,7 +44,7 @@ const Servicio = {
             }); 
           break;
         case "4":
-            connection.query("INSERT INTO actividades(idMunicipio, nombre, foto, typeImg) VALUES (?,?,?,?)",[municipio, nombre,foto,tipoImg],
+            connection.query("INSERT INTO actividades(idMunicipio, nombre, img, typeImg) VALUES (?,?,?,?)",[municipio, nombre,foto,tipoImg],
               (error, rows) => {
                   if(error)
                       throw error;
@@ -46,7 +54,7 @@ const Servicio = {
               });
           break;
         case "5":
-            connection.query("INSERT INTO restaurantes(nombre, direccion, idMunicipio, foto, typeImg) VALUES (?,?,?,?,?)",[nombre, direccion, municipio,foto, tipoImg],
+            connection.query("INSERT INTO restaurantes(nombre, direccion, idMunicipio, img, typeImg) VALUES (?,?,?,?,?)",[nombre, direccion, municipio,foto, tipoImg],
               (error, rows) => {
                   if(error)
                       throw error;

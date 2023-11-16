@@ -60,7 +60,8 @@ const NavbarComponent = () => {
                 Inicio
               </Link>
             </NavbarItem>
-            <NavbarItem >
+           
+        <NavbarItem >
               <Link to={`Ofertas`}>
                 Servicios
               </Link>
@@ -70,10 +71,27 @@ const NavbarComponent = () => {
                 Paquetes
               </Link>
             </NavbarItem>
+<<<<<<< HEAD
 
 
+=======
+            {tipo != 1 &&(
+              <>
+               <NavbarItem>
+                <Link to={`listadoAdministrador`}> Listado</Link>
+              </NavbarItem>
+              <NavbarItem>
+              <Link to={`RegistrarServicio`}>
+                      Agregar
+                      </Link>
+            </NavbarItem>
+            </>
+            )}
+            
+           
+>>>>>>> 182404bfde96fdf25ba692e814a952fed4636cfa
           </NavbarContent>
-          <Input
+          {tipo == 1 &&(<Input
             classNames={{
               base: "max-w-full sm:max-w-[10rem] h-10",
               mainWrapper: "h-full",
@@ -84,10 +102,11 @@ const NavbarComponent = () => {
             size="sm"
             startContent={<SearchIconComponent size={28} />}
             type="search"
-          />
+          />)}
         </NavbarContent>
 
 
+<<<<<<< HEAD
 
         <NavbarContent as="div" className="items-center " justify="end" >
 
@@ -102,6 +121,15 @@ const NavbarComponent = () => {
           </NavbarItem>
 
 
+=======
+          
+          
+          
+       {tipo === 1 &&(<NavbarItem>
+            <Link to={`ShoppingCart`}><CartIconComponent size={30} /></Link>
+          </NavbarItem>)}
+       
+>>>>>>> 182404bfde96fdf25ba692e814a952fed4636cfa
           <SelectComponent></SelectComponent>
           <Dropdown placement="bottom-end ml-6">
             {!usuarioLogueado ? (
@@ -137,6 +165,7 @@ const NavbarComponent = () => {
                       <p className="font-semibold py-1">Mis Compras</p>
 
 
+<<<<<<< HEAD
                     </div>
                   ) : (
 
@@ -157,6 +186,9 @@ const NavbarComponent = () => {
                   </Link>
                 ) : (<div> </div>)}
               </DropdownItem>
+=======
+            
+>>>>>>> 182404bfde96fdf25ba692e814a952fed4636cfa
 
               <DropdownItem key="logout" color="danger" onClick={handleLogOut}>
                 Log Out

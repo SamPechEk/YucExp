@@ -10,11 +10,7 @@ const Servicio = {
       }
       switch(tipo) {
         case "1":
-<<<<<<< HEAD
-          connection.query("INSERT INTO hoteles(nombre, idMunicipio, calificacion, foto, typeImg) VALUES (?,?,?,?,?)",[nombre, municipio, calificacion,foto, tipoImg],
-=======
           connection.query("INSERT INTO hoteles(nombre, idMunicipio, calificacion, img, typeImg) VALUES (?,?,?,?,?)",[nombre, municipio, calificacion,url_foto, tipoImg],
->>>>>>> 182404bfde96fdf25ba692e814a952fed4636cfa
           (error, rows) => {
               if(error)
                   throw error;

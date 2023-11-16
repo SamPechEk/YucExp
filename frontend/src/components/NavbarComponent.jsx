@@ -1,4 +1,4 @@
-import { Navbar, NavbarBrand, NavbarContent, NavbarItem, Input, DropdownItem, DropdownTrigger, Dropdown, DropdownMenu, Avatar, navbar } from "@nextui-org/react";
+import {Navbar, NavbarBrand, NavbarContent, NavbarItem, Input, DropdownItem, DropdownTrigger, Dropdown, DropdownMenu, Avatar, navbar} from "@nextui-org/react";
 import AcmeLogoComponent from "./Icons/AcmeLogoComponent";
 import SearchIconComponent from "./Icons/SearchIconComponent";
 import { Outlet, Link } from "react-router-dom";
@@ -8,7 +8,7 @@ import Footer from "./Footer";
 import SelectComponent from "./SelectComponent";
 import Swal from 'sweetalert2';
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import  axios  from 'axios';
 
 
 
@@ -21,11 +21,11 @@ const NavbarComponent = () => {
   const [email, setEmail] = useState("null");
   const [tipo, setTipo] = useState("null");
 
-  //solicita info del usuario
+//solicita info del usuario
   useEffect(() => {
     axios.get(`http://localhost:7000/api/usuarios/user/${token}`)
       .then((response) => {
-
+        
         setNombre(response.data.user.nombre);
         setEmail(response.data.user.email);
         setTipo(response.data.user.idTipoUsuario);
@@ -40,14 +40,14 @@ const NavbarComponent = () => {
     // Eliminar el token del localStorage
     localStorage.removeItem('token');
     Swal.fire('Sesión cerrada correctamente', '', 'success')
-    setTimeout(function () {
+    setTimeout(function() {
       window.location.replace('/login');
     }, 3000);
     // Redirigir al usuario a la página de inicio de sesión u otra página, si es necesario
     // window.location.replace('/login'); // Ejemplo de redirección
   };
-  return (
-    <>
+    return (
+      <>
       <Navbar isBordered>
         <NavbarContent justify="start">
           <NavbarBrand className="mr-2">
@@ -56,7 +56,7 @@ const NavbarComponent = () => {
           </NavbarBrand>
           <NavbarContent className="hidden sm:flex gap-6">
             <NavbarItem>
-              <Link to={`/`}>
+            <Link to={`/`}>
                 Inicio
               </Link>
             </NavbarItem>
@@ -71,10 +71,6 @@ const NavbarComponent = () => {
                 Paquetes
               </Link>
             </NavbarItem>
-<<<<<<< HEAD
-
-
-=======
             {tipo != 1 &&(
               <>
                <NavbarItem>
@@ -89,7 +85,6 @@ const NavbarComponent = () => {
             )}
             
            
->>>>>>> 182404bfde96fdf25ba692e814a952fed4636cfa
           </NavbarContent>
           {tipo == 1 &&(<Input
             classNames={{
@@ -104,24 +99,13 @@ const NavbarComponent = () => {
             type="search"
           />)}
         </NavbarContent>
+  
+        
 
+       <NavbarContent as="div" className="items-center " justify="end" >
+        
+         
 
-<<<<<<< HEAD
-
-        <NavbarContent as="div" className="items-center " justify="end" >
-
-
-
-
-
-
-
-          <NavbarItem>
-            <Link to={`ShoppingCart`}><CartIconComponent size={30} /></Link>
-          </NavbarItem>
-
-
-=======
           
           
           
@@ -129,71 +113,57 @@ const NavbarComponent = () => {
             <Link to={`ShoppingCart`}><CartIconComponent size={30} /></Link>
           </NavbarItem>)}
        
->>>>>>> 182404bfde96fdf25ba692e814a952fed4636cfa
           <SelectComponent></SelectComponent>
           <Dropdown placement="bottom-end ml-6">
-            {!usuarioLogueado ? (
-              <NavbarItem isActive>
-                <Link to={`Login`} color="secondary">
-                  Login
-                </Link>
-              </NavbarItem>
-            ) : (
-              <DropdownTrigger>
-                <Avatar
-                  isBordered
-                  as="button"
-                  className="transition-transform"
-                  color="secondary"
-                  size="md"
-                  showFallback
+          {!usuarioLogueado ? (
+          <NavbarItem isActive>
+            <Link to={`Login`} color="secondary">
+              Login
+            </Link>
+          </NavbarItem>
+           ) : (
+            <DropdownTrigger>
+              <Avatar
+                isBordered
+                as="button"
+                className="transition-transform"
+                color="secondary"
+                size="md"
+                showFallback
                   src='https://images.unsplash.com/broken'
-                />
-              </DropdownTrigger>
+              />
+            </DropdownTrigger>
             )}
-            <DropdownMenu aria-label="Profile Actions" variant="flat">
-              <DropdownItem key="profile" className="h-17 gap-2">
-                <Link to={`ShoppingList`}>
+           <DropdownMenu aria-label="Profile Actions" variant="flat">
+            <DropdownItem key="profile" className="h-18 gap-2">
+              <Link to={`ShoppingList`}>
+                
+                <p className="font-semibold">{nombre}</p>
+                <p className="font-semibold">{email}</p>
+                
+                {tipo === 1 ? (
+                  <div>
+                 <p className="font-semibold py-1">Turista</p>
+                 <p className="font-semibold py-1">Mis Compras</p>
+                 </div>
+              ) : (
 
-                  <p className="font-semibold py-1">{nombre}</p>
-                  <p className="font-semibold py-1">{email}</p>
+                <p className="font-semibold">Administrador</p>
+                  
+              )}
+              </Link>
+              
+              
 
-                  {tipo === 1 ? (
-                    <div>
-                      <p className="font-semibold py-1">Turista</p>
-
-                      <p className="font-semibold py-1">Mis Compras</p>
-
-
-<<<<<<< HEAD
-                    </div>
-                  ) : (
-
-                    <p className="font-semibold py-1">Administrador</p>
-
-                  )}
-
-
-
-                </Link>
-              </DropdownItem>
+            </DropdownItem>
 
 
-              <DropdownItem key="Registrar">
-                {tipo != 1 ? (
-                  <Link to={`RegistrarServicio`}>
-                    Agregar
-                  </Link>
-                ) : (<div> </div>)}
-              </DropdownItem>
-=======
             
->>>>>>> 182404bfde96fdf25ba692e814a952fed4636cfa
 
-              <DropdownItem key="logout" color="danger" onClick={handleLogOut}>
-                Log Out
-              </DropdownItem>
-            </DropdownMenu>
+            <DropdownItem className="py-1" key="logout" color="danger" onClick={handleLogOut}>
+              Log Out
+            </DropdownItem>
+          </DropdownMenu>
           </Dropdown>
           <NavbarItem>
             <SwitchDarkModeComponent />
@@ -206,7 +176,7 @@ const NavbarComponent = () => {
         <Outlet />
       </div>
       <Footer />
-    </>
-  );
-}
+      </>
+    );
+  }
 export default NavbarComponent

@@ -71,25 +71,8 @@ const NavbarComponent = () => {
                 Paquetes
               </Link>
             </NavbarItem>
-<<<<<<< HEAD
-            {tipo != 1 &&(
-              <>
-               <NavbarItem>
-                <Link to={`listadoAdministrador`}> Listado</Link>
-              </NavbarItem>
-              <NavbarItem>
-              <Link to={`RegistrarServicio`}>
-                      Agregar
-                      </Link>
-            </NavbarItem>
-            </>
-            )}
-            
-           
-=======
 
 
->>>>>>> 3d8b9cb52e54fc1af2142f850c1b9a22f77109dd
           </NavbarContent>
           {tipo == 1 &&(<Input
             classNames={{
@@ -106,15 +89,6 @@ const NavbarComponent = () => {
         </NavbarContent>
 
 
-<<<<<<< HEAD
-          
-          
-          
-       {tipo === 1 &&(<NavbarItem>
-            <Link to={`ShoppingCart`}><CartIconComponent size={30} /></Link>
-          </NavbarItem>)}
-       
-=======
 
         <NavbarContent as="div" className="items-center " justify="end" >
 
@@ -129,7 +103,6 @@ const NavbarComponent = () => {
           </NavbarItem>
 
 
->>>>>>> 3d8b9cb52e54fc1af2142f850c1b9a22f77109dd
           <SelectComponent></SelectComponent>
           <Dropdown placement="bottom-end ml-6">
             {!usuarioLogueado ? (
@@ -165,9 +138,6 @@ const NavbarComponent = () => {
                       <p className="font-semibold py-1">Mis Compras</p>
 
 
-<<<<<<< HEAD
-            
-=======
                     </div>
                   ) : (
 
@@ -188,7 +158,6 @@ const NavbarComponent = () => {
                   </Link>
                 ) : (<div> </div>)}
               </DropdownItem>
->>>>>>> 3d8b9cb52e54fc1af2142f850c1b9a22f77109dd
 
               <DropdownItem key="logout" color="danger" onClick={handleLogOut}>
                 Log Out

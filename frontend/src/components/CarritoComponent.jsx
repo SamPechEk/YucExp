@@ -54,10 +54,8 @@ const handleReservar = () => {
   })
 };
 
-
-
-
 const CarritoComponent = () => {
+  const [datosQr, setdatosQr] = useState({});
   const [datosItemCarrito, setDatosItemCarrito] = useState([]);
   const token = localStorage.getItem('token');
   useEffect(() => {
@@ -65,6 +63,7 @@ const CarritoComponent = () => {
     axios.get(`http://localhost:7000/api/usuarios/list/car/${token}`)
       .then((response) => {
         setDatosItemCarrito(response.data.items);
+        setdatosQr(JSON.stringify(response.data.items));
       })
       .catch((error) => {
         console.error('Error al obtener datos de itemcarrito:', error);
@@ -109,9 +108,10 @@ const CarritoComponent = () => {
                         <CardHeader className="flex gap-3">
                           <div className="flex flex-col">
                             <p className="text-md">{item.detallesServicio.nombre}</p>
-                            <p className="text-small text-default-500">
-                              {item.detallesServicio.img}
-                            </p>
+                            {/* <p className="text-small text-default-500">
+                              {item.detallesServicio.foto}
+                            </p> */}
+                          <QRCode value={datosQr}></QRCode>
                           </div>
                         </CardHeader>
                         <Divider />
@@ -121,7 +121,7 @@ const CarritoComponent = () => {
                               alt="nextui logo"
                               height={40}
                               radius="sm"
-                              src={item.detallesServicio.img}
+                              src={item.detallesServicio.foto}
                               width={40}
                             />
                             <p>{item.detallesServicio.nombre}</p>

@@ -6,7 +6,7 @@ import {Select, SelectItem} from "@nextui-org/react";
 import axios from "axios";
 import Swal from 'sweetalert2';
 import {Image} from "@nextui-org/react";
-import {  Modal,   ModalContent,   ModalHeader,   ModalBody,   ModalFooter } from "@nextui-org/react";
+import {  Modal,   ModalContent,   ModalHeader,   ModalBody,   ModalFooter, useDisclosure, Input, Checkbox, Link } from "@nextui-org/react";
 
 
 
@@ -38,7 +38,12 @@ const ListadoAdminComponent = () =>{
           });
     }
 
-
+    const {isOpen, onOpen, onOpenChange} = useDisclosure();
+    const [datosModal, setDatosModal] = useState({
+      nombre: '',
+      id: 0,
+      context: ''
+    });
     const actualizar = (e) =>{
         var id = document.getElementById('id_servicio').value;
         var nombre = document.getElementById('nombre').value;
@@ -50,43 +55,46 @@ const ListadoAdminComponent = () =>{
             id : id,
             nombre : nombre
         }
+        setDatosModal(datos);
+      }
 
-        Swal.fire({
-            title: "Nuevo Nombre",
-            input: "text",
-            inputValue:nombre,
-            inputAttributes: {
-              autocapitalize: "off"
-            },
-            showCancelButton: true,
-            confirmButtonText: "Look up",
-            showLoaderOnConfirm: true,
-            preConfirm: async (login) => {
-              try {
-                const githubUrl = `
-                  https://api.github.com/users/${login}
-                `;
-                const response = await fetch(githubUrl);
-                if (!response.ok) {
-                  return Swal.showValidationMessage(`
-                    ${JSON.stringify(await response.json())}
-                  `);
-                }
-                return response.json();
-              } catch (error) {
-                Swal.showValidationMessage(`
-                  Request failed: ${error}
-                `);
-              }
-            },
-            allowOutsideClick: () => !Swal.isLoading()
-          }).then((result) => {
-            if (result.isConfirmed) {
-              Swal.fire({
-                title: `${result.value.login}'s avatar`,
-                imageUrl: result.value.avatar_url
-              });
+    const Eliminar = () => {
+      var id = document.getElementById('id_servicio').value;//obtiene el id del objeto a eliminar
+      var nombre = document.getElementById('nombre').value;//obtiene el id del objeto a eliminar
+      axios.delete(`http://localhost:7000/obtener/servicios/listado/servicios/eliminar/${id}`)
+          .then((response) => {
+            
+            if (!response.data.success) {
+              Swal.fire(response.data.msg, '', 'danger')
+              return;
             }
+            const updatedItems = datos.filter((d) => d.id !== id);
+            setdatos(updatedItems);
+            Swal.fire({
+              title: "Eliminado " + nombre + " De manera Correcta",
+              icon: "danger",
+              showClass: {
+                popup: `
+                  animate__animated
+                  animate__fadeInUp
+                  animate__faster
+                `
+              },
+              hideClass: {
+                popup: `
+                  animate__animated
+                  animate__fadeOutDown
+                  animate__faster
+                `
+              }
+            } ,
+            setTimeout(function() {
+              window.location.replace('/listadoAdministrador');
+            }, 3000));
+          })
+          .catch((error) => {
+            console.log(error);
+            Swal.fire('Hubo un error en la peticion, Contacta al programador', '', 'error')
           });
     }
 
@@ -95,7 +103,12 @@ const ListadoAdminComponent = () =>{
     <div className="flex flex-col  items-center  py-10 px-10">
         <Card className="max-w-full max-h-full w-[1200px]">
             <CardHeader>
+              <div className="justify-items-start...">
                 <h1>Listado de servicios</h1>
+              </div>
+                <div className="justify-items-end... mr-5">
+                  <Button className="" color="success">Registrar</Button>
+                </div>
             </CardHeader>
             <CardBody>
                 <div className="items-center pt-5">
@@ -129,15 +142,62 @@ const ListadoAdminComponent = () =>{
                             <div className="mt-10 flex flex-wrap gap-4 items-right">
                                 <input type="hidden" id="id_servicio" value={d.id}/>
                                 <input type="hidden" id="nombre" value={d.nombre}/>
-                                <Button color="warning" onClick={actualizar}>
+                                <Button color="warning" onClick={actualizar} onPress={onOpen}>
                                     Editar
                                 </Button>
-                                <Button color="danger" className="mr-5">Eliminar</Button>
+                                <Button color="danger" className="mr-5" onClick={Eliminar}>Eliminar</Button>
                             </div>
                         </div>
                     </AccordionItem>
                     ))}
                 </Accordion>
+
+                <div>
+                  <Modal 
+                    isOpen={isOpen} 
+                    onOpenChange={onOpenChange}
+                    placement="top-center"
+                  >
+                    <ModalContent>
+                      {(onClose) => (
+                        <>
+                          <ModalHeader className="flex flex-col gap-1">Editor</ModalHeader>
+                          <ModalBody>
+                            <Input
+                              autoFocus
+                              label="nombre"
+                              placeholder="Escribe el nuebo nombre"
+                              variant="bordered"
+                              value={datosModal.nombre}
+                            />
+                            <Input
+                              label="numero de registro"
+                              placeholder="Escribe el nuebo nombre"
+                              variant="bordered"
+                              value={datosModal.id}
+                              isDisabled
+                            />
+                            <Input
+                              label="tipo"
+                              placeholder="Escribe el nuebo nombre"
+                              variant="bordered"
+                              value={datosModal.context}
+                              isDisabled
+                            />
+                          </ModalBody>
+                          <ModalFooter>
+                            <Button color="danger" variant="flat" onPress={onClose}>
+                              Cancelar
+                            </Button>
+                            <Button color="primary" onPress={onClose}>
+                              Actualizar
+                            </Button>
+                          </ModalFooter>
+                        </>
+                      )}
+                    </ModalContent>
+                  </Modal>
+                </div>
             </CardBody>
             <CardFooter>
                 <h3>Al hacer una modificacion ira directo a la base de datos</h3>

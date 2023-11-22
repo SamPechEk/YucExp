@@ -57,7 +57,7 @@ router.get('/randomServices/:municipio', async (req, res) => {
           if (rows.length > 0) {
             resolve({
               nombre: rows[0].nombre,
-              img: rows[0].img,
+              foto: rows[0].foto,
               typeImg: rows[0].typeImg,
               tabla: tablaNombre,
             });
@@ -119,7 +119,7 @@ router.get('/Services/:municipio', async (req, res) => {
           }
           const registros = rows.map((row) => ({
             nombre: row.nombre,
-            img: row.img,
+            foto: row.foto,
             tabla:tabla,
             idservicio:row[id],
             id:id,
@@ -354,7 +354,7 @@ router.get('/list/car/:token', async (req, res) => {
           id = "idLugar";
         }
         // Consulta para obtener detalles del servicio de la tabla correspondiente (usando idTipoServicio)
-        const obtenerDetallesServicioQuery = `SELECT nombre, img FROM ${idTipoServicio} WHERE ${id} = ?`;
+        const obtenerDetallesServicioQuery = `SELECT nombre, foto FROM ${idTipoServicio} WHERE ${id} = ?`;
 
         connection.query(obtenerDetallesServicioQuery, [referenceIdServicio], (err, servicioRow) => {
           if (err) {

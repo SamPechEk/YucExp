@@ -23,6 +23,7 @@ const FormularioServiciosComponent = () =>
             }
             if(!datosSelect.length > 0){//confirma que el arreglo aun no tenga datos, asi evita que se carguen de forma infinita
               setdatosSelect(response.data.msg);//le pasamos la respuesta del servidor con los datos
+              console.log(datosSelect);
             }
           })
           .catch((error) => {

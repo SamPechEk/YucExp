@@ -15,11 +15,12 @@ import {
 } from "../controllers/usuarioController.js";
 
 import checkAuth from "../middleware/checkAuth.js";
+import Stripe from "stripe";
 
 
 // Autenticación, Registro y Confirmación de Usuarios
 router.post("/", registrar); // Crea un nuevo usuario
-router.post("/login", autenticar); 
+router.post("/login", autenticar);
 router.get("/confirma/:token", confirma);
 router.post("/olvide-password", olvidePassword);
 router.route("/olvide-password/:token").get(comprobarToken).post(nuevoPassword);
@@ -41,6 +42,32 @@ router.get('/municipios', (req, res) => {
   });
 });
 
+const stripe = Stripe(process.env.STRIPE_SECRET);
+router.post('/create-checkout-session', async (req, res) => {
+  const token = req.body.token;
+  const session = await stripe.checkout.sessions.create({
+    line_items: [
+      {
+        price_data: {
+          currency: 'mxn',
+          product_data: {
+            name: 'ReservaYucExp',
+          },
+          unit_amount: 20000,
+        },
+        quantity: 1,
+      },
+    ],
+    mode: 'payment',
+    success_url: 'http://localhost:7000/api/usuarios/reser/carget/'+token,
+    cancel_url: process.env.FRONTEND_URL+'/ShoppingCart',
+  });
+  // console.log(session.url);
+
+  // res.redirect(303, session.url);
+  return res.status(200).json({ success: true, url:session.url });
+});
+
 router.get('/randomServices/:municipio', async (req, res) => {
   const { municipio } = req.params;
 
@@ -57,7 +84,7 @@ router.get('/randomServices/:municipio', async (req, res) => {
           if (rows.length > 0) {
             resolve({
               nombre: rows[0].nombre,
-              img: rows[0].img,
+              foto: rows[0].foto,
               typeImg: rows[0].typeImg,
               tabla: tablaNombre,
             });
@@ -104,26 +131,27 @@ router.get('/Services/:municipio', async (req, res) => {
         if (err) {
           console.log(err);
           reject(err);
-        } else { let id;
-          if (tabla =="actividades") {
+        } else {
+          let id;
+          if (tabla == "actividades") {
             id = "idActividad";
           }
-          if (tabla =="hoteles") {
+          if (tabla == "hoteles") {
             id = "idHotel";
           }
-          if (tabla =="restaurantes") {
+          if (tabla == "restaurantes") {
             id = "idRestaurante";
           }
-          if (tabla =="lugar") {
+          if (tabla == "lugar") {
             id = "idLugar";
           }
           const registros = rows.map((row) => ({
             nombre: row.nombre,
-            img: row.img,
-            tabla:tabla,
-            idservicio:row[id],
-            id:id,
-            idMunicipio:row.idMunicipio
+            foto: row.foto,
+            tabla: tabla,
+            idservicio: row[id],
+            id: id,
+            idMunicipio: row.idMunicipio
           }));
           resolve({ [tablaNombre]: registros });
         }
@@ -161,10 +189,10 @@ router.get('/Services/:municipio', async (req, res) => {
 // Recibe datos desde frontend y se insertan en la tabla "itemscarrito" de la base de dato
 
 router.post('/add/car', async (req, res) => {
- 
-  
+
+
   const { idusuario, tabla, idservicio, idMunicipio } = req.body;
- 
+
   const decoded = jwt.verify(idusuario, process.env.JWT_SECRET);
   let iduser = decoded.id;
   const fechaCreacion = new Date(); // Obtén la fecha actual
@@ -194,11 +222,11 @@ router.post('/add/car', async (req, res) => {
       });
     });
   };
-  
+
   const insertarItemCarrito = (idcarrito) => {
     return new Promise((resolve, reject) => {
       const insertItemCarritoQuery = 'INSERT INTO itemscarrito (idcarrito, referenceIdServicio, idtiposervicio) VALUES (?, ?, ?)';
-      connection.query(insertItemCarritoQuery, [idcarrito,  idservicio,tabla], (err) => {
+      connection.query(insertItemCarritoQuery, [idcarrito, idservicio, tabla], (err) => {
         if (err) {
           console.error(err);
           reject(err);
@@ -208,7 +236,7 @@ router.post('/add/car', async (req, res) => {
       });
     });
   };
-  
+
   verificarYCrearCarrito()
     .then((idcarrito) => insertarItemCarrito(idcarrito))
     .then(() => {
@@ -218,8 +246,8 @@ router.post('/add/car', async (req, res) => {
       console.error('Error al agregar item al carrito:', error);
       return res.status(500).json({ success: false, msg: 'Error en el servidor' });
     });
-  
-  
+
+
 });
 
 
@@ -241,10 +269,10 @@ router.get('/api/itemcarrito', async (req, res) => {
 router.delete('/api/itemcarrito/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    
+
     // Realizar una consulta a la base de datos para eliminar el item del carrito por su ID
     await query('DELETE FROM itemscarrito WHERE id = ?', [id]);
-    
+
     // Si se elimina correctamente, devuelve una respuesta exitosa
     res.status(200).json({ message: 'Artículo eliminado del carrito correctamente' });
   } catch (error) {
@@ -258,7 +286,7 @@ router.get('/user/:token', async (req, res) => {
   const obtenerUser = (token) => {
     return new Promise((resolve, reject) => {
       const query = 'SELECT * FROM usuario WHERE idUsuario = ?';
-  
+
       connection.query(query, [token], (error, results) => {
         if (error) {
           reject(error);
@@ -270,35 +298,113 @@ router.get('/user/:token', async (req, res) => {
       });
     });
   };
-  
+
   const { token } = req.params;
   if (!token) {
     return res.status(401).json({ message: 'Token no proporcionado' });
   }
-  
+
   try {
     // Verifica y decodifica el token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-  
+
     // Realiza una consulta a la base de datos para obtener la información del usuario
     const user = await obtenerUser(decoded.id);
-  
+
     // Si el usuario no se encuentra en la base de datos, puedes manejarlo según tus necesidades
     if (!user) {
       return res.status(404).json({ message: 'Usuario no encontrado' });
     }
-  
+
     // Envía la información del usuario en la respuesta
     res.json({ user });
   } catch (error) {
     res.status(401).json({ message: 'Token no válido' });
   }
-  
+
 
 
 });
 
 // Promisify the connection query method
+
+router.get('/historial/car/:token', async (req, res) => {
+  try {
+    const { token } = req.params;
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const idUsuario = decoded.id;
+
+    const obtenerCarritosQuery = "SELECT carrito.idcarrito, carrito.fechaCreacion FROM carrito WHERE idusuario = ? AND status = 1";
+    const carritoRows = await promisifyQuery(obtenerCarritosQuery, [idUsuario]);
+
+    if (carritoRows.length === 0) {
+      return res.status(200).json({ success: true, msg: 'No se encontraron carritos finalizados para el usuario.', items: [] });
+    }
+
+    const items = [];
+
+    for (const carrito of carritoRows) {
+      const { idcarrito, fechaCreacion } = carrito;
+      const obtenerDetallesServicioQuery =
+        "SELECT itemscarrito.iditem, itemscarrito.idcarrito, itemscarrito.idTipoServicio, itemscarrito.referenceIdServicio" +
+        " FROM itemscarrito" +
+        " WHERE itemscarrito.idcarrito = ?";
+      const elementosRows = await promisifyQuery(obtenerDetallesServicioQuery, [idcarrito]);
+
+      for (const elemento of elementosRows) {
+        const { iditem, idTipoServicio, referenceIdServicio } = elemento;
+        let id = "";
+
+        if (elemento.idTipoServicio == "actividades") {
+          id = "idActividad";
+        }
+        if (elemento.idTipoServicio == "hoteles") {
+          id = "idHotel";
+        }
+        if (elemento.idTipoServicio == "restaurantes") {
+          id = "idRestaurante";
+        }
+        if (elemento.idTipoServicio == "lugar") {
+          id = "idLugar";
+        }
+
+        const obtenerDetallesServicioQuery = `SELECT nombre, foto FROM ${elemento.idTipoServicio} WHERE ${id} = ?`;
+        const servicioRow = await promisifyQuery(obtenerDetallesServicioQuery, [referenceIdServicio]);
+
+        if (servicioRow.length > 0) {
+          items.push({
+            iditem,
+            idcarrito,
+            fechaCreacion,
+            idTipoServicio,
+            referenceIdServicio,
+            detallesServicio: servicioRow[0],
+          });
+        }
+      }
+    }
+
+    return res.status(200).json({ success: true, msg: 'Carritos finalizados encontrados.', items });
+  } catch (error) {
+    console.error('Error al procesar la solicitud:', error);
+    res.status(500).json({ success: false, msg: 'Error en el servidor' });
+  }
+});
+
+// Función para convertir las consultas a promesas
+function promisifyQuery(query, values) {
+  return new Promise((resolve, reject) => {
+    connection.query(query, values, (err, result) => {
+      if (err) reject(err);
+      else resolve(result);
+    });
+  });
+}
+
+
+
+
+
 
 
 // Ruta para obtener elementos del carrito del usuario
@@ -341,20 +447,20 @@ router.get('/list/car/:token', async (req, res) => {
       elementosRows.forEach((elemento) => {
         const { iditem, idTipoServicio, referenceIdServicio } = elemento;
         let id = "";
-        if (idTipoServicio =="actividades") {
+        if (idTipoServicio == "actividades") {
           id = "idActividad";
         }
-        if (idTipoServicio =="hoteles") {
+        if (idTipoServicio == "hoteles") {
           id = "idHotel";
         }
-        if (idTipoServicio =="restaurantes") {
+        if (idTipoServicio == "restaurantes") {
           id = "idRestaurante";
         }
-        if (idTipoServicio =="lugar") {
+        if (idTipoServicio == "lugar") {
           id = "idLugar";
         }
         // Consulta para obtener detalles del servicio de la tabla correspondiente (usando idTipoServicio)
-        const obtenerDetallesServicioQuery = `SELECT nombre, img FROM ${idTipoServicio} WHERE ${id} = ?`;
+        const obtenerDetallesServicioQuery = `SELECT nombre, foto FROM ${idTipoServicio} WHERE ${id} = ?`;
 
         connection.query(obtenerDetallesServicioQuery, [referenceIdServicio], (err, servicioRow) => {
           if (err) {
@@ -415,6 +521,21 @@ router.put('/reser/car', (req, res) => {
       return res.status(500).json({ success: false, msg: 'Error en el servidor' });
     }
     return res.status(200).json({ success: true, msg: 'Estado del carrito actualizado correctamente' });
+  });
+});
+router.get('/reser/carget/:idUsuario', (req, res) => {
+  const { idUsuario } = req.params;
+  const decoded = jwt.verify(idUsuario, process.env.JWT_SECRET);
+  let iduser = decoded.id;
+  // Realiza una consulta SQL para actualizar el estado del carrito
+  const updateCarritoQuery = 'UPDATE carrito SET status = 1 WHERE idusuario = ?';
+
+  connection.query(updateCarritoQuery, [iduser], (error, result) => {
+    if (error) {
+      console.error('Error al cambiar el estado del carrito:', error);
+      return res.status(500).json({ success: false, msg: 'Error en el servidor' });
+    }
+    return res.redirect(302, process.env.FRONTEND_URL+'/ShoppingList');
   });
 });
 

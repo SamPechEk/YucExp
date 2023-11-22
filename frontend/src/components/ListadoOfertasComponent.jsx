@@ -36,7 +36,7 @@ export default function ListadoOfertasComponent() {
                 width="100%"
                 alt={item.nombre}
                 className="w-full object-cover h-[400px]"
-                src={item.img}
+                src={item.foto}
               />
             </CardBody>
             <CardFooter className="text-small justify-between">

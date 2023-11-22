@@ -8,6 +8,7 @@ import { Input } from "@nextui-org/react";
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import QRCode from "react-qr-code";
+import Vmenus from './Vmenus';
 
 
 const handleReservar = () => {
@@ -20,39 +21,64 @@ const handleReservar = () => {
   }).then((result) => {
     /* Read more about isConfirmed, isDenied below */
     if (result.isConfirmed) {
-      const token = localStorage.getItem('token');
-      axios.put('http://localhost:7000/api/usuarios/reser/car', { idusuario: token })
-        .then((response) => {
+      try {
+        const td = localStorage.getItem('token');
+        const data = {
+          // Aquí puedes incluir los datos adicionales que deseas enviar
+          token: td,
+        };
+        const response = axios.post(`http://localhost:7000/api/usuarios/create-checkout-session`,data)
+        .then(response => {
+          // Aquí puedes acceder a los datos de la respuesta
+          console.log('Datos de la respuesta:', response.data);
+      
+          // También puedes realizar acciones adicionales según la respuesta
           if (response.data.success) {
-            Swal.fire({
-              title: 'Muchas Gracias Por Su Preferencia!!!, Le deseamos que disfrute sus vacaciones',
-              width: 600,
-              padding: '3em',
-              color: '#89745F',
-              background: '#fff url(/images/trees.png)',
-              backdrop: `
-                        rgba(0,0,123,0.4)
-                        url("../public/gracias-thanks2.gif")
-                        left top
-                        no-repeat
-                      `
-            })
-            setTimeout(function() {
-              window.location.replace('/Ofertas');
-            }, 3000);
-          }
+            window.location.href = response.data.url;
+          } 
         })
-        .catch((error) => {
-          console.log(error.response.data.msg);
-          Swal.fire(error.response.data.msg, '', 'error');
-        });
+        .catch(error => {
+          // Manejar errores de la solicitud
+          console.error('Error:', error);
+        });;
+       
+        // Esto podría contener la URL de redirección de la sesión de checkout
+      } catch (error) {
+        console.error('Error al realizar la solicitud:', error);
+      }
+      // const token = localStorage.getItem('token');
+      // axios.put('http://localhost:7000/api/usuarios/reser/car', { idusuario: token })
+      //   .then((response) => {
+      //     if (response.data.success) {
+      //       Swal.fire({
+      //         title: 'Muchas Gracias Por Su Preferencia!!!, Le deseamos que disfrute sus vacaciones',
+      //         width: 600,
+      //         padding: '3em',
+      //         color: '#89745F',
+      //         background: '#fff url(/images/trees.png)',
+      //         backdrop: `
+      //                   rgba(0,0,123,0.4)
+      //                   url("../public/gracias-thanks2.gif")
+      //                   left top
+      //                   no-repeat
+      //                 `
+      //       })
+      //       setTimeout(function() {
+      //         window.location.replace('/Ofertas');
+      //       }, 3000);
+      //     }
+      //   })
+      //   .catch((error) => {
+      //     console.log(error.response.data.msg);
+      //     Swal.fire(error.response.data.msg, '', 'error');
+      //   });
       
     }
-    else if (result.isDenied) {
-      Swal.fire('Se cancelo correctamente la compra del paquete', '', 'info')
-    }
+    
   })
 };
+
+
 
 
 
@@ -62,6 +88,7 @@ const CarritoComponent = () => {
   const token = localStorage.getItem('token');
   useEffect(() => {
     // Hacer una solicitud GET al backend para obtener los items agregados
+    
     axios.get(`http://localhost:7000/api/usuarios/list/car/${token}`)
       .then((response) => {
         setDatosItemCarrito(response.data.items);
@@ -91,8 +118,11 @@ const CarritoComponent = () => {
       <Card className="max-w-full max-h-full w-[900px] h-[600px]">
         <CardHeader className="flex flex-col content-center mr-4">
           <h1 className="text-large uppercase font-bold">Reservaciones</h1>
+          <h4 className="text-large  font-bold">Cuota de solicitud $200</h4>
         </CardHeader>
         <CardBody className="content-start">
+        {datosItemCarrito.length>0  ?(
+          <>
           <Table aria-label="Elementos del Carrito">
             <TableHeader>
               <TableColumn>TIPO DE SERVICIO</TableColumn>
@@ -110,7 +140,7 @@ const CarritoComponent = () => {
                           <div className="flex flex-col">
                             <p className="text-md">{item.detallesServicio.nombre}</p>
                             <p className="text-small text-default-500">
-                              {item.detallesServicio.img}
+                              {item.detallesServicio.foto}
                             </p>
                           </div>
                         </CardHeader>
@@ -121,7 +151,7 @@ const CarritoComponent = () => {
                               alt="nextui logo"
                               height={40}
                               radius="sm"
-                              src={item.detallesServicio.img}
+                              src={item.detallesServicio.foto}
                               width={40}
                             />
                             <p>{item.detallesServicio.nombre}</p>
@@ -142,18 +172,27 @@ const CarritoComponent = () => {
                     >
                       Eliminar servicio
                     </Button>
-                  </TableCell>
+                  </TableCell> 
                 </TableRow>
               ))}
             </TableBody>
           </Table>
-          <div className="mt-10 flex flex-wrap gap-4 justify-end">
             <Button color="success" onClick={() => handleReservar()}>
-              Reservar
+            Reservar
             </Button>
-            <Link to={`/Ofertas`}>
-              <Button color="danger">Cancelar</Button>
-            </Link>
+          
+          <Link to={`/Ofertas`}>
+            <Button color="danger">Cancelar</Button>
+          </Link>
+          </>
+
+        ):(
+          <>
+          <h1 className="text-large uppercase font-bold">Sin elementos en el carrito</h1>
+          <Vmenus></Vmenus>
+        </>
+        )}
+        <div className="mt-10 flex flex-wrap gap-4 justify-end">
           </div>
         </CardBody>
       </Card>

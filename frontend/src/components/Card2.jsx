@@ -29,6 +29,9 @@ const Card2 = ({ rest2 }) => {
 
       if (response.data.success) {
         Swal.fire(response.data.msg, '', 'success')
+        setTimeout(function() {
+          window.location.replace('/ShoppingCart');
+        }, 2000);
         
       }
       console.log('Respuesta del servidor:', response.data);
@@ -53,7 +56,7 @@ const Card2 = ({ rest2 }) => {
   // console.log(rest2);
   return (
     <div className='z-10 dark:bg-[#0d1b2a] drop-shadow-md overflow-hidden rounded-2xl mr-2  my-4'>
-      <img src={rest2.foto}
+      <img src={rest2.img}
         className="h-40 w-full object-cover"
 
       />

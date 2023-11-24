@@ -84,7 +84,7 @@ router.get('/randomServices/:municipio', async (req, res) => {
           if (rows.length > 0) {
             resolve({
               nombre: rows[0].nombre,
-              foto: rows[0].foto,
+              img: rows[0].img,
               typeImg: rows[0].typeImg,
               tabla: tablaNombre,
             });
@@ -147,7 +147,7 @@ router.get('/Services/:municipio', async (req, res) => {
           }
           const registros = rows.map((row) => ({
             nombre: row.nombre,
-            foto: row.foto,
+            img: row.img,
             tabla: tabla,
             idservicio: row[id],
             id: id,
@@ -368,7 +368,7 @@ router.get('/historial/car/:token', async (req, res) => {
           id = "idLugar";
         }
 
-        const obtenerDetallesServicioQuery = `SELECT nombre, foto FROM ${elemento.idTipoServicio} WHERE ${id} = ?`;
+        const obtenerDetallesServicioQuery = `SELECT nombre, img FROM ${elemento.idTipoServicio} WHERE ${id} = ?`;
         const servicioRow = await promisifyQuery(obtenerDetallesServicioQuery, [referenceIdServicio]);
 
         if (servicioRow.length > 0) {
@@ -460,7 +460,7 @@ router.get('/list/car/:token', async (req, res) => {
           id = "idLugar";
         }
         // Consulta para obtener detalles del servicio de la tabla correspondiente (usando idTipoServicio)
-        const obtenerDetallesServicioQuery = `SELECT nombre, foto FROM ${idTipoServicio} WHERE ${id} = ?`;
+        const obtenerDetallesServicioQuery = `SELECT nombre, img FROM ${idTipoServicio} WHERE ${id} = ?`;
 
         connection.query(obtenerDetallesServicioQuery, [referenceIdServicio], (err, servicioRow) => {
           if (err) {

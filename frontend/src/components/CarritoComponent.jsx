@@ -102,7 +102,7 @@ const CarritoComponent = () => {
     // Realizar una solicitud DELETE al backend para eliminar el elemento del carrito
     axios.delete(`http://localhost:7000/api/usuarios/delete/caritem/${id}`)
       .then((response) => {
-        Swal.fire('Elemento eliminado del carrito:'+response.data.msg, '', 'success')
+        Swal.fire(response.data.msg, '', 'success')
         // console.log('Elemento eliminado del carrito:', response.data);
         // Actualizar la lista de elementos del carrito después de eliminar el servicio
         const updatedItems = datosItemCarrito.filter((item) => item.iditem !== id);
@@ -118,7 +118,17 @@ const CarritoComponent = () => {
       <Card className="max-w-full max-h-full w-[900px] h-[600px]">
         <CardHeader className="flex flex-col content-center mr-4">
           <h1 className="text-large uppercase font-bold">Reservaciones</h1>
-          <h4 className="text-large  font-bold">Cuota de solicitud $200</h4>
+          <h4 className="text-large  font-bold">Cuota de solicitud $200<Input
+          type="number"
+          label="Price"
+          placeholder="0.00"
+          labelPlacement="outside"
+          endContent={
+            <div className="pointer-events-none flex items-center">
+              <span className="text-default-400 text-small">$</span>
+            </div>
+          }
+        /></h4>
         </CardHeader>
         <CardBody className="content-start">
         {datosItemCarrito.length>0  ?(
@@ -140,7 +150,7 @@ const CarritoComponent = () => {
                           <div className="flex flex-col">
                             <p className="text-md">{item.detallesServicio.nombre}</p>
                             <p className="text-small text-default-500">
-                              {item.detallesServicio.foto}
+                              {/* {item.detallesServicio.img} */}
                             </p>
                           </div>
                         </CardHeader>
@@ -152,7 +162,7 @@ const CarritoComponent = () => {
 
                               height={200}
                               radius="lg"
-                              src={item.detallesServicio.foto}
+                              src={item.detallesServicio.img}
                               width={200}
 
                             />

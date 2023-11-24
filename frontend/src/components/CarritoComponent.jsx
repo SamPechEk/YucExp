@@ -146,13 +146,13 @@ const CarritoComponent = () => {
                         </CardHeader>
                         <Divider />
                         <CardBody>
-                          <div className="grid grid-cols-2">
+                          <div className="gap-3 grid grid-cols-2">
                             <Image
                               alt="nextui logo"
-                              height={40}
-                              radius="sm"
+                              height={200}
+                              radius="lg"
                               src={item.detallesServicio.foto}
-                              width={40}
+                              width={200}
                             />
                             <p>{item.detallesServicio.nombre}</p>
                           </div>
@@ -177,23 +177,25 @@ const CarritoComponent = () => {
               ))}
             </TableBody>
           </Table>
-            <Button color="success" onClick={() => handleReservar()}>
-            Reservar
-            </Button>
-          
+            
+            <div className="py-2">
           <Link to={`/Ofertas`}>
             <Button color="danger">Cancelar</Button>
           </Link>
+          <Button color="success" onClick={() => handleReservar()}>
+            Reservar
+            </Button>
+            </div>
+          
           </>
 
-        ):(
+        )
+        :(
           <>
           <h1 className="text-large uppercase font-bold">Sin elementos en el carrito</h1>
           <Vmenus></Vmenus>
         </>
         )}
-        <div className="mt-10 flex flex-wrap gap-4 justify-end">
-          </div>
         </CardBody>
       </Card>
     </div>

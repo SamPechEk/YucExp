@@ -71,7 +71,7 @@ const NavbarComponent = () => {
                 Paquetes
               </Link>
             </NavbarItem>
-            {tipo != 2 &&(
+            {tipo != 1 &&(
               <>
                <NavbarItem>
                 <Link to={`listadoAdministrador`}> Listado</Link>

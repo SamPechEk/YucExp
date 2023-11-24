@@ -149,10 +149,12 @@ const CarritoComponent = () => {
                           <div className="gap-3 grid grid-cols-2">
                             <Image
                               alt="nextui logo"
+
                               height={200}
                               radius="lg"
                               src={item.detallesServicio.foto}
                               width={200}
+
                             />
                             <p>{item.detallesServicio.nombre}</p>
                           </div>

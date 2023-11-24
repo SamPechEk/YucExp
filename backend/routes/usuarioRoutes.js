@@ -45,15 +45,16 @@ router.get('/municipios', (req, res) => {
 const stripe = Stripe(process.env.STRIPE_SECRET);
 router.post('/create-checkout-session', async (req, res) => {
   const token = req.body.token;
+  const donativo = req.body.donativo * 100;
   const session = await stripe.checkout.sessions.create({
     line_items: [
       {
         price_data: {
           currency: 'mxn',
           product_data: {
-            name: 'ReservaYucExp',
+            name: 'Donativo YucExp',
           },
-          unit_amount: 20000,
+          unit_amount: donativo,
         },
         quantity: 1,
       },

@@ -12,8 +12,13 @@ import Vmenus from './Vmenus';
 
 
 const handleReservar = () => {
+  let donativo = document.getElementById("donativo").value;
+  if(donativo<100){
+    Swal.fire("El monto del donativo debe ser mayor a $100 MXN", '', 'error');
+    return;
+  }
   Swal.fire({
-    title: 'Confirma que deseas proceder con el pago',
+    title: `Confirma que deseas proceder con el pago de: $${donativo} MXN`,
     showDenyButton: true,
     showCancelButton: false,
     confirmButtonText: 'Aceptar',
@@ -26,6 +31,7 @@ const handleReservar = () => {
         const data = {
           // Aquí puedes incluir los datos adicionales que deseas enviar
           token: td,
+          donativo:donativo
         };
         const response = axios.post(`http://localhost:7000/api/usuarios/create-checkout-session`,data)
         .then(response => {
@@ -118,21 +124,23 @@ const CarritoComponent = () => {
       <Card className="max-w-full max-h-full w-[900px] h-[600px]">
         <CardHeader className="flex flex-col content-center mr-4">
           <h1 className="text-large uppercase font-bold">Reservaciones</h1>
-          <h4 className="text-large  font-bold">Cuota de solicitud $200<Input
-          type="number"
-          label="Price"
-          placeholder="0.00"
-          labelPlacement="outside"
-          endContent={
-            <div className="pointer-events-none flex items-center">
-              <span className="text-default-400 text-small">$</span>
-            </div>
-          }
-        /></h4>
+         
         </CardHeader>
         <CardBody className="content-start">
         {datosItemCarrito.length>0  ?(
           <>
+          <Input
+          id="donativo"
+          type="number"
+          label="Donativo voluntario Min $100"
+          placeholder="100.00"
+          labelPlacement="outside"
+          startContent={
+            <div className="pointer-events-none flex items-center">
+              <span className="text-default-400 text-small">$</span>
+            </div>
+          }
+        />
           <Table aria-label="Elementos del Carrito">
             <TableHeader>
               <TableColumn>TIPO DE SERVICIO</TableColumn>
@@ -190,14 +198,15 @@ const CarritoComponent = () => {
             </TableBody>
           </Table>
             
-            <div className="py-2">
-          <Link to={`/Ofertas`}>
-            <Button color="danger">Cancelar</Button>
-          </Link>
-          <Button color="success" onClick={() => handleReservar()}>
-            Reservar
+          <div className="py-2">
+
+            <Button color="success" onClick={() => handleReservar()}>
+              Reservar
             </Button>
-            </div>
+            <Link to={`/Ofertas`}>
+              <Button color="danger">Volver</Button>
+            </Link>
+          </div>
           
           </>
 

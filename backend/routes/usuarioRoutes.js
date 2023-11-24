@@ -392,6 +392,87 @@ router.get('/historial/car/:token', async (req, res) => {
   }
 });
 
+router.get('/historial2/car/:token', async (req, res) => {
+  try {
+    const { token } = req.params;
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const idUsuario = decoded.id;
+    const obtenerCarritosQuery = "SELECT carrito.idcarrito, carrito.fechaCreacion, carrito.donativo FROM carrito WHERE idusuario = ? AND status = 1";
+    const carritoRows = await promisifyQuery(obtenerCarritosQuery, [idUsuario]);
+
+    if (carritoRows.length === 0) {
+      return res.status(200).json({ success: true, msg: 'No se encontraron carritos finalizados para el usuario.', items: [] });
+    }
+
+    const carritos = {};
+    const lugar = "";
+    for (const carrito of carritoRows) {
+      const { idcarrito, fechaCreacion, donativo } = carrito;
+      
+      const obtenerDetallesServicioQuery =
+        "SELECT itemscarrito.iditem, itemscarrito.idcarrito, itemscarrito.idTipoServicio, itemscarrito.referenceIdServicio" +
+        " FROM itemscarrito" +
+        " WHERE itemscarrito.idcarrito = ?";
+      const elementosRows = await promisifyQuery(obtenerDetallesServicioQuery, [idcarrito]);
+
+      for (const elemento of elementosRows) {
+        const { iditem, idTipoServicio, referenceIdServicio } = elemento;
+        let id = "";
+
+        if (elemento.idTipoServicio == "actividades") {
+          id = "idActividad";
+        }
+        if (elemento.idTipoServicio == "hoteles") {
+          id = "idHotel";
+        }
+        if (elemento.idTipoServicio == "restaurantes") {
+          id = "idRestaurante";
+        }
+        if (elemento.idTipoServicio == "lugar") {
+          id = "idLugar";
+        }
+
+        const obtenerDetallesServicioQuery = `SELECT nombre, img, idMunicipio FROM ${elemento.idTipoServicio} WHERE ${id} = ?`;
+        const servicioRow = await promisifyQuery(obtenerDetallesServicioQuery, [referenceIdServicio]);
+        const obtenerDetallesMunicipioQuery = `SELECT nombre FROM municipios WHERE idMunicipio = ?`;
+        const municipioRow = await promisifyQuery(obtenerDetallesMunicipioQuery, [servicioRow[0].idMunicipio]);
+        
+        if (servicioRow.length > 0) {
+          // Si es la primera vez que encontramos este carrito, creamos un objeto vacío para él
+          if (!carritos[idcarrito]) {
+            carritos[idcarrito] = {
+              idcarrito,
+              fechaCreacion,
+              items: [],
+              municipio:municipioRow[0].nombre,
+              donativo
+            };
+          }
+          
+          carritos[idcarrito].items.push({
+            iditem,
+            idcarrito,
+            idTipoServicio,
+            referenceIdServicio,
+            detallesServicio: servicioRow[0],
+            donativo
+          });
+        }
+      }
+    }
+
+    // Convertimos el objeto de carritos en un array para obtener la respuesta final
+    const carritosArray = Object.values(carritos);
+    
+
+    return res.status(200).json({ success: true, msg: 'Carritos finalizados encontrados.', carritos: carritosArray });
+  } catch (error) {
+    console.error('Error al procesar la solicitud:', error);
+    res.status(500).json({ success: false, msg: 'Error en el servidor' });
+  }
+});
+
+
 // Función para convertir las consultas a promesas
 function promisifyQuery(query, values) {
   return new Promise((resolve, reject) => {

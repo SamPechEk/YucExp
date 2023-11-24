@@ -5,16 +5,20 @@ import { Divider } from "@nextui-org/react";
 import { Card, CardHeader, CardBody, Accordion, AccordionItem, Avatar } from "@nextui-org/react";
 
 const ListadoComprasComponent = () => {
-  const [compras, setCompras] = useState([]);
+  const [carritos, setCompras] = useState([]);
+  const [muni, setMuni] = useState("");
+
+  
   // const { idUsuario } = useParams(); // Asegúrate de tener configurado React Router correctamente
   const token = localStorage.getItem('token');
 
 
   useEffect(() => {
     // Hacer una solicitud GET al backend para obtener los items agregados
-    axios.get(`http://localhost:7000/api/usuarios/historial/car/${token}`)
+    axios.get(`http://localhost:7000/api/usuarios/historial2/car/${token}`)
       .then((response) => {
-        setCompras(response.data.items); // Ajusta esto según la estructura de tu respuesta
+        setCompras(response.data.carritos); // Ajusta esto según la estructura de tu respuesta
+        setMuni(response.data.municipio);
       })
       .catch((error) => {
         console.error('Error al obtener datos de itemcarrito:', error);
@@ -29,46 +33,37 @@ const ListadoComprasComponent = () => {
         <CardHeader className="flex flex-col content-center mr-4">
           <h1 className="text-large uppercase font-bold">Historial de servicios</h1>
           </CardHeader>
-        <CardBody>
-          <Accordion selectionMode="multiple">
-            {compras.map((compra, index) => (
-              <AccordionItem
-                key={index.toString()}
-                startContent={
-                  <Avatar
-                  size="lg"
-                    src={compra.detallesServicio.foto} // Ajusta la ruta de la imagen según la estructura de tu respuesta
-                  />
-                }
-                title={compra.detallesServicio.nombre}
-                subtitle={compra.idTipoServicio}
-              >
-                <div className="max-w-md">
-                  <div className="space-y-1">
-                    <a
-                      className="relative z-10 rounded-full bg-gray-50 px-3 py-1 font-small text-gray-600 hover:bg-gray-100"
-                    >
-                      Fecha de creación: {`${new Date(compra.fechaCreacion).toLocaleDateString()}`}
-                    </a>
-                  </div>
-                  <Divider className="my-4" />
-                  <div className="flex h-5 items-center space-x-4 text-small">
-                    <div>Número de carrito: {compra.idcarrito}</div>
-                    <Divider orientation="vertical" />
-                    <div>{compra.detallesServicio.nombre}</div>
-                    <Divider orientation="vertical" />
-                    <div>{compra.idTipoServicio}</div>
-                  </div>
-                  <Divider className="my-4" />
-                </div>
-                <Image
-                  isZoomed
-                  height={200}
-                  src={compra.detallesServicio.foto} alt="Imagen del Servicio" />
-              </AccordionItem>
+          <CardBody>
+  <Accordion selectionMode="multiple">
+    {carritos.map((carrito) => (
+      <AccordionItem
+        key={carrito.idcarrito}
+        startContent={
+          <Avatar
+            size="lg"
+            src={carrito.items[0].detallesServicio.img} // Ajusta la ruta de la imagen según la estructura de tu respuesta
+          />
+        }
+        title={`${carrito.municipio} - Carrito #${carrito.idcarrito} - Donativo: $${carrito.donativo}`}
+        subtitle={`Fecha de creación: ${new Date(carrito.fechaCreacion).toLocaleDateString()}`}
+      >
+        <div className="max-w-md">
+          <ul>
+            {carrito.items.map((item) => (
+              <li key={item.iditem}>
+                <p>{item.detallesServicio.nombre} - Categoria: {item.idTipoServicio}</p>
+                
+                {/* Agrega más detalles si es necesario */}
+              </li>
             ))}
-          </Accordion>
-        </CardBody>
+          </ul>
+        </div>
+      </AccordionItem>
+    ))}
+  </Accordion>
+</CardBody>
+
+
       </Card>
     </div>
   );

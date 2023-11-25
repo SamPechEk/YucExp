@@ -15,7 +15,7 @@ export const emailRegistro = async (datos) => {
   // Información del email
 
   const info = await transport.sendMail({
-    from: '"YucExp - Administrador" <cuentas@YucExt.com.mx>',
+    from: '"YucExp - Administrador" <cuentas@YucExp.com.mx>',
     to: email,
     subject: "YucExp - Comprueba tu cuenta",
     text: "Comprueba tu cuenta en YucExp",
@@ -25,6 +25,38 @@ export const emailRegistro = async (datos) => {
     <a href="${process.env.FRONTEND_URL}/confirma/${token}">Comprobar Cuenta</a>
     
     <p>Si tu no creaste esta cuenta, puedes ignorar el mensaje</p>
+    
+    
+    `,
+  });
+};
+
+export const emailReserva = async (datos) => {
+  const { donativo, email, nombre } = datos;
+
+  const transport = nodemailer.createTransport({
+    host: process.env.EMAIL_HOST,
+    port: process.env.EMAIL_PORT,
+    auth: {
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS,
+    },
+  });
+
+  // Información del email
+
+  const info = await transport.sendMail({
+    from: '"YucExp - Confirmación" <info@YucExp.com.mx>',
+    to: email,
+    subject: "YucExp - Tu reserva se completo",
+    text: "Detalles de servicio y donativo",
+    html: `<p>Hola: ${nombre} tu reserva esta lista</p>
+    <p>Gracias por tu donación de: $${donativo}MXN tu reserva esta lista</p>
+    <p>Puedes verificar y descargar el comprobante en el siguiente enlace: 
+
+    <a href="${process.env.FRONTEND_URL}/ShoppingList/1">Ver detalles</a>
+    
+    <p>Gracias!</p>
     
     
     `,

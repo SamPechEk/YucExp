@@ -16,6 +16,8 @@ import {
 
 import checkAuth from "../middleware/checkAuth.js";
 import Stripe from "stripe";
+import { emailReserva } from "../helpers/email.js";
+
 
 
 // Autenticación, Registro y Confirmación de Usuarios
@@ -60,7 +62,7 @@ router.post('/create-checkout-session', async (req, res) => {
       },
     ],
     mode: 'payment',
-    success_url: 'http://localhost:7000/api/usuarios/reser/carget/'+token,
+    success_url: `http://localhost:7000/api/usuarios/reser/carget/${token}/${donativo}`,
     cancel_url: process.env.FRONTEND_URL+'/ShoppingCart',
   });
   // console.log(session.url);
@@ -605,19 +607,32 @@ router.put('/reser/car', (req, res) => {
     return res.status(200).json({ success: true, msg: 'Estado del carrito actualizado correctamente' });
   });
 });
-router.get('/reser/carget/:idUsuario', (req, res) => {
-  const { idUsuario } = req.params;
+router.get('/reser/carget/:idUsuario/:donativo', async (req, res) => {
+  const { idUsuario, donativo } = req.params;
   const decoded = jwt.verify(idUsuario, process.env.JWT_SECRET);
   let iduser = decoded.id;
-  // Realiza una consulta SQL para actualizar el estado del carrito
-  const updateCarritoQuery = 'UPDATE carrito SET status = 1 WHERE idusuario = ?';
 
-  connection.query(updateCarritoQuery, [iduser], (error, result) => {
+  const query = 'SELECT * FROM usuario WHERE idUsuario = ?';
+  const user = "";
+  const userElementosRows = await promisifyQuery(query, [iduser]);
+
+  // Realiza una consulta SQL para actualizar el estado del carrito
+  const updateCarritoQuery = 'UPDATE carrito SET status = 1, donativo = ? WHERE idusuario = ? and status = 0';
+
+  connection.query(updateCarritoQuery, [donativo/100,iduser], (error, result) => {
     if (error) {
       console.error('Error al cambiar el estado del carrito:', error);
       return res.status(500).json({ success: false, msg: 'Error en el servidor' });
     }
     return res.redirect(302, process.env.FRONTEND_URL+'/ShoppingList');
+  });
+
+  
+    
+  emailReserva({
+    email: userElementosRows[0].email,
+    nombre: userElementosRows[0].nombre,
+    donativo:donativo/100
   });
 });
 

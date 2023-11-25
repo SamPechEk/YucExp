@@ -21,7 +21,7 @@ const App = () => {
                   <Route path="Servicios" element={<ListadoComponent />} />
                   <Route path="Ofertas" element={<ListadoOfertasComponent />} />
                   <Route path="ShoppingCart" element={<CarritoComponent />} />
-                  <Route path="ShoppingList" element={<ListadoComprasComponent />} />
+                  <Route path="ShoppingList/:t?" element={<ListadoComprasComponent />} />
                   <Route path="Actividades" element={<ActividadesComponent />} />
                   <Route path="login" element={<LoginComponent />} />
                   <Route path="confirma/:token" element={<ConfirmarCuent />} />

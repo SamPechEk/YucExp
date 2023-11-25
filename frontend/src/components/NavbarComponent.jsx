@@ -13,6 +13,7 @@ import axios from 'axios';
 
 
 
+
 const NavbarComponent = () => {
   const token = localStorage.getItem('token');
   const usuarioLogueado = token !== null;
@@ -97,10 +98,12 @@ const NavbarComponent = () => {
 
 
 
-
+        {usuarioLogueado  &&(
           <NavbarItem>
-            <Link to={`ShoppingCart`}><CartIconComponent size={30} /></Link>
-          </NavbarItem>
+          <Link to={`ShoppingCart`}><CartIconComponent size={30} /></Link>
+        </NavbarItem>
+           )}
+          
 
 
           <SelectComponent></SelectComponent>

@@ -10,9 +10,9 @@ const Footer2 = () => {
             <div className='col-span-2'>
                 <img src={logo} className="h-[25px]" />
                 <h3 className='text-2xl font-bold mt-10'>Contactanos</h3>
-                <h3 className='py-2 text-[#6D737A]'>Tel: +52 9992 400 123</h3>
-                <h3 className='py-2 text-[#6D737A]'>... <br></br>...</h3>
-                <h3 className='py-2 text-[#363A3D]'>Email: example@mail.com</h3>
+                <h3 className='py-2 text-[#6D737A]'>Tel: +52 9999999999</h3>
+                {/* <h3 className='py-2 text-[#6D737A]'>... <br></br>...</h3> */}
+                <h3 className='py-2 text-[#363A3D]'>Email: contacto@yucexp.com.mx</h3>
                 <div className='flex gap-4 py-4'>
                         <div className='p-4 bg-[#E9F8F3] rounded-xl'><FaFacebookF size={25} style={{color:'#c'}} /></div>
                         <div className='p-4 bg-[#E9F8F3] rounded-xl'><FaDribbble size={25} style={{color:'#DB5A42'}} /></div>

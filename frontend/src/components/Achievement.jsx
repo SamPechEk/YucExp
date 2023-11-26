@@ -11,7 +11,10 @@ const Achievement = () => {
             
             <div className='flex flex-col justify-center '>
                 <h1 className='md:leading-[72px] text-3xl font-bold'>Que espera de <span className='text-[#DB5A42]'> Nuestros Servicios</span></h1>
-                    ...                
+                    <p>Hoteles</p>
+                    <p>Restaurantes</p> 
+                    <p>Actividades</p>
+                    <p>Lugares de interes</p>               
                 <div className='grid grid-cols-2 py-16'>
                     <div className='py-6 flex'>
                         <div className='p-4 bg-[#E9F8F3] rounded-xl'>

@@ -24,6 +24,9 @@ const NavbarComponent = () => {
 
   //solicita info del usuario
   useEffect(() => {
+    if (token) {
+      
+    
     axios.get(`http://localhost:7000/api/usuarios/user/${token}`)
       .then((response) => {
 
@@ -35,6 +38,7 @@ const NavbarComponent = () => {
         console.error('Error al obtener la información del usuario:', error);
         // Maneja los errores aquí, por ejemplo, mostrando un mensaje al usuario.
       });
+    }
   }, []);
 
   const handleLogOut = () => {

@@ -129,18 +129,7 @@ const CarritoComponent = () => {
         <CardBody className="content-start">
         {datosItemCarrito.length>0  ?(
           <>
-          <Input
-          id="donativo"
-          type="number"
-          label="Donativo voluntario Min $100"
-          placeholder="100.00"
-          labelPlacement="outside"
-          startContent={
-            <div className="pointer-events-none flex items-center">
-              <span className="text-default-400 text-small">$</span>
-            </div>
-          }
-        />
+          
           <Table aria-label="Elementos del Carrito">
             <TableHeader>
               <TableColumn>TIPO DE SERVICIO</TableColumn>
@@ -197,7 +186,18 @@ const CarritoComponent = () => {
               ))}
             </TableBody>
           </Table>
-            
+          <Input
+          id="donativo"
+          type="number"
+          label="Donativo voluntario Min $100"
+          placeholder="100.00"
+          labelPlacement="outside"
+          startContent={
+            <div className="pointer-events-none flex items-center">
+              <span className="text-default-400 text-small">$</span>
+            </div>
+          }
+        />  
           <div className="py-2">
 
             <Button color="success" onClick={() => handleReservar()}>

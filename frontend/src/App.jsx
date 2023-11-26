@@ -18,7 +18,7 @@ const App = () => {
           <Routes>
               <Route path="/" element={<NavbarComponent />}>
                   <Route index element={<HomeComponent />} />
-                  <Route path="Servicios" element={<ListadoComponent />} />
+                  <Route path="Paquetes" element={<ListadoComponent />} />
                   <Route path="Ofertas" element={<ListadoOfertasComponent />} />
                   <Route path="ShoppingCart" element={<CarritoComponent />} />
                   <Route path="ShoppingList/:t?" element={<ListadoComprasComponent />} />

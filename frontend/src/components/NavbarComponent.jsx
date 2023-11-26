@@ -72,7 +72,7 @@ const NavbarComponent = () => {
               </Link>
             </NavbarItem>
             <NavbarItem>
-              <Link to={`Servicios`}>
+              <Link to={`Paquetes`}>
                 Paquetes
               </Link>
             </NavbarItem>

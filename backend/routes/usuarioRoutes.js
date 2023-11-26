@@ -474,6 +474,86 @@ router.get('/historial2/car/:token', async (req, res) => {
   }
 });
 
+router.get('/paquetes/:idMunicipio', async (req, res) => {
+  try {
+    const { idMunicipio } = req.params;
+    // const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    // const idUsuario = decoded.id;
+    const obtenerCarritosQuery = "SELECT carrito.idcarrito, carrito.fechaCreacion, carrito.donativo FROM carrito WHERE idmunicipio = ? and status = 1";
+    const carritoRows = await promisifyQuery(obtenerCarritosQuery, [idMunicipio]);
+
+    if (carritoRows.length === 0) {
+      return res.status(200).json({ success: true, msg: 'No se encontraron paquetes', items: [] });
+    }
+
+    const carritos = {};
+    const lugar = "";
+    for (const carrito of carritoRows) {
+      const { idcarrito, fechaCreacion, donativo } = carrito;
+      
+      const obtenerDetallesServicioQuery =
+        "SELECT itemscarrito.iditem, itemscarrito.idcarrito, itemscarrito.idTipoServicio, itemscarrito.referenceIdServicio" +
+        " FROM itemscarrito" +
+        " WHERE itemscarrito.idcarrito = ?";
+      const elementosRows = await promisifyQuery(obtenerDetallesServicioQuery, [idcarrito]);
+
+      for (const elemento of elementosRows) {
+        const { iditem, idTipoServicio, referenceIdServicio } = elemento;
+        let id = "";
+
+        if (elemento.idTipoServicio == "actividades") {
+          id = "idActividad";
+        }
+        if (elemento.idTipoServicio == "hoteles") {
+          id = "idHotel";
+        }
+        if (elemento.idTipoServicio == "restaurantes") {
+          id = "idRestaurante";
+        }
+        if (elemento.idTipoServicio == "lugar") {
+          id = "idLugar";
+        }
+
+        const obtenerDetallesServicioQuery = `SELECT nombre, img, idMunicipio FROM ${elemento.idTipoServicio} WHERE ${id} = ?`;
+        const servicioRow = await promisifyQuery(obtenerDetallesServicioQuery, [referenceIdServicio]);
+        const obtenerDetallesMunicipioQuery = `SELECT nombre FROM municipios WHERE idMunicipio = ?`;
+        const municipioRow = await promisifyQuery(obtenerDetallesMunicipioQuery, [servicioRow[0].idMunicipio]);
+        
+        if (servicioRow.length > 0) {
+          // Si es la primera vez que encontramos este carrito, creamos un objeto vacío para él
+          if (!carritos[idcarrito]) {
+            carritos[idcarrito] = {
+              idcarrito,
+              fechaCreacion,
+              items: [],
+              municipio:municipioRow[0].nombre,
+              donativo
+            };
+          }
+          
+          carritos[idcarrito].items.push({
+            iditem,
+            idcarrito,
+            idTipoServicio,
+            referenceIdServicio,
+            detallesServicio: servicioRow[0],
+            donativo
+          });
+        }
+      }
+    }
+
+    // Convertimos el objeto de carritos en un array para obtener la respuesta final
+    const carritosArray = Object.values(carritos);
+    
+
+    return res.status(200).json({ success: true, msg: 'Carritos finalizados encontrados.', carritos: carritosArray });
+  } catch (error) {
+    console.error('Error al procesar la solicitud:', error);
+    res.status(500).json({ success: false, msg: 'Error en el servidor' });
+  }
+});
+
 
 // Función para convertir las consultas a promesas
 function promisifyQuery(query, values) {
@@ -624,7 +704,7 @@ router.get('/reser/carget/:idUsuario/:donativo', async (req, res) => {
       console.error('Error al cambiar el estado del carrito:', error);
       return res.status(500).json({ success: false, msg: 'Error en el servidor' });
     }
-    return res.redirect(302, process.env.FRONTEND_URL+'/ShoppingList');
+    return res.redirect(302, process.env.FRONTEND_URL+'/ShoppingList/1');
   });
 
   
@@ -635,5 +715,56 @@ router.get('/reser/carget/:idUsuario/:donativo', async (req, res) => {
     donativo:donativo/100
   });
 });
+
+
+
+router.post('/duplicate/car', async (req, res) => {
+  try {
+    const { idusuario, idcarrito } = req.body;
+    const decoded = jwt.verify(idusuario, process.env.JWT_SECRET);
+    const iduser = decoded.id;
+    const fechaCreacion = new Date(); // Obtén la fecha actual
+
+    // Verifica si el usuario ya tiene un carrito activo
+    const activeCarritoQuery = 'SELECT idcarrito FROM carrito WHERE idusuario = ? AND status = 0';
+    const activeCarrito = await promisifyQuery(activeCarritoQuery, [iduser]);
+
+    if (activeCarrito && activeCarrito.length > 0) {
+      // Si el usuario tiene un carrito activo, inserta los elementos del carrito que se va a duplicar en ese carrito existente
+      const insertItemscarritoQuery = 'INSERT INTO itemscarrito (idcarrito, referenceIdServicio, idtiposervicio) SELECT ?, referenceIdServicio, idtiposervicio FROM itemscarrito WHERE idcarrito = ?';
+      await promisifyQuery(insertItemscarritoQuery, [activeCarrito[0].idcarrito, idcarrito]);
+
+      return res.status(200).json({ success: true, msg: 'Elementos del carrito duplicado insertados en el carrito activo existente' });
+    }
+
+    // Si el usuario no tiene un carrito activo, duplica el carrito y sus elementos
+    const getCarritoDetailsQuery = 'SELECT * FROM carrito WHERE idcarrito = ?';
+    const carritoDetails = await promisifyQuery(getCarritoDetailsQuery, [idcarrito]);
+
+    if (!carritoDetails || carritoDetails.length === 0) {
+      return res.status(404).json({ success: false, msg: 'Carrito no encontrado' });
+    }
+
+    const carritoActual = carritoDetails[0];
+
+    // Crea un nuevo carrito duplicado con los mismos elementos
+    const duplicateCarritoQuery = 'INSERT INTO carrito (idusuario, fechaCreacion, status, idmunicipio) VALUES (?, ?, ?, ?)';
+    const newCarritoId = await promisifyQuery(duplicateCarritoQuery, [iduser, fechaCreacion, 0, carritoActual.idmunicipio]);
+
+    // Obtén los elementos del carrito existente
+    const getItemscarritoQuery = 'SELECT * FROM itemscarrito WHERE idcarrito = ?';
+    const elementosCarrito = await promisifyQuery(getItemscarritoQuery, [idcarrito]);
+
+    // Inserta los elementos duplicados en el nuevo carrito
+    const insertItemscarritoQuery = 'INSERT INTO itemscarrito (idcarrito, referenceIdServicio, idtiposervicio) VALUES (?, ?, ?)';
+    await Promise.all(elementosCarrito.map((elemento) => promisifyQuery(insertItemscarritoQuery, [newCarritoId.insertId, elemento.referenceIdServicio, elemento.idTipoServicio])));
+
+    return res.status(200).json({ success: true, msg: 'Carrito duplicado exitosamente' });
+  } catch (error) {
+    console.error('Error al duplicar carrito:', error);
+    return res.status(500).json({ success: false, msg: 'Error en el servidor' });
+  }
+});
+// Función para convertir una consulta a promesa
 
 export default router;

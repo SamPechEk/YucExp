@@ -71,7 +71,9 @@ const Courses = () => {
             Object.entries(data).map(([category, items], i) => (
               <div className="dark:text-[#0d1b2a]" key={i}>
                 <h2 className="dark:text-white">{category}</h2>
+                
                 {items.map((item, j) => (
+                  
                   <Card2 key={j} rest2={item} />
                 ))}
               </div>

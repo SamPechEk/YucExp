@@ -8,6 +8,7 @@ import Swal from 'sweetalert2';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import QRCode from 'qrcode.react';
+import Vmenus from './Vmenus';
 
 const ListadoComprasComponent = () => {
   const [carritos, setCompras] = useState([]);
@@ -53,7 +54,7 @@ const ListadoComprasComponent = () => {
           const y = (pdfHeight - imgHeight) / 2;
 
           pdf.addImage(imgData, 'PNG', x, y, imgWidth, imgHeight);
-          pdf.save('documento.pdf');
+          pdf.save(`ticket-YucExp-#${id}.pdf`);
         });
         setTimeout(() => {
           if (teme === "dark") {
@@ -116,6 +117,7 @@ const ListadoComprasComponent = () => {
           <h1 className="text-large uppercase font-bold">Historial de servicios</h1>
         </CardHeader>
         <CardBody>
+        {carritos  ?(
           <Accordion selectionMode="multiple">
             {carritos.map((carrito) => (
               <AccordionItem
@@ -156,6 +158,14 @@ const ListadoComprasComponent = () => {
             ))}
            
           </Accordion>
+           ):(
+            <>
+            <Card isFooterBlurred className="w-full  col-span-12 sm:col-span-4">
+              <h1 className="text-large uppercase font-bold">Sin elementos en el carrito</h1>
+              <Vmenus></Vmenus>
+              </Card>
+            </>
+          )} 
         </CardBody>
 
 

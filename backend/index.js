@@ -5,13 +5,16 @@ import usuarioRoutes from "./routes/usuarioRoutes.js";
 import serviciosRoutes from "./routes/serviciosRoutes.js";
 import path from 'path';
 import { fileURLToPath } from 'url'; // Importa la función fileURLToPath
+// import csrf from "csurf";
+
+
 
 
 const __filename = fileURLToPath(import.meta.url); // Convierte import.meta.url en __filename
 const __dirname = path.dirname(__filename)
 
 const app = express();
-
+// app.use(csrf());
 app.use(express.json());
 
 

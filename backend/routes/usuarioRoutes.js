@@ -767,4 +767,71 @@ router.post('/duplicate/car', async (req, res) => {
 });
 // Función para convertir una consulta a promesa
 
+async function fetchAccessToken() {
+  try {
+    const body = {
+      username: "admin",
+      password: "admin",
+      provider: "db",
+      refresh: true,
+    }
+
+    const response = await fetch(
+      "http://20.84.101.7/api/v1/security/login",
+      {
+        method: "POST",
+        body: JSON.stringify(body),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    )
+
+    const jsonResponse = await response.json()
+    return jsonResponse?.access_token
+  } catch (e) {
+    console.error(e)
+  }
+}
+
+async function fetchGuestToken() {
+  const accessToken = await fetchAccessToken()
+  try {
+    const body = {
+      resources: [
+        {
+          type: "dashboard",
+          id: "cbe78626-de2b-4f30-8d09-db207a78a1a9",
+        },
+      ],
+      rls: [],
+      user: {
+        username: "appuser",
+        first_name: "AppUser",
+        last_name: "superset",
+      },
+    }
+    const response = await fetch(
+      "http://20.84.101.7/api/v1/security/guest_token",
+      {
+        method: "POST",
+        body: JSON.stringify(body),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    )
+    const jsonResponse = await response.json()
+    return jsonResponse?.token
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+router.get("/guest-token", async (req, res) => {
+  const token = await fetchGuestToken()
+  res.json(token)
+})
+
 export default router;

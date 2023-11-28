@@ -11,7 +11,10 @@
   },
   "dependencies": {
     "@nextui-org/react": "^2.1.12",
+    "@preset-sdk/embedded": "^0.1.8",
+    "@superset-ui/embedded-sdk": "^0.1.0-alpha.10",
     "axios": "^1.6.0",
+    "csurf": "^1.11.0",
     "framer-motion": "^10.16.4",
     "html2canvas": "^1.4.1",
     "jspdf": "^2.5.1",
@@ -28,6 +31,7 @@
     "react-slick": "^0.29.0",
     "slick-carousel": "^1.8.1",
     "sort-by": "^1.2.0",
+    "superset-dashboard-sdk": "^1.0.0-alpha.11",
     "sweetalert2": "^11.7.31"
   },
   "devDependencies": {

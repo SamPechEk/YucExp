@@ -12,6 +12,7 @@ import ActividadesComponent from "./components/ActividadesComponents";
 import ConfirmarCuent from "./components/ConfirmarCuenta";
 import FormularioServiciosComponent from "./components/FormularioServiciosComponent";
 import ListadoAdminComponent from './components/ListadoAdminComponent';
+import DashComponent from './components/DashComponent';
 const App = () => {
   return (
     <BrowserRouter>
@@ -27,6 +28,7 @@ const App = () => {
                   <Route path="confirma/:token" element={<ConfirmarCuent />} />
                   <Route path="registrarServicio" element={<FormularioServiciosComponent />} />
                   <Route path="listadoAdministrador" element={<ListadoAdminComponent />} />
+                  <Route path="dash" element={<DashComponent  />} />
               </Route>
           </Routes>
     </BrowserRouter>

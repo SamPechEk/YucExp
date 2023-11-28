@@ -8,7 +8,7 @@ function DashComponent() {
 
     const getToken = async () => {
         try {
-          const response = await axios.get('http://localhost:7000/api/usuarios/guest-token2');
+          const response = await axios.get('https://yucexpback.onrender.com/api/usuarios/guest-token2');
           const token = response.data;
           console.log(response);
           return token;

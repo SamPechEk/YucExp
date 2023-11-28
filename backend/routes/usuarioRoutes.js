@@ -538,5 +538,72 @@ router.get('/reser/carget/:idUsuario', (req, res) => {
     return res.redirect(302, process.env.FRONTEND_URL+'/ShoppingList');
   });
 });
+async function fetchAccessToken2() {
+  try {
+    const body = {
+      name: "6452b8ab-f069-4f37-9052-a6fdadf48f72",
+      secret: "729563199d07622a6b3296c3320c6732f9d3e6efdce42cfbfb30c5e445d5218a"
+    }
 
+    const response = await fetch(
+      "https://api.app.preset.io/v1/auth/",
+      {
+        method: "POST",
+        body: JSON.stringify(body),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    )
+
+    const jsonResponse = await response.json()
+    // console.log("access",jsonResponse);
+    return jsonResponse.payload.access_token
+  } catch (e) {
+    console.error(e)
+  }
+}
+
+async function fetchGuestToken2() {
+  const accessToken = await fetchAccessToken2()
+  console.log("access",accessToken);
+  try {
+    const body = {
+      resources: [
+        {
+          type: "dashboard",
+          id: "c17ccf6b-eb68-402e-b435-bc121350df89",
+        },
+      ],
+      rls: [],
+      user: {
+        username: "Samuel Ismael",
+        first_name: "Pech",
+        last_name: "Ek",
+      },
+    }
+    const response = await fetch(
+      "https://api.app.preset.io/v1/teams/a197342f/workspaces/b16d05ec/guest-token/",
+      {
+        method: "POST",
+        body: JSON.stringify(body),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    )
+    const jsonResponse = await response.json()
+    // console.log("guesy",jsonResponse);
+    return jsonResponse.payload.token
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+router.get("/guest-token2", async (req, res) => {
+  const token = await fetchGuestToken2()
+  // console.log("tok",token);
+  res.json(token)
+})
 export default router;

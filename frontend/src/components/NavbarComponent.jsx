@@ -105,49 +105,49 @@ const NavbarComponent = () => {
 
           <SelectComponent></SelectComponent>
           <Dropdown placement="bottom-end ml-6">
-            {!usuarioLogueado ? (
-              <NavbarItem isActive>
-                <Link to={`Login`} color="secondary">
-                  Login
-                </Link>
-              </NavbarItem>
-            ) : (
-              <DropdownTrigger>
-                <Avatar
-                  isBordered
-                  as="button"
-                  className="transition-transform"
-                  color="secondary"
-                  size="md"
-                  showFallback
+
+          {!usuarioLogueado ? (
+          <NavbarItem isActive>
+            <Link to={`Login`} color="secondary">
+              Login
+            </Link>
+          </NavbarItem>
+           ) : (
+            <DropdownTrigger>
+              <Avatar
+                isBordered
+                as="button"
+                className="transition-transform"
+                color="secondary"
+                size="md"
+                showFallback
                   src='https://images.unsplash.com/broken'
-                />
-              </DropdownTrigger>
+              />
+            </DropdownTrigger>
             )}
-            <DropdownMenu aria-label="Profile Actions" variant="flat">
-              <DropdownItem key="profile" className="h-17 gap-2">
-                <Link to={`ShoppingList`}>
+           <DropdownMenu aria-label="Profile Actions" variant="flat">
+            <DropdownItem key="profile" className="h-18 gap-2">
+              <Link to={`ShoppingList`}>
+                
+                <p className="font-semibold">{nombre}</p>
+                <p className="font-semibold">{email}</p>
+                
+                {tipo === 1 ? (
+                  <div>
+                 <p className="font-semibold py-1">Turista</p>
+                 <p className="font-semibold py-1">Mis Compras</p>
+                 </div>
+              ) : (
 
-                  <p className="font-semibold py-1">{nombre}</p>
-                  <p className="font-semibold py-1">{email}</p>
-
-                  {tipo === 1 ? (
-                    <div>
-                      <p className="font-semibold py-1">Turista</p>
-
-                      <p className="font-semibold py-1">Mis Compras</p>
+                <p className="font-semibold">Administrador</p>
+                  
+              )}
+              </Link>
+              
+              
 
 
-                    </div>
-                  ) : (
-
-                    <p className="font-semibold py-1">Administrador</p>
-
-                  )}
-
-
-
-                </Link>
+                
               </DropdownItem>
 
 
@@ -159,10 +159,12 @@ const NavbarComponent = () => {
                 ) : (<div> </div>)}
               </DropdownItem>
 
-              <DropdownItem key="logout" color="danger" onClick={handleLogOut}>
-                Log Out
-              </DropdownItem>
-            </DropdownMenu>
+
+            <DropdownItem className="py-1" key="logout" color="danger" onClick={handleLogOut}>
+              Log Out
+            </DropdownItem>
+          </DropdownMenu>
+
           </Dropdown>
           <NavbarItem>
             <SwitchDarkModeComponent />

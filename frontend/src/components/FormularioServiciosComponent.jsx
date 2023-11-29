@@ -79,7 +79,10 @@ const FormularioServiciosComponent = () =>
 
           axios.post('http://localhost:7000/obtener/servicios/registrarServicio', formData).then((response) =>{
             if(!response.data.success){
-              Swal.fire(response.data.msg,'','error')
+              Swal.fire(response.data.msg,'','error');
+              setTimeout(function() {
+                window.location.replace('/Ofertas');
+              }, 2000);
             }
             else{
             Swal.fire(response.data.msg, '','success')

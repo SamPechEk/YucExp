@@ -73,7 +73,7 @@ function DashComponent() {
 
   return (
     <div className="App">
-      <h1>How to Embed Superset Dashboard into React</h1>
+      <h1>Un poco de numeros</h1>
       <div id="dashboard" style={{ width: "100vw", height: "100vh" }}></div>
      
     </div>

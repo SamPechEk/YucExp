@@ -6,8 +6,10 @@ import Vmenus from './Vmenus';
 
 export default function ListadoComponent() {
   const [paquetes, setCompras] = useState([]);
+  
   const idMunicipio = localStorage.getItem("selectedMunicipio");
   const token = localStorage.getItem('token');
+  const usuarioLogueado = token !== null;
   const handleDuplicateCarrito = async (idcarrito) => {
     try {
       // Hacer una solicitud POST para duplicar el carrito
@@ -41,6 +43,11 @@ export default function ListadoComponent() {
         console.error('Error al obtener datos de itemcarrito:', error);
       });
   }, []);
+  const handletoLogin = () => {
+    
+    window.location.replace('/Login');
+   
+  };
   return (
     <div>
       <div className="justify-center items-centr flex py-5">
@@ -67,9 +74,17 @@ export default function ListadoComponent() {
                   <p className="text-black text-tiny">{carrito.municipio}</p>
                   <p className="text-black text-tiny">Agregar {carrito.items.length} al carrito</p>
                 </div>
-                <Button className="text-tiny" color="primary" radius="full" size="sm" onClick={() => handleDuplicateCarrito(carrito.idcarrito)}>
-                  Añadir al carrito
-                </Button>
+                {!usuarioLogueado ? (
+                  <Button className="text-tiny" color="primary" radius="full" size="sm" onClick={() => handletoLogin()}>
+                    Agregar al Carrito
+                  </Button>
+                   
+                ) : (
+                  <Button className="text-tiny" color="primary" radius="full" size="sm" onClick={() => handleDuplicateCarrito(carrito.idcarrito)}>
+                    Añadir al carrito
+                  </Button>
+                )}
+               
               </CardFooter>
             </Card>
             ))}

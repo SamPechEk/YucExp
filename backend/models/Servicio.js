@@ -11,7 +11,7 @@ const Servicio = {
       }
       switch(tipo) {
         case "1":
-          connection.query("INSERT INTO hoteles(nombre, idMunicipio, calificacion, img, typeImg) VALUES (?,?,?,?,?)",[nombre, municipio, calificacion,foto, tipoImg],
+          connection.query("INSERT INTO hoteles(nombre, idMunicipio, calificacion, img, typeImg) VALUES (?,?,?,?,?)",[nombre, municipio, calificacion,url_foto, tipoImg],
 
           (error, rows) => {
               if(error)
@@ -33,7 +33,7 @@ const Servicio = {
           break;
         case "3":
 
-          connection.query("INSERT INTO lugar(idMunicipio, nombre, img, typeImg) VALUES (?,?,?,?)",[municipio, nombre,foto, tipoImg],
+          connection.query("INSERT INTO lugar(idMunicipio, nombre, img, typeImg) VALUES (?,?,?,?)",[municipio, nombre,url_foto, tipoImg],
 
             (error, rows) => {
                 if(error)
@@ -45,7 +45,7 @@ const Servicio = {
           break;
         case "4":
 
-            connection.query("INSERT INTO actividades(idMunicipio, nombre, img, typeImg) VALUES (?,?,?,?)",[municipio, nombre,foto,tipoImg],
+            connection.query("INSERT INTO actividades(idMunicipio, nombre, img, typeImg) VALUES (?,?,?,?)",[municipio, nombre,url_foto,tipoImg],
 
               (error, rows) => {
                   if(error)
@@ -57,7 +57,7 @@ const Servicio = {
           break;
         case "5":
 
-            connection.query("INSERT INTO restaurantes(nombre, direccion, idMunicipio, img, typeImg) VALUES (?,?,?,?,?)",[nombre, direccion, municipio,foto, tipoImg],
+            connection.query("INSERT INTO restaurantes(nombre, direccion, idMunicipio, img, typeImg) VALUES (?,?,?,?,?)",[nombre, direccion, municipio,url_foto, tipoImg],
 
               (error, rows) => {
                   if(error)

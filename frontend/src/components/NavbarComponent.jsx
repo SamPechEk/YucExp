@@ -107,7 +107,7 @@ const NavbarComponent = () => {
 
 
 
-        {usuarioLogueado  &&(
+        {usuarioLogueado && tipo == 1  &&(
           <NavbarItem>
           <Link to={`ShoppingCart`}><CartIconComponent size={30} /></Link>
         </NavbarItem>
@@ -139,7 +139,7 @@ const NavbarComponent = () => {
             )}
            <DropdownMenu aria-label="Profile Actions" variant="flat">
             <DropdownItem key="profile" className="h-18 gap-2">
-              <Link to={`ShoppingList`}>
+              
                 
                 <p className="font-semibold">{nombre}</p>
                 <p className="font-semibold">{email}</p>
@@ -147,14 +147,14 @@ const NavbarComponent = () => {
                 {tipo === 1 ? (
                   <div>
                  <p className="font-semibold py-1">Turista</p>
-                 <p className="font-semibold py-1">Mis Compras</p>
+                 
                  </div>
               ) : (
 
                 <p className="font-semibold">Administrador</p>
                   
               )}
-              </Link>
+              
               
               
 
@@ -168,7 +168,7 @@ const NavbarComponent = () => {
                   <Link to={`RegistrarServicio`}>
                     Agregar
                   </Link>
-                ) : (<div> </div>)}
+                ) : (<Link to={`ShoppingList`}>Mis compras </Link>)}
               </DropdownItem>
 
 

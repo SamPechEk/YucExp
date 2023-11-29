@@ -129,7 +129,7 @@ const ListadoAdminComponent = () =>{
                                 isZoomed
                                 width={300}
                                 alt={300}
-                                src={d.foto}
+                                src={d.img}
                             />
                                 {d.calificacion ? 
                                 (<p className="font-bold">La calificacion es de: {d.calificacion} estrellas</p>)

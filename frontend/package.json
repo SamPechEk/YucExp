@@ -25,6 +25,7 @@
     "react-slick": "^0.29.0",
     "slick-carousel": "^1.8.1",
     "sort-by": "^1.2.0",
+    "superset-dashboard-sdk": "^1.0.0-alpha.11",
     "sweetalert2": "^11.7.31"
   },
   "devDependencies": {

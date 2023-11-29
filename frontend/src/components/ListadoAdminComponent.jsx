@@ -23,7 +23,7 @@ const ListadoAdminComponent = () =>{
             setdatos([]);
         }
         console.log(valor);
-        axios.post('http://localhost:7000/obtener/servicios/listado/servicios', valor)
+        axios.post('https://yucexpback.onrender.com/obtener/servicios/listado/servicios', valor)
           .then((response) => {
             
             if (!response.data.success) {

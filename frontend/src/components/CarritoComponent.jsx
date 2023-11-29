@@ -33,7 +33,7 @@ const handleReservar = () => {
           token: td,
           donativo:donativo
         };
-        const response = axios.post(`http://localhost:7000/api/usuarios/create-checkout-session`,data)
+        const response = axios.post(`https://yucexpback.onrender.com/api/usuarios/create-checkout-session`,data)
         .then(response => {
           // Aquí puedes acceder a los datos de la respuesta
           console.log('Datos de la respuesta:', response.data);
@@ -53,7 +53,7 @@ const handleReservar = () => {
         console.error('Error al realizar la solicitud:', error);
       }
       // const token = localStorage.getItem('token');
-      // axios.put('http://localhost:7000/api/usuarios/reser/car', { idusuario: token })
+      // axios.put('https://yucexpback.onrender.com/api/usuarios/reser/car', { idusuario: token })
       //   .then((response) => {
       //     if (response.data.success) {
       //       Swal.fire({
@@ -95,7 +95,7 @@ const CarritoComponent = () => {
   useEffect(() => {
     // Hacer una solicitud GET al backend para obtener los items agregados
     
-    axios.get(`http://localhost:7000/api/usuarios/list/car/${token}`)
+    axios.get(`https://yucexpback.onrender.com/api/usuarios/list/car/${token}`)
       .then((response) => {
         setDatosItemCarrito(response.data.items);
       })
@@ -106,7 +106,7 @@ const CarritoComponent = () => {
 
   const handleEliminarItem = (id) => {
     // Realizar una solicitud DELETE al backend para eliminar el elemento del carrito
-    axios.delete(`http://localhost:7000/api/usuarios/delete/caritem/${id}`)
+    axios.delete(`https://yucexpback.onrender.com/api/usuarios/delete/caritem/${id}`)
       .then((response) => {
         Swal.fire(response.data.msg, '', 'success')
         // console.log('Elemento eliminado del carrito:', response.data);

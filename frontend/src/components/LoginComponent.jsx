@@ -57,7 +57,7 @@ export default function LoginComponent() {
 
         // Realiza la solicitud POST al servidor
         axios
-          .post('http://localhost:7000/api/usuarios', data)
+          .post('https://yucexpback.onrender.com/api/usuarios', data)
           .then((response) => {
 
             if (response.data.success) {
@@ -76,7 +76,7 @@ export default function LoginComponent() {
       }else {
         // console.log(selected);
         axios
-          .post('http://localhost:7000/api/usuarios/login', data)
+          .post('https://yucexpback.onrender.com/api/usuarios/login', data)
           .then((response) => {
             console.log(response.data.success);
             if (response.data.success) {

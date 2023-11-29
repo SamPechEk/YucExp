@@ -10,7 +10,7 @@ export default function ListadoOfertasComponent() {
   useEffect(() => {
     const storedMunicipio = localStorage.getItem("selectedMunicipio");
     // Realiza una solicitud Axios para obtener los registros aleatorios
-    axios.get(`http://localhost:7000/api/usuarios/randomServices/${storedMunicipio}`)
+    axios.get(`https://yucexpback.onrender.com/api/usuarios/randomServices/${storedMunicipio}`)
       .then((response) => {
         setOfertas(response.data);
       })

@@ -29,7 +29,7 @@ import axios from 'axios';
 
 export const Municipios = async () => {
   try {
-    const response = await axios.get('http://localhost:7000/api/usuarios/municipios'); // Reemplaza con la URL de tu servidor
+    const response = await axios.get('https://yucexpback.onrender.com/api/usuarios/municipios'); // Reemplaza con la URL de tu servidor
     const municipios = response.data.map(item => ({
       label: item.nombreMunicipio,
       value: item.idMunicipio.toString(),

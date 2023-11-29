@@ -24,7 +24,7 @@ const Card2 = ({ rest2 }) => {
     };
 
     axios
-    .post('http://localhost:7000/api/usuarios/add/car', data)
+    .post('https://yucexpback.onrender.com/api/usuarios/add/car', data)
     .then((response) => {
 
       if (response.data.success) {

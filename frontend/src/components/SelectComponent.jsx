@@ -9,7 +9,7 @@ export default function SelectComponent() {
   const [selectedMunicipio, setSelectedMunicipio] = useState(new Set([]));
 
   useEffect(() => {
-    axios.get("http://localhost:7000/api/usuarios/municipios")
+    axios.get("https://yucexpback.onrender.com/api/usuarios/municipios")
       .then((response) => {
         const formattedMunicipios = response.data.map((municipio) => ({
           label: municipio.nombreMunicipio,

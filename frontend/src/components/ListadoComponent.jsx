@@ -11,7 +11,7 @@ export default function ListadoComponent() {
   const handleDuplicateCarrito = async (idcarrito) => {
     try {
       // Hacer una solicitud POST para duplicar el carrito
-      const response = await axios.post('http://localhost:7000/api/usuarios/duplicate/car', {
+      const response = await axios.post('https://yucexpback.onrender.com/api/usuarios/duplicate/car', {
         idusuario: token, // Reemplaza con la lógica para obtener el id del usuario
         idcarrito,
       });
@@ -33,7 +33,7 @@ export default function ListadoComponent() {
   };
   useEffect(() => {
     // Hacer una solicitud GET al backend para obtener los items agregados
-    axios.get(`http://localhost:7000/api/usuarios/paquetes/${idMunicipio}`)
+    axios.get(`https://yucexpback.onrender.com/api/usuarios/paquetes/${idMunicipio}`)
       .then((response) => {
         setCompras(response.data.carritos); // Ajusta esto según la estructura de tu respuesta
       })

@@ -74,7 +74,7 @@ const ListadoComprasComponent = () => {
 
   useEffect(() => {
     // Hacer una solicitud GET al backend para obtener los items agregados
-    axios.get(`http://localhost:7000/api/usuarios/historial2/car/${token}`)
+    axios.get(`https://yucexpback.onrender.com/api/usuarios/historial2/car/${token}`)
       .then((response) => {
         setCompras(response.data.carritos); // Ajusta esto según la estructura de tu respuesta
         setMuni(response.data.municipio);

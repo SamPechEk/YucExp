@@ -27,7 +27,7 @@ const NavbarComponent = () => {
     if (token) {
       
     
-    axios.get(`http://localhost:7000/api/usuarios/user/${token}`)
+    axios.get(`https://yucexpback.onrender.com/api/usuarios/user/${token}`)
       .then((response) => {
 
         setNombre(response.data.user.nombre);

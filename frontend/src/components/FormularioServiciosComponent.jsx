@@ -14,7 +14,7 @@ const FormularioServiciosComponent = () =>
 
   React.useEffect(()=>{
     //obtiene los tipo de servicios para pintar el select
-          axios.get('http://localhost:7000/obtener/servicios/getServicios')
+          axios.get('https://yucexpback.onrender.com/obtener/servicios/getServicios')
           .then((response) => {
             
             if (!response.data.success) {
@@ -32,7 +32,7 @@ const FormularioServiciosComponent = () =>
           });
 
 
-          axios.get("http://localhost:7000/api/usuarios/municipios")//trae d la base de datos los municipios 
+          axios.get("https://yucexpback.onrender.com/api/usuarios/municipios")//trae d la base de datos los municipios 
           .then((response) => {
             if(!municipiosV.length > 0){
               setMunicipios(response.data);
@@ -77,7 +77,7 @@ const FormularioServiciosComponent = () =>
           formData.set('foto', foto);
           formData.set('tipoImg', tipoImg);
 
-          axios.post('http://localhost:7000/obtener/servicios/registrarServicio', formData).then((response) =>{
+          axios.post('https://yucexpback.onrender.com/obtener/servicios/registrarServicio', formData).then((response) =>{
             if(!response.data.success){
               Swal.fire(response.data.msg,'','error')
             }

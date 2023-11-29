@@ -10,7 +10,7 @@ const Courses = () => {
 
   useEffect(() => {
     // Realiza la solicitud para obtener los datos del servidor
-    axios.get(`http://localhost:7000/api/usuarios/Services/${storedMunicipio}`)
+    axios.get(`https://yucexpback.onrender.com/api/usuarios/Services/${storedMunicipio}`)
       .then((response) => {
         setData(response.data);
         // console.log(data);

@@ -12,7 +12,7 @@ export default function ConfirmarCuenta() {
     
     
     axios
-      .get(`http://localhost:7000/api/usuarios/confirma/${token}`)
+      .get(`https://yucexpback.onrender.com/api/usuarios/confirma/${token}`)
       .then((response) => {
 
         if (response.data.success) {

@@ -76,6 +76,11 @@ const NavbarComponent = () => {
                 Paquetes
               </Link>
             </NavbarItem>
+            <NavbarItem>
+              <Link to={`Dash`}>
+                Estadisticas
+              </Link>
+            </NavbarItem>
 
 
           </NavbarContent>

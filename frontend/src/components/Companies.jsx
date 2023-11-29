@@ -9,11 +9,17 @@ const Companies = () => {
             <p className='text-center  text-[#536E96] dark:text-white text-xl'>Companias que le ayudaran a disfrutar su viaje</p>
             <div className='flex justify-center py-8 md:gap-8 '>
 
-                <div className='grid md:grid-cols-3 grid-cols-1 gap-1'>
-                  <div className='place-content-left'><img className='w-30 h-20' src={uber} /></div>
-                  <div className='place-content-center w-30 h-20'><img className='w-fit h-30' src={aeromexico} /></div>
-                  <div className='place-content-center'><img className='w-30 h-20' src={ado} /></div>
-                </div>
+            <div className='grid md:grid-cols-3 grid-cols-2 gap-2' style={{alignItems:"center", alignContent:"center"}}>
+                  <div>
+                    <img width={200} src={uber} />
+                  </div>
+                  <div>
+                    <img width={200} src={aeromexico} />
+                  </div>
+                  <div>
+                  <img width={200} src={ado} />
+                  </div>
+                   </div>
             </div>
         
         </div>

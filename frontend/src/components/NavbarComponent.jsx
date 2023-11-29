@@ -76,11 +76,14 @@ const NavbarComponent = () => {
                 Paquetes
               </Link>
             </NavbarItem>
+            {usuarioLogueado && tipo == 2  &&(
             <NavbarItem>
               <Link to={`Dash`}>
                 Estadisticas
               </Link>
             </NavbarItem>
+            )}
+
 
 
           </NavbarContent>
@@ -169,6 +172,13 @@ const NavbarComponent = () => {
                     Agregar
                   </Link>
                 ) : (<Link to={`ShoppingList`}>Mis compras </Link>)}
+              </DropdownItem>
+              <DropdownItem key="Listar">
+                {tipo != 1 ? (
+                  <Link to={`listadoAdministrador`}>
+                    Listado
+                  </Link>
+                ) : (<></>)}
               </DropdownItem>
 
 

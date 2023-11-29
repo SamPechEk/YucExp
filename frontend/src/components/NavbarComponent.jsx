@@ -9,6 +9,7 @@ import SelectComponent from "./SelectComponent";
 import Swal from 'sweetalert2';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { dark, uber, white } from "../assets";
 
 
 
@@ -17,6 +18,20 @@ import axios from 'axios';
 const NavbarComponent = () => {
   const token = localStorage.getItem('token');
   const usuarioLogueado = token !== null;
+  const [theme, setTheme] = useState('light');
+
+  useEffect(() => {
+    // Comprobar el tema actual al cargar la página
+    let initialTheme = 'light';
+    // const htmlElement = document.querySelector('html');
+    if (document.querySelector('html').classList.contains('dark')) {
+      initialTheme = 'dark';
+    }
+    
+    setTheme(initialTheme);
+  }, []); // El array vacío asegura que se ejecute solo una vez al cargar la página
+
+  
 
   const [nombre, setNombre] = useState("null");
   const [email, setEmail] = useState("null");
@@ -51,13 +66,31 @@ const NavbarComponent = () => {
     // Redirigir al usuario a la página de inicio de sesión u otra página, si es necesario
     // window.location.replace('/login'); // Ejemplo de redirección
   };
+  const toggleTheme = () => {
+    console.log('themeeeeee');
+    let newTheme = 'light';
+    // const htmlElement = document.querySelector('html');
+    if (document.querySelector('html').classList.contains('dark')) {
+      newTheme = 'dark';
+    }
+    
+    
+    setTheme(newTheme);
+  };
   return (
     <>
-      <Navbar isBordered>
+      <Navbar isBordered onClick={() => toggleTheme()}>
         <NavbarContent justify="start">
           <NavbarBrand className="mr-2">
-            <AcmeLogoComponent />
-            <p className="hidden sm:block font-bold text-inherit">YucExp</p>
+          
+            {theme == "dark" ? (
+                <img width={200} src={white} />
+              ) : (
+
+                <img width={200} src={dark} />
+                  
+              )}
+            
           </NavbarBrand>
           <NavbarContent className="hidden sm:flex gap-6">
             <NavbarItem>
@@ -87,7 +120,7 @@ const NavbarComponent = () => {
 
 
           </NavbarContent>
-          {tipo == 1 &&(<Input
+          {/* {tipo == 1 &&(<Input
             classNames={{
               base: "max-w-full sm:max-w-[10rem] h-10",
               mainWrapper: "h-full",
@@ -98,7 +131,7 @@ const NavbarComponent = () => {
             size="sm"
             startContent={<SearchIconComponent size={28} />}
             type="search"
-          />)}
+          />)} */}
         </NavbarContent>
 
 
@@ -188,7 +221,7 @@ const NavbarComponent = () => {
           </DropdownMenu>
 
           </Dropdown>
-          <NavbarItem>
+          <NavbarItem  >
             <SwitchDarkModeComponent />
           </NavbarItem>
         </NavbarContent>

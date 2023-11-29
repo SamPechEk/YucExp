@@ -15,6 +15,8 @@ import cta from "./cta.png"
 import ado from "./ado.png"
 import uber from "./uber.png"
 import aeromexico from "./aeromexico.png"
+import white from "./white.png"
+import dark from "./dark.png"
 export {
   hamburgerMenu,
   close,
@@ -32,7 +34,9 @@ export {
   cta,
   uber,
   aeromexico,
-  ado
+  ado,
+  white,
+  dark
 
 
 };

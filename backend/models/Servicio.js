@@ -7,7 +7,7 @@ const Servicio = {
 
       let url_foto = foto;
       if(tipoImg == 1){    
-         url_foto = "http://localhost:7000/"+foto;
+         url_foto = "https://yucexpback.onrender.com/"+foto;
       }
       switch(tipo) {
         case "1":

@@ -18,7 +18,9 @@ export default function ConfirmarCuenta() {
         if (response.data.success) {
           Swal.fire(response.data.msg, '', 'success');
         }
-        
+        setTimeout(function() {
+          window.location.replace('/Login');
+        }, 2000);
         // console.log('Respuesta del servidor:', response);
       })
       .catch((error) => {

@@ -79,10 +79,14 @@ const FormularioServiciosComponent = () =>
 
           axios.post('https://yucexpback.onrender.com/obtener/servicios/registrarServicio', formData).then((response) =>{
             if(!response.data.success){
-              Swal.fire(response.data.msg,'','error')
+              Swal.fire(response.data.msg,'','error');
+             
             }
             else{
-            Swal.fire(response.data.msg, '','success')
+            Swal.fire(response.data.msg, '','success');
+            setTimeout(function() {
+              window.location.replace('/Ofertas');
+            }, 2000);
             }
           }).catch((error) => {
             Swal.fire(error.data.msg,'','error')
